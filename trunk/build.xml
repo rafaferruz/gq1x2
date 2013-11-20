@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="GQ1X2" default="default" basedir=".">
-    <description>Builds, tests, and runs the project GQ1X2.</description>
+<project name="gq1x2" default="default" basedir=".">
+    <description>Builds, tests, and runs the project gq1x2.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 
