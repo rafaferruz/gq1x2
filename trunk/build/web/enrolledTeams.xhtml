@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt"/>
+
+		<h:form id="enrolledTeam_form">
+		    <h3>
+			<h:outputLabel for="componentLabel0Text" id="componentLabel0" >
+			    <h:outputText id="componentLabel0Text" value="#{txt.enrollingTeams}"/>
+			</h:outputLabel>
+		    </h3>
+		    <table>
+			<tr>
+			    <td>
+				<h:outputLabel for="componentLabel3" id="componentLabel3">
+				    <h:outputText id="componentLabel3Text" value="#{txt.selectchampionship}"/>
+				</h:outputLabel>
+			    </td>
+			    <td>
+				<h:outputLabel for="componentLabel4" id="componentLabel4">
+				    <h:outputText id="componentLabel4Text" value="#{txt.enrolledTeams}"/>
+				</h:outputLabel>
+			    </td>
+			</tr>
+			<tr valign="top">
+			    <td>
+				<h:selectOneMenu id="dropdown1" value="#{enrolledTeam.entChaId}" onchange="submit();" valueChangeListener="#{enrolledTeam.championshipChangeEvent}">
+				    <f:selectItems id="dropdown1SelectItems" value="#{enrolledTeam.championshipItemList}"/>
+				</h:selectOneMenu>
+			    </td>
+			    <td>
+				<h:selectOneListbox id="listbox2" value="#{enrolledTeam.entTeaId}" >
+				    <f:selectItems id="listbox2SelectItems" value="#{enrolledTeam.enrolledTeamItemList}"/>
+				</h:selectOneListbox>
+			    </td>
+			    <td>
+				<h:commandButton action="#{enrolledTeam.backenrolling}" id="button1" value="Desinscribir"/>
+				<h:commandButton action="#{enrolledTeam.enrolling}" id="button2" value="Inscribir"/>
+			    </td>
+			    <td>
+				<h:selectOneListbox id="listbox3" value="#{enrolledTeam.selectedDisposableTeam}" size="20">
+				    <f:selectItems id="listbox3SelectItems" value="#{enrolledTeam.disposableTeamItemList}"/>
+				</h:selectOneListbox>
+			    </td>
+			</tr>
+			<tr>
+			    <td colspan="4">
+				<h:messages/>
+			    </td>
+			</tr>
+		    </table>
+		</h:form>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+
+</html>
+

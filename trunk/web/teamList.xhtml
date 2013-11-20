@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+		<f:loadBundle basename="com.gq2.multilang.team" var="txt"/>
+
+		<h3 align="left">
+                    <h:outputFormat value="#{txt.teamList}"/>
+                </h3>
+
+                <h:form id="teamList_form">
+                    <h:inputHidden id="runAction" value="#{team.runAction}" />
+                    <h:inputHidden id="keyId" value="#{team.teaId}"/>
+
+                    <c:set var="teamList" value="#{team.teamList}" scope="session"/>
+
+                    <table>
+			<tr>
+			    <td>
+				<c:if test="#{team.rowCount == 0}">
+				    <h3 align="left">#{txt.NoListTeams}</h3>
+				</c:if>
+				<c:if test="#{team.rowCount > 0}">
+				    <table>
+					<!-- column headers -->
+					<tr>
+					    <th>#{txt.Id}</th>
+					    <th>#{txt.Code}</th>
+					    <th>#{txt.TeamName}</th>
+					    <th>#{txt.Action}</th>
+					</tr>
+					<!-- column data -->
+					<c:forEach var="row" items="#{sessionScope.teamList}">
+					    <tr>
+						<td><h:outputText value="#{row.teaId}"/></td>
+						<td><h:outputText value="#{row.teaCode}"/></td>
+						<td><h:outputText value="#{row.teaName}"/></td>
+						<td align="center">
+						    <h:commandButton action="#{team.edit}" value="#{txt.Edit}"   onclick="window.document.getElementById('teamList_form:keyId').value = #{row.teaId};"/>
+						    <h:commandButton action="#{team.delete}" value="#{txt.Delete}"   onclick="window.document.getElementById('teamList_form:keyId').value = #{row.teaId};"/>
+						</td>
+					    </tr>
+					</c:forEach>
+
+				    </table>
+				</c:if>
+
+			    </td>
+			    <td>
+				<table class="commandBoxInList">
+				    <tr>
+					<td>
+					    <h:commandButton action="#{team.newTeam}" value="#{txt.newTeam}"/>
+					</td>
+				    </tr>
+				    <tr>
+					<td>
+    					    <h:commandButton action="#{team.searchTeam}" value="#{txt.searchTeam}"/>
+					</td>
+				    </tr>
+				</table>
+			    </td>
+			</tr>
+                    </table>
+		    <script type="text/javascript" >
+							function runCommand(command) {
+							    window.document.teamList_form.runAction.value = command;
+							    window.document.teamList_form.submit();
+							    return 0;
+							}
+							function teamEdit(id) {
+							    window.document.teamList_form.keyId.value = id;
+							    runCommand('edit');
+							    return 0;
+							}
+		    </script>
+
+                </h:form>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+
+</html>
+

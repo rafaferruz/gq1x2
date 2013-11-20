@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"></meta>
+        <title>Programa de estudios estadísticos de resultados de fútbol.</title>
+
+<!--	       <link rel="stylesheet" href="http://ecosysw.com/comunes/css/zorongo.css" type="text/css"></link>
+		<link rel="stylesheet" href="http://ecosysw.com/comunes/css/menus.css" type="text/css"></link>
+		<link rel="stylesheet" href="http://ecosysw.com/comunes/css/granq.css" type="text/css"></link>
+-->	
+
+	<!-- YAML framework. Componentes de diseño de paginas con CSS. -->
+	<h:outputStylesheet  library="css" name="layout_3col_standard.css" />
+	<h:outputStylesheet  library="css" name="menus.css" />
+	<!--[if lte IE 7]>
+	<link href="/css/patches/patch_3col_standard.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
+
+	<h:outputScript library="scripts/comunes" name="Comunes1.js" />
+	<h:outputScript library="scripts/comunes" name="x_core.js" />
+	<h:outputScript library="scripts/comunes/granq" name="Fapuestas.js" />
+<!--        <script TYPE="text/javascript" LANGUAGE="javascript" SRC="http://ecosysw.com/comunes/scripts/Comunes1.js"></script>
+
+        <script TYPE="text/javascript" LANGUAGE="javascript" SRC="http://ecosysw.com/comunes/scripts/x_core.js"></script>
+        <script TYPE="text/javascript" LANGUAGE="javascript" SRC="http://ecosysw.com/comunes/scripts/granq/Fapuestas.js"></script>
+-->
+        <meta name="keywords" content="estudios estadísticos resultados fútbol"></meta>
+
+    </h:head>
+
+    <h:body>
+	<div class="header">
+	    <div class="page_margins">
+		<div class="page">
+		    <!-- begin: main navigation #nav -->
+		    <div id="nav">
+			<ui:insert name="top">Cabecera de Página</ui:insert>
+		    </div>
+		    <!-- end: main navigation -->
+		    <!-- begin: content area #main -->
+		    <div id="main">
+			<!-- begin: #col1 - first float column -->
+			<div id="col1" role="complementary">
+			    <div id="col1_content" class="clearfix"> </div>
+			</div>
+			<!-- end: #col1 -->
+			<!-- begin: #col2 second float column -->
+			<div id="col2" role="complementary">
+			    <div id="col2_content" class="clearfix"> </div>
+			</div>
+			<!-- end: #col2 -->
+			<!-- begin: #col3 static column -->
+			<div id="col3" role="main">
+			    <div id="col3_content" class="clearfix"> 
+				<ui:insert name="content">Cuerpo de Página</ui:insert>
+			    </div>
+			    <!-- IE column clearing -->
+			    <div id="ie_clearing">&nbsp;</div>
+			</div>
+			<!-- end: #col3 -->
+		    </div>
+		    <!-- end: #main -->
+		    <!-- begin: #footer -->
+		    <div id="footer" role="contentinfo">Layout based on <a href="http://www.yaml.de/">YAML</a>
+			<ui:insert name="bottom">Pie de Página y funciones finales</ui:insert>
+			<!-- end: #footer -->
+		    </div>
+		</div>
+	    </div>
+	</div>
+    </h:body>
+</html>
+

@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt"/>
+
+		<h:form id="createMatches_form">
+		    <h3>
+			<h:outputLabel for="componentLabel0Text" id="componentLabel0" >
+			    <h:outputText id="componentLabel0Text" value="#{txt.createMatches}"/>
+			</h:outputLabel>
+		    </h3>
+		    <table>
+			<tr>
+			    <td>
+				<h:outputLabel for="componentLabel3" id="componentLabel3">
+				    <h:outputText id="componentLabel3Text" value="#{txt.selectchampionship}"/>
+				</h:outputLabel>
+			    </td>
+			    <td>
+				<h:outputLabel for="textround" id="textroundlabel">
+				    <h:outputText id="textround" value="#{txt.preQround}"/>
+				</h:outputLabel>
+			    </td>
+			</tr>
+			<tr>
+			    <td>
+				<h:selectOneMenu id="dropdown1" value="#{showScores.scoChaId}" onchange="submit();" valueChangeListener="#{showScores.championshipChangeEvent}">
+				    <f:selectItems id="dropdown1SelectItems" value="#{showScores.championshipItemList}"/>
+				</h:selectOneMenu>
+			    </td>
+			    <td>
+				<h:inputText id="round" maxlength="2" size="2" value="#{showScores.scoRound}" onchange="submit();" valueChangeListener="#{showScores.roundChangeEvent}">
+				    <f:validateLongRange maximum="60" minimum="1"/>
+				</h:inputText>
+			    </td>
+			    <td>
+			    </td>
+			</tr>
+			<tr>
+			    <td>
+				<br/>
+			    </td>
+			    <td colspan="2">
+				<h:outputLabel for="componentLabel5Text" id="componentLabel5">
+				    <h:outputText id="componentLabel5Text" value="#{txt.rounddate}"/>
+				</h:outputLabel>
+			    </td>
+			</tr>
+			<tr>
+			    <td>
+				<br/>
+			    </td>
+			    <td>
+				<h:inputText converterMessage="#{txt.errordate}" id="rounddate" maxlength="10" size="10"
+					     validator="#{showScores.roundDateValidator}" value="#{showScores.scoDate}"
+					      onchange="submit();" valueChangeListener="#{showScores.dateChangeEvent}">
+				    <f:convertDateTime pattern="#{txt.datepattern}" type="date"/>
+				</h:inputText>
+				<h:outputLabel for="componentLabel6Text" id="componentLabel6">
+				    <h:outputText id="componentLabel6Text" value="#{txt.rounddatepattern}"/>
+				</h:outputLabel>
+			    </td>
+			    <td colspan="2">
+			    </td>
+			    <td>
+				<br/>
+			    </td>
+			</tr>
+			<tr>
+			    <td colspan="3">
+				<h:dataTable id="dataTable1" value="#{showScores.scoreList}" var="currentRow">
+				    <h:column id="column1">
+					<h:outputText id="outputText1" value="#{currentRow['scoTeamName1']}"/>
+					<f:facet name="header">
+					    <h:outputText id="outputText2" value="#{txt.hometeam}"/>
+					</f:facet>
+				    </h:column>
+				    <h:column id="column2">
+					<h:outputText id="outputText3" value="#{currentRow['scoTeamName2']}"/>
+					<f:facet name="header">
+					    <h:outputText id="outputText4" value="#{txt.outteam}"/>
+					</f:facet>
+				    </h:column>
+				    <h:column id="column3">
+					<h:inputText id="inputText5" maxlength="2" required="true" size="2" value="#{currentRow['scoScore1']}">
+					    <f:validateLongRange maximum="20" minimum="0"/>
+					</h:inputText>
+					<f:facet name="header">
+					    <h:outputText id="outputText6" value="#{txt.GC}"/>
+					</f:facet>
+				    </h:column>
+				    <h:column id="column4">
+					<h:inputText id="inputText7" maxlength="2" required="true" size="2" value="#{currentRow['scoScore2']}">
+					    <f:validateLongRange maximum="20" minimum="0"/>
+					</h:inputText>
+					<f:facet name="header">
+					    <h:outputText id="outputText8" value="#{txt.GF}"/>
+					</f:facet>
+				    </h:column>
+				    <h:column id="column5">
+					<h:selectBooleanCheckbox id="checkbox8" value="#{currentRow['scoMarkDelete']}">
+					</h:selectBooleanCheckbox>
+					<f:facet name="header">
+					    <h:outputText id="checkboxText8" value="#{txt.deleteMatch}"/>
+					</f:facet>
+				    </h:column>
+				</h:dataTable>
+			    </td>
+			</tr>
+			<tr>
+			    <td colspan="3">
+				<h:selectOneMenu id="dropdown11" value="#{showScores.scoTeam1Id}">
+				    <f:selectItems id="dropdown11SelectItems" value="#{showScores.teamItemList_1}"/>
+				</h:selectOneMenu>
+				<h:selectOneMenu id="dropdown12" value="#{showScores.scoTeam2Id}">
+				    <f:selectItems id="dropdown12SelectItems" value="#{showScores.teamItemList_2}"/>
+				</h:selectOneMenu>
+				<h:commandButton disabled="#{showScores.disabledCreateCommand}" action="#{showScores.createMatch}" id="button10" value="#{txt.preQinsert}"/>
+				<h:commandButton action="#{showScores.deleteMatches}" id="button11" value="#{txt.deleteMatches}"/>
+			    </td>
+			</tr>
+			<tr>
+			    <td colspan="3">
+				<h:messages/>
+			    </td>
+			</tr>
+			<tr>
+			    <td colspan="3"></td>
+			    <td colspan="3"></td>
+			    <td colspan="3">
+				<h:commandButton action="close" id="button9" value="#{txt.close}"/>
+			    </td>
+			</tr>
+		    </table>
+		</h:form>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+
+</html>
+
