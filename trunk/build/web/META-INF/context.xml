@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="">
-    <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" defaultAutoCommit="false" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/gq1x2" password="07021951" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/gq1x2" username="rafa"/>
-</Context>
