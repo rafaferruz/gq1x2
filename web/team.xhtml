@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+
+                <f:loadBundle basename="com.gq2.multilang.team" var="txt"/>
+
+                <h3>
+                    <h:outputFormat value="#{txt.editTeams}"/>
+                </h3>
+                <h:form id="team_form" >
+                    <h:inputHidden id="runAction" value="#{team.runAction}" />
+                    <table>
+
+                        <tr>
+                            <td>
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="#{txt.Id}:" for="keyId" ></h:outputLabel>
+                                    <h:inputText id="keyId" size="5" maxlength="5" disabled="true" value="#{team.teaId}" />
+
+
+                                    <h:outputLabel value="#{txt.Status}:" for="status" ></h:outputLabel>
+                                    <h:selectOneRadio id="status" value="#{team.teaStatus}" >
+                                        <f:selectItem id="status_0" itemValue="0" itemLabel="#{txt.Activ}"/>
+                                        <f:selectItem id="status_1" itemValue="1" itemLabel="#{txt.Unactiv}"/>
+                                        <f:selectItem id="status_2" itemValue="2" itemLabel="#{txt.Locked}"/>
+                                    </h:selectOneRadio>
+
+                                    <h:outputLabel value="#{txt.Code}:" for="code" ></h:outputLabel>
+                                    <h:inputText id="code" required="true" size="12" maxlength="12" value="#{team.teaCode}" />
+
+
+                                    <h:outputLabel value="#{txt.TeamName}:" for="name" ></h:outputLabel>
+                                    <h:inputText id="name" required="true" size="60" maxlength="40" value="#{team.teaName}" />
+
+
+                                    <h:outputLabel value="#{txt.Rating}:" for="rating" ></h:outputLabel>
+                                    <h:inputText id="rating" size="5" maxlength="5" value="#{team.teaRating}">
+					<f:validateLongRange minimum="0"/>
+				    </h:inputText>
+
+                                    <h:panelGroup/>
+                                    <h:panelGroup>
+                                        <table>
+					    <tr>
+						<td>
+                                                    <h:commandButton id="cancel" action="#{team.cancelAction}" value="#{txt.Cancel}" />
+                                                    <h:commandButton id="save" action="#{team.saveNewTeam}" value="#{txt.Save}" />
+                                                </td>
+					    </tr>
+					</table>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>
+

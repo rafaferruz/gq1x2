@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.granq.multilang.granq" var="txt"/>
+
+                <h:form id="form1">
+                    <h:outputLabel for="textseason" id="textseasonlabel">
+                        <h:outputText id="textseason" value="#{txt.preQseason}"/>
+                    </h:outputLabel>
+                    <h:inputText id="season" maxlength="4" size="4" value="#{statPrognostic.season}"  onchange="submit();" valueChangeListener="#{statPrognostic.changeValueSeason}">
+                        <f:validateLongRange maximum="2010" minimum="2000"/>
+                    </h:inputText>
+                    <h:outputLabel for="textfirstRound" id="textfirstRoundlabel">
+                        <h:outputText id="textfirstRound" value="#{txt.firstRound}"/>
+                    </h:outputLabel>
+                    <h:inputText id="firstRound" maxlength="2" size="2" value="#{statPrognostic.firstRound}"  onchange="submit();" valueChangeListener="#{statPrognostic.changeValueRound}">
+                        <f:validateLongRange maximum="60" minimum="1"/>
+                    </h:inputText>
+                    <h:outputLabel for="textlastRound" id="textlastRoundlabel">
+                        <h:outputText id="textlastRound" value="#{txt.lastRound}"/>
+                    </h:outputLabel>
+                    <h:inputText id="lastRound" maxlength="2" size="2" value="#{statPrognostic.lastRound}"  onchange="submit();" valueChangeListener="#{statPrognostic.changeValueRound}">
+                        <f:validateLongRange maximum="60" minimum="1"/>
+                    </h:inputText>
+
+                    <h:dataTable  width="950 pt"     headerClass="list-header" id="dataTable1"
+                                  value="#{statPrognostic.statBeanList}" var="currentRow">
+                        <h:column id="column2"     >
+                            <h:outputText id="outputText3" value="#{currentRow['sp1']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputText4" value="1"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="column3">
+                            <h:outputText id="outputText5" value="#{currentRow['spX']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputText6" value="X"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="column4">
+                            <h:outputText id="outputText7" value="#{currentRow['sp2']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputText8" value="2"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="column5" >
+                            <h:outputText id="outputText9" value="#{currentRow['a41']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputText10" value="1"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="column6">
+                            <h:outputText id="outputText11" value="#{currentRow['a4X']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputText12" value="X"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="column7">
+                            <h:outputText id="outputText13" value="#{currentRow['a42']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputText14" value="2"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="column8" >
+                            <h:outputText id="outputText15" value="#{currentRow['porc1']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputText16" value="1"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="column9">
+                            <h:outputText id="outputText17" value="#{currentRow['porcX']}"/>
+                            <f:facet name="header">
+                                <h:outputText  id="outputText18" value="X"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="column10">
+                            <h:outputText id="outputText19" value="#{currentRow['porc2']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputText20" value="2"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columnse1" >
+                            <h:outputText id="outputTextse1" value="#{currentRow['se1']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextse11" value="1"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columnsex">
+                            <h:outputText id="outputTextsex" value="#{currentRow['seX']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextsexx" value="X"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columnse2">
+                            <h:outputText id="outputTextse2" value="#{currentRow['se2']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextse22" value="2"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columndse1" >
+                            <h:outputText id="outputTextdse1" value="#{currentRow['dse1']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextdse11" value="1"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columndsex">
+                            <h:outputText id="outputTextdsex" value="#{currentRow['dseX']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextdsexx" value="X"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columndse2">
+                            <h:outputText id="outputTextdse2" value="#{currentRow['dse2']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextdse22" value="2"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columnsesra1" >
+                            <h:outputText id="outputTextsesra1" value="#{currentRow['sesra1']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextsesra11" value="1"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columnsesrax">
+                            <h:outputText id="outputTextsesrax" value="#{currentRow['sesraX']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextsesraxx" value="X"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columnsesra2">
+                            <h:outputText id="outputTextsesra2" value="#{currentRow['sesra2']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextsesra22" value="2"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columndsesra1" >
+                            <h:outputText id="outputTextdsesra1" value="#{currentRow['dsesra1']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextdsesra11" value="1"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columndsesrax">
+                            <h:outputText id="outputTextdsesrax" value="#{currentRow['dsesraX']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextdsesraxx" value="X"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columndsesra2">
+                            <h:outputText id="outputTextdsesra2" value="#{currentRow['dsesra2']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextdsesra22" value="2"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columnsesrb1" >
+                            <h:outputText id="outputTextsesrb1" value="#{currentRow['sesrb1']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextsesrb11" value="1"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columnsesrbx">
+                            <h:outputText id="outputTextsesrbx" value="#{currentRow['sesrbX']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextsesrbxx" value="X"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columnsesrb2">
+                            <h:outputText id="outputTextsesrb2" value="#{currentRow['sesrb2']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextsesrb22" value="2"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columndsesrb1" >
+                            <h:outputText id="outputTextdsesrb1" value="#{currentRow['dsesrb1']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextdsesrb11" value="1"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columndsesrbx">
+                            <h:outputText id="outputTextdsesrbx" value="#{currentRow['dsesrbX']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextdsesrbxx" value="X"/>
+                            </f:facet>
+                        </h:column>
+                        <h:column id="columndsesrb2">
+                            <h:outputText id="outputTextdsesrb2" value="#{currentRow['dsesrb2']}"/>
+                            <f:facet name="header">
+                                <h:outputText id="outputTextdsesrb22" value="2"/>
+                            </f:facet>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>

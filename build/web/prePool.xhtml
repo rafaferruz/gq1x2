@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.granq.multilang.granq" var="txt"/>
+
+		<h:form id="form1">
+		    <h:outputLabel for="pagetitle" id="pagetitlelabel" styleClass="page-title">
+			<h:outputText id="pagetitle" value="#{txt.preQpagetitle}"/>
+		    </h:outputLabel>
+		    <br/>
+		    <br/>
+		    <table>
+			<tbody>
+			    <tr>
+				<td>
+				    <h:outputLabel for="textseason" id="textseasonlabel">
+					<h:outputText id="textseason" value="#{txt.preQseason}"/>
+				    </h:outputLabel>
+				    <h:inputText id="season" maxlength="4" onchange="submit();" size="4" value="#{prePool.season}" valueChangeListener="#{prePool.changeValueSeason}">
+					<f:validateLongRange minimum="2000" maximum="2013"/>
+				    </h:inputText>
+				</td>
+				<td>
+				    <h:outputLabel for="textround" id="textroundlabel">
+					<h:outputText id="textround" value="#{txt.preQround}"/>
+				    </h:outputLabel>
+				    <h:inputText id="round" maxlength="2" onchange="submit();" size="2" value="#{prePool.orderNumber}" valueChangeListener="#{prePool.changeValueOrderNumber}">
+					<f:validateLongRange maximum="60" minimum="1"/>
+				    </h:inputText>
+				</td>
+				<td>
+				    <h:outputLabel for="textradio" id="textradiolabel">
+					<h:outputText id="textradio" value="#{txt.sorting}"/>
+				    </h:outputLabel>
+				    <h:selectOneRadio id="radioButtonList1" layout="lineDirection" onchange="submit();" value="#{prePool.sortby}" immediate="true">
+					<f:selectItem itemLabel="#{txt.byrating}" itemValue="rating"/>
+					<f:selectItem itemLabel="#{txt.byorder}" itemValue="order"/>
+				    </h:selectOneRadio>
+				    <h:commandButton action="#{prePool.updateScores()}" id="buttonupdate" value="#{txt.preQupdateresults}"/>
+
+				</td>
+			    </tr>
+			    <tr>
+				<td colspan="3">
+				    <br/>
+				    <br/>
+				    <h:dataTable cellpadding="0px" cellspacing="0px"
+						 columnClasses=",,col-center,col-center,col-center,col-center,col-center,col-center,col-center,col-center"
+						 headerClass="list-header" id="dataTable1" rowClasses="list-row-even,list-row-odd" value="#{prePool.prePoolList}" var="currentRow" width="950pt">
+					<h:column id="column2">
+					    <h:outputText id="outputText3" value="#{currentRow['preTeaName1']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText4" value="#{txt.hometeam}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column3">
+					    <h:outputText id="outputText5" value="#{currentRow['preTeaName2']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText6" value="#{txt.outteam}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column2score">
+					    <h:outputText id="outputText3score" value="#{currentRow['preScoScore1']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText4score" value="GC  "/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column3score">
+					    <h:outputText id="outputText5score" value="#{currentRow['preScoScore2']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText6score" value="GF       "/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column4">
+					    <h:outputText id="outputText7" value="#{currentRow['preRat4PreviousDiference']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText8" value="#{txt.difrating}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column5">
+					    <h:outputText id="outputText9" value="#{currentRow['prePercentWin']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText10" value="#{txt.preQprobG}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column6">
+					    <h:outputText id="outputText11" value="#{currentRow['prePercentDraw']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText12" value="#{txt.preQprobE}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column7">
+					    <h:outputText id="outputText13" value="#{currentRow['prePercentLose']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText14" value="#{txt.preQprobP}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column8">
+					    <h:outputText id="outputText15" value="#{currentRow['prePrognostic']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText16" value="#{txt.pronostic}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column9">
+					    <h:outputText id="outputText17" value="#{currentRow['preRat4ScoreSign']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText18" value="#{txt.result}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column10">
+					    <h:outputText id="outputText19" value="#{currentRow['preFailedPrognostic']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText20" value="#{txt.fault}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column11">
+					    <f:facet name="header">
+						<h:outputText id="outputText21" value="#{txt.action}"/>
+					    </f:facet>
+					    <h:commandButton action="#{prePool.deleteMatch}" id="button20" styleClass="button-short" value="#{txt.preQdelete}">
+						<f:setPropertyActionListener target="#{prePool.dataPrePoolMatch}" value="#{currentRow}"/>
+					    </h:commandButton>
+					</h:column>
+				    </h:dataTable>
+				</td>
+			    </tr>
+			    <tr>
+				<td colspan="2" valign="top">
+				    <h:outputLabel for="textlabel1" id="label1" styleClass="table-title">
+					<h:outputText id="textlabel1" value="#{txt.preQinsertMatches}"/>
+				    </h:outputLabel>
+				    <br/>
+				    <br/>
+				    <h:commandButton action="#{prePool.insertTotal}" id="button3" value="#{txt.preQinserttotal}"/>
+				    <br/>
+				    <br/>
+				    <h:outputLabel for="textchampionship" id="textchampionshiplabel">
+					<h:outputText id="textchampionship" value="#{txt.selectchampionship}"/>
+				    </h:outputLabel>
+				    <h:outputLabel for="componentLabel1Text" id="textroundlabel1">
+					<h:outputText id="componentLabel1Text" value="#{txt.selectround}"/>
+				    </h:outputLabel>
+				    <br/>
+				    <h:selectOneMenu id="dropdown1" onchange="submit();" value="#{prePool.chaId}" valueChangeListener="#{prePool.changeValueChampionship}">
+					<f:selectItems id="dropdown1SelectItems" value="#{prePool.championshipItemList}"/>
+				    </h:selectOneMenu>
+				    <h:selectOneMenu id="dropdown2" value="#{prePool.round}">
+					<f:selectItems id="dropdown2SelectItems" value="#{prePool.roundItemList}"/>
+				    </h:selectOneMenu>
+				    <br/>
+				    <br/>
+				    <h:outputLabel for="textmatches1" id="textmatcheslabel1">
+					<h:outputText id="textmatches1" value="#{txt.preQmatches}"/>
+				    </h:outputLabel>
+				    <h:inputText id="matches1" maxlength="2" size="2" value="#{prePool.insertedmatches}"/>
+				    <h:outputText id="textmatches2" value="#{txt.preQalternativeMatches}"/>
+				    <h:selectBooleanCheckbox id="checkbox1" value="#{prePool.alternative}"/>
+				    <br/>
+				    <br/>
+				    <h:commandButton action="cancel" id="button1" value="#{txt.cancel}"/>
+				    <h:commandButton action="#{prePool.showMatches}" id="button4" value="#{txt.preQshowmatches}"/>
+				    <h:commandButton action="#{prePool.insertMatches}" id="button2" value="#{txt.preQinsert}"/>
+				    <br/>
+				</td>
+				<td>
+				    <br/>
+				    <br/>
+				    <table>
+					<tr>
+					    <td>
+						<h:dataTable columnClasses=",,col-center" headerClass="list-header" id="dataTable2"
+							     rowClasses="list-row-even,list-row-odd" value="#{prePool.dataMatches}" var="currentMatch">
+						    <h:column id="column101">
+							<f:facet name="header">
+							    <h:outputText id="outputText102" value="#{txt.hometeam}"/>
+							</f:facet>
+							<h:outputText id="outputText101" value="#{currentMatch['preTeaName1']}"/>
+						    </h:column>
+						    <h:column id="column102">
+							<f:facet name="header">
+							    <h:outputText id="outputText104" value="#{txt.outteam}"/>
+							</f:facet>
+							<h:outputText id="outputText103" value="#{currentMatch['preTeaName2']}"/>
+						    </h:column>
+						    <h:column id="column103">
+							<f:facet name="header">
+							    <h:outputText id="outputText106" value="#{txt.action}"/>
+							</f:facet>
+							<h:commandButton action="#{prePool.inputMatch}" id="button10" styleClass="button-short" value="#{txt.preQinsert}">
+							    <f:setPropertyActionListener target="#{prePool.dataMatch}" value="#{currentMatch}"/>
+							</h:commandButton>
+						    </h:column>
+						</h:dataTable>
+					    </td>
+					</tr>
+					<tr>
+					    <td>
+						<h:selectOneMenu id="dropdown11" value="#{prePool.team1}">
+						    <f:selectItems id="dropdown11SelectItems" value="#{prePool.teamItemList}"/>
+						</h:selectOneMenu>
+						<h:selectOneMenu id="dropdown12" value="#{prePool.team2}">
+						    <f:selectItems id="dropdown12SelectItems" value="#{prePool.teamItemList}"/>
+						</h:selectOneMenu>
+						<h:commandButton action="#{prePool.createMatch}" id="button11"
+								 styleClass="button-short" value="#{txt.preQinsert}"/>
+					    </td>
+					</tr>
+				    </table>
+				</td>
+			    </tr>
+			</tbody>
+		    </table>
+		</h:form>
+
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>

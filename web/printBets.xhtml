@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.granq.multilang.granq" var="txt"/>
+
+		<h:form id="form1">
+		    <h:outputLabel for="pagetitle" id="pagetitlelabel" styleClass="page-title">
+			<h:outputText id="pagetitle" value="#{txt.colpagetitle}"/>
+		    </h:outputLabel>
+		    <br/>
+		    <br/>
+		    <h:panelGrid columns="2" id="panelgrid101" >
+			<f:facet name="header">
+			    <h:outputText value="#{txt.printerselection}"/>
+			</f:facet>
+			<h:selectOneMenu id="selprinter" onchange="submit()"
+					 valueChangeListener="#{printBets.selectPrinter}"
+					 value="#{printBets.selPrinter}">
+			    <f:selectItem itemLabel="#{txt.ptrpleaseselectprinter}" />
+			    <f:selectItems id="printers" value="#{printBets.printers}"  />
+			</h:selectOneMenu>
+			<h:outputLabel for="defaultprintertxt" id="defaultprinterlabel">
+			    <h:selectBooleanCheckbox id="defaultprinter" value="#{printBets.defaultPrinter}" />
+			    <h:outputText id="defaultprintertxt" value="#{txt.ptrdefaultprinter}"/>
+			</h:outputLabel>
+
+		    </h:panelGrid>
+		    <h:panelGrid columns="2" id="panelgrid102" >
+			<f:facet name="header">
+			    <h:outputText value="#{txt.printerparams}"/>
+			</f:facet>
+			<h:outputLabel for="margintoptxt" id="margintoplabel">
+			    <h:outputText id="margintoptxt" value="#{txt.ptrmargintop}"/>
+			</h:outputLabel>
+			<h:inputText  id="margintop"
+				      value="#{printBets.margintop}" required="true"  >
+			    <f:validateDoubleRange minimum="-100" maximum="1000"/>
+			</h:inputText>
+			<h:outputLabel for="marginlefttxt" id="marginleftlabel">
+			    <h:outputText id="marginlefttxt" value="#{txt.ptrmarginleft}"/>
+			</h:outputLabel>
+			<h:inputText id="marginleft"
+				     value="#{printBets.marginleft}" required="true"  >
+			    <f:validateDoubleRange minimum="-100" maximum="1000"/>
+			</h:inputText>
+			<h:outputLabel for="widthcolumntxt" id="widthcolumnlabel">
+			    <h:outputText id="widthcolumntxt" value="#{txt.ptrwidthcolumn}"/>
+			</h:outputLabel>
+			<h:inputText id="widthcolumn"
+				     value="#{printBets.widthcolumn}" required="true"  >
+			    <f:validateDoubleRange minimum="-100" maximum="1000"/>
+			</h:inputText>
+			<h:outputLabel for="widthcelltxt" id="widthcelllabel">
+			    <h:outputText id="widthcelltxt" value="#{txt.ptrwidthcell}"/>
+			</h:outputLabel>
+			<h:inputText id="widthcell"
+				     value="#{printBets.widthcell}" required="true"  >
+			    <f:validateDoubleRange minimum="-100" maximum="1000"/>
+			</h:inputText>
+			<h:outputLabel for="highrowtxt" id="highrowlabel">
+			    <h:outputText id="highrowtxt" value="#{txt.ptrhighrow}"/>
+			</h:outputLabel>
+			<h:inputText id="highrow"
+				     value="#{printBets.highrow}" required="true"  >
+			    <f:validateDoubleRange minimum="-100" maximum="1000"/>
+			</h:inputText>
+			<h:outputLabel for="highcelltxt" id="highcelllabel">
+			    <h:outputText id="highcelltxt" value="#{txt.ptrhighcell}"/>
+			</h:outputLabel>
+			<h:inputText id="highcell"
+				     value="#{printBets.highcell}" required="true"  >
+			    <f:validateDoubleRange minimum="-100" maximum="1000"/>
+			</h:inputText>
+		    </h:panelGrid>
+		    <br/>
+		    <br/>
+		    <h:panelGrid columns="2" id="panelgrid103" >
+			<h:panelGrid columns="1" id="panelgrid103a" >
+			    <h:commandButton value="#{txt.ptrdefaultvalues}" action="#{printBets.defaultValues}"  />
+			    <br></br>
+			    <h:commandButton value="#{txt.ptrsaveprinter}" action="#{printBets.savePrinter}"  />
+			</h:panelGrid>
+			<h:panelGrid columns="1" id="panelgrid103b" >
+			    <h:outputLabel for="frompagetxt" id="frompagelabel">
+				<h:outputText id="frompagetxt" value="#{txt.ptrfrompage}"/>
+			    </h:outputLabel>
+			    <h:inputText id="frompage"
+					 value="#{printBets.frompage}" required="true"  >
+				<f:validateDoubleRange minimum="1" maximum="1000"/>
+			    </h:inputText>
+			    <br></br>
+			    <h:outputLabel for="topagetxt" id="topagelabel">
+				<h:outputText id="topagetxt" value="#{txt.ptrtopage}"/>
+			    </h:outputLabel>
+			    <h:inputText id="topage"
+					 value="#{printBets.topage}" required="true"  >
+				<f:validateDoubleRange minimum="1" maximum="1000"/>
+			    </h:inputText>
+			    <br></br>
+			    <h:commandButton value="#{txt.print}" action="#{printBets.printCols}"  />
+			</h:panelGrid>
+		    </h:panelGrid>
+
+
+		</h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>

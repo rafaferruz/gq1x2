@@ -1,0 +1,75 @@
+.menus {  font-family: Mistral; font-size: 12px; font-weight: bold; color: #FFFF00; text-decoration: none}
+.menus_2 {  font-size: 10px; color: #000000; text-decoration: none; font-family: Verdana, Arial, Helvetica, sans-serif; font-weight: bold}
+.menus_2ult {  font-size: 12px; color: #FFFF00; text-decoration: none; font-family: Verdana, Arial, Helvetica, sans-serif; font-weight: bold}
+.enlaces {  color: #000000}
+
+.menuMain {
+    position:relative;visibility:visible; background-color:#10c410;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    text-decoration: none;
+    padding: 0.3em 2em;
+}
+.menuMain a:link, a:active, a:visited, a:hover {
+    color: #FFFF00;
+    text-decoration: none;
+}
+.menuBox {
+    background-color:#009900;
+    visibility:hidden; 
+    font-family:verdana,arial; 
+    font-size:1em;
+    z-index: 2;
+    text-decoration: none;
+    position: absolute;
+    vertical-align: top;
+    left: 200px;
+}
+.menuBox a:link, a:active, a:visited, a:hover {
+    color: #000000;
+    text-decoration: none;
+}
+.menuBoxTable{
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    background-color: #FFFFFF;
+}
+.menuMainTable{
+    border: none;
+    background-color: #FFFFFF;
+}
+.menuMainTable td {
+    border-style: none;
+}
+a.menuMainLinks {
+    font-size: 8pt;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    color: #FFFF00;
+}
+.menuLink{
+    text-align: left;
+    padding-left: 10px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-right: 1px;
+    color: #FFFF00;
+}
+
+.navigationbar{
+    background-color: #10c410;
+    text-align: center;
+}
+
+.navigationcell{
+    line-height: 20px;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-left-color: #FFFF00;
+    border-right-color: #FFFF00;
+}

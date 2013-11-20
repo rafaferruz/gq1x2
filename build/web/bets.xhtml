@@ -1,0 +1,273 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.granq.multilang.granq" var="txt"/>
+
+		<h:form id="form1">
+		    <h:outputLabel for="pagetitle" id="pagetitlelabel" styleClass="page-title">
+			<h:outputText id="pagetitle" value="#{txt.betpagetitle}"/>
+		    </h:outputLabel>
+		    <br/>
+		    <br/>
+
+		    <table>
+			<tbody>
+			    <tr>
+				<td>
+				    <h:outputLabel for="textseason" id="textseasonlabel">
+					<h:outputText id="textseason" value="#{txt.season}"/>
+				    </h:outputLabel>
+				    <h:inputText id="season" maxlength="4" onchange="submit();" size="4" value="#{bets.betSeason}" >
+					<f:validateLongRange maximum="2010" minimum="2000"/>
+				    </h:inputText>
+				    <h:outputLabel for="textround" id="textroundlabel">
+					<h:outputText id="textround" value="#{txt.round}"/>
+				    </h:outputLabel>
+				    <h:inputText id="round" maxlength="2" onchange="submit();" size="2" value="#{bets.betOrderNumber}">
+					<f:validateLongRange maximum="60" minimum="1"/>
+				    </h:inputText>
+				    <h:outputLabel for="textdescription"  id="textdescriptionlabel">
+					<h:outputText id="textdescription" value="#{txt.description}"/>
+				    </h:outputLabel>
+				    <h:inputText id="description" maxlength="40" size="40" value="#{bets.betDescription}">
+				    </h:inputText>
+				</td>
+			    </tr>
+			    <tr>
+				<td valign="top">
+				    <h:commandButton action="cancel" id="button1" value="#{txt.cancel}"/>
+				    <h:commandButton action="#{bets.showBets}" id="button2" value="#{txt.betshow}"/>
+				    <h:commandButton action="#{bets.saveBet}" id="button3" value="#{txt.betsave}"/>
+				    <h:commandButton action="#{bets.insertBet}" id="button4" value="#{txt.betinsert}"/>
+				    <h:commandButton action="#{bets.generateCols}" id="button5" value="#{txt.generatecols}"/>
+				    <br></br>
+				    <br></br>
+				</td>
+			    </tr>
+			    <tr>
+				<td>
+				    <table>
+					<tr>
+					    <td valign="top">
+						<h:dataTable columnClasses="col-center,col-center,col-center,col-left"
+							     headerClass="list-header" id="dataTable1"
+							     rowClasses="list-row-even,list-row-odd"
+							     value="#{bets.betList}" var="currentRow">
+						    <h:column id="column2">
+							<f:facet name="header"  >
+							    <h:outputText id="outputText4" value="#{txt.ID}"/>
+							</f:facet>
+							<h:commandLink value="#{currentRow.betId}" action="#{bets.editBet}" >
+							    <f:setPropertyActionListener target="#{bets.betForEdition}" value="#{currentRow}" />
+							</h:commandLink>
+						    </h:column>
+						    <h:column id="column3">
+							<h:outputText id="outputText5" value="#{currentRow['betSeason']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText6" value="#{txt.season}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column4">
+							<h:outputText  id="outputText7" value="#{currentRow['betOrderNumber']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText8" value="#{txt.round}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column5">
+							<h:outputText id="outputText9" value="#{currentRow['betDescription']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText10" value="#{txt.description}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column6">
+							<f:facet name="header">
+							    <h:outputText id="outputText11" value="#{txt.action}"/>
+							</f:facet>
+							<h:commandButton action="#{bets.deleteBet}" id="button11" styleClass="button-short" value="#{txt.delete}">
+							    <f:setPropertyActionListener target="#{bets.betToDelete}" value="#{currentRow}"/>
+							</h:commandButton>
+						    </h:column>
+						</h:dataTable>
+					    </td>
+					    <td>
+						<br></br>
+					    </td>
+					    <td valign="top">
+						<h:dataTable columnClasses="col-left,col-left,col-center,
+							     col-center,col-center,col-center,col-center,col-center"
+							     headerClass="list-header" id="dataTableBetLines"
+							     rowClasses="list-row-even,list-row-odd"
+							     value="#{bets.dataBetLines}" var="currentBetLine">
+						    <h:column  id="column201">
+							<h:outputText id="outputText201" value="#{currentBetLine['bliTeamName1']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText202" value="#{txt.hometeam}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column  id="column202">
+							<h:outputText id="outputText203" value="#{currentBetLine['bliTeamName2']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText204" value="#{txt.outteam}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column  id="column202a">
+							<h:outputText id="outputText203a" value="#{currentBetLine['bliRating4PreviousDiference']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText204a" value="DIF"/>
+							</f:facet>
+						    </h:column>
+						    <h:column  id="column202b">
+							<h:outputText id="outputText203b" value="#{currentBetLine['bliPercentWin']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText204b" value="%G"/>
+							</f:facet>
+						    </h:column>
+						    <h:column  id="column202c">
+							<h:outputText id="outputText203c" value="#{currentBetLine['bliPercentDraw']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText204c" value="%E"/>
+							</f:facet>
+						    </h:column>
+						    <h:column  id="column202d">
+							<h:outputText id="outputText203d" value="#{currentBetLine['bliPercentLose']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText204d" value="%P"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column203">
+							<h:inputText id="outputText205" size="3" maxlength="3" value="#{currentBetLine['bliColumnBase']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText206" value="#{txt.blicolbase}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column204">
+							<h:selectBooleanCheckbox id="checkbox201" value="#{currentBetLine['bliColumnGroup1']}"/>
+							<f:facet name="header">
+							    <h:outputLabel for="outputText208"  id="outputText208label" onclick="clickCol(1);" >
+								<h:outputText id="outputText208" value="#{txt.group1}"/>
+							    </h:outputLabel>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column205">
+							<h:selectBooleanCheckbox id="checkbox202" value="#{currentBetLine['bliColumnGroup2']}"/>
+							<f:facet name="header">
+							    <h:outputLabel for="outputText210"  id="outputText210label" onclick="clickCol(2);" >
+								<h:outputText id="outputText210" value="#{txt.group2}"/>
+							    </h:outputLabel>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column206">
+							<h:selectBooleanCheckbox id="checkbox203" value="#{currentBetLine['bliColumnGroup3']}"/>
+							<f:facet name="header">
+							    <h:outputLabel for="outputText212"  id="outputText212label" onclick="clickCol(3);" >
+								<h:outputText id="outputText212" value="#{txt.group3}"/>
+							    </h:outputLabel>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column207">
+							<h:selectBooleanCheckbox id="checkbox204" value="#{currentBetLine['bliColumnGroup4']}"/>
+							<f:facet name="header">
+							    <h:outputLabel for="outputText214"  id="outputText214label" onclick="clickCol(4);" >
+								<h:outputText id="outputText214" value="#{txt.group4}"/>
+							    </h:outputLabel>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column208">
+							<h:selectBooleanCheckbox  id="checkbox205" value="#{currentBetLine['bliColumnGroup5']}"/>
+							<f:facet name="header">
+							    <h:outputLabel for="outputText215"  id="outputText215label" onclick="clickCol(5);" >
+								<h:outputText id="outputText215" value="#{txt.group5}"/>
+							    </h:outputLabel>
+							</f:facet>
+						    </h:column>
+						</h:dataTable>
+						<br></br>
+						<h:outputLabel for="textradio" id="textradiolabel">
+						    <h:outputText id="textradio" value="#{txt.sorting}"/>
+						</h:outputLabel>
+						<h:selectOneRadio id="radioButtonList1" immediate="true" layout="lineDirection" onchange="submit();" value="#{bets.sortby}">
+						    <f:selectItem itemLabel="#{txt.byrating}" itemValue="rating"/>
+						    <f:selectItem itemLabel="#{txt.byorder}" itemValue="order"/>
+						</h:selectOneRadio>
+						<br></br>
+						<h:dataTable columnClasses="col-right,col-center,
+							     col-center,col-center,col-center,col-center,col-center"
+							     headerClass="list-header" id="dataTableBetGroups"
+							     rowClasses="list-row-even,list-row-odd"
+							     value="#{bets.dataBetGroups}" var="currentBetGroup">
+						    <h:column  id="column301">
+							<h:outputText id="outputText301" value="#{txt.betnummatchestoplay}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText302" value=""/>
+							</f:facet>
+						    </h:column>
+						    <h:column  id="column302">
+							<h:outputText id="outputText303" value="#{currentBetGroup['bgrSign']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText304" value="#{txt.sign}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column303">
+							<h:inputText id="inputText305" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup1Values']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText306" value="#{txt.group1}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column304">
+							<h:inputText id="inputText306" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup2Values']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText307" value="#{txt.group2}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column305">
+							<h:inputText id="inputText307" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup3Values']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText308" value="#{txt.group3}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column306">
+							<h:inputText id="inputText308" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup4Values']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText309" value="#{txt.group4}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column307">
+							<h:inputText id="inputText309" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup5Values']}"/>
+							<f:facet name="header">
+							    <h:outputText  id="outputText310" value="#{txt.group5}"/>
+							</f:facet>
+						    </h:column>
+						</h:dataTable>
+					    </td>
+					</tr>
+				    </table>
+				</td>
+			    </tr>
+			</tbody>
+		    </table>
+		    <h:inputHidden  valueChangeListener="#{bets.checkcolChange}"   id="checkcol" value="#{bets.checkcol}" />
+		</h:form>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>
