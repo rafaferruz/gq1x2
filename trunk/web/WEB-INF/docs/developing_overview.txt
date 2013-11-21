@@ -10,7 +10,7 @@ El JRE (Java Runtime Environment) se encuentra en la carpeta /home/rafa/jdk1.7.0
 
 Entorno de Desarrollo Netbeans 7.3.1
 
-Este IDE ha sido instalado junto al paquete JDK7.
+Este IDE ha sido instalado juntamente con el paquete JDK7.
 Para poder realizar el desarrollo de la aplicacion GQ1X2 se han tenido que realizar unas determinadas operaciones de configuracion de Netbeans.
 Definicion de la plataforma de desarrollo Java. Ir a 'Tools/Java Platforms'. En este caso es JDK7 y buscar el directorio de instalacion. Si se cambia la version de JDK se deberia crear una nueva plataforma o instalarlo en un directorio de nombre mas generico sobreescribiendo la version anterior.
 Definicion del servidor de aplicaciones a utilizar. En nuestro caso, se ha instalado Tomcat 7. Para definir un servidor de aplicaciones o modificar la configuracion hay que ir a 'Window/Servides'; en 'Servers' se debe añadir un servidor. Para instalar Tomcat, las ventanas de creacion solicitan el directorio donde se encuentra instalado el servidor y piden un nombre de usuario y contraseña como Manager del servidor.
@@ -36,6 +36,11 @@ Frameworks de ayuda a la programacion
 Otras Herramientas Auxiliares
     Filezilla
     SVN
+	El servidor de svn se encuentra ubicado en code.google.com.
+	El nombre del proyecto en el servidor svn es 'gq1x2'.
+	El usuario administrador del projecto en el servidor svn es 'rafaferruz@hotmail.com'.
+	Las contraseñas del administrador del proyecto y de ejecucion de commits del proyecto por parte de dicho administrador son responsabilidad de dicho usuario y debe ser guardadas en un sitio seguro.
+
 
 Aplicacion GQ1X2
 
@@ -128,7 +133,7 @@ Lista de Tareas Realizadas
 		    Esto ha supuesto una gran reduccion de codigo por la comparticion de variables y de metodos.
 19/11/2013 - Arrancar servidor de Mysql en el arranque del sistema
 		Se ha copiado mysql.server script al directorio /etc/init.d y el fichero de configuracion my.cnf al directorio /etc.
-
+20/11/2013 - Incorporacion del proyecto 'gq1x2' al servidor svn 'code.google.com' para la gestion de versiones del mismo.
 
 
 
