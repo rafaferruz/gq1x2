@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.granq.multilang.granq" var="txt"/>
+                <h3 align="center">#{txt.generatePreTools}</h3>
+                <h:form id="genPrePool_form">
+                    <table>
+
+                        <tr>
+                            <td>
+                                <h:outputLabel for="componentLabel3" id="componentLabel3">
+                                    <h:outputText id="componentLabel3Text" value="#{txt.selectChampionship}"/>
+                                </h:outputLabel>
+                            </td>
+                            <td colspan="2">
+                                <h:selectOneMenu id="dropdown1" onchange="submit()" value="#{genPrePool.chaId}" valueChangeListener="#{genPrePool.championshipChangeEvent}">
+                                    <f:selectItems id="dropdown1SelectItems" value="#{genPrePool.championshipItemList}"/>
+                                </h:selectOneMenu>
+                            </td>
+
+                            <td colspan="2">
+                                <h:selectOneRadio id="mode" value="#{genPrePool.generateMode}" >
+                                    <f:selectItem id="mode_0" itemValue="0" itemLabel="#{txt.generateOnly}"/>
+                                    <f:selectItem id="mode_1" itemValue="1" itemLabel="#{txt.generateFrom}"/>
+                                    <f:selectItem id="mode_2" itemValue="2" itemLabel="#{txt.generateAll}"/>
+                                    <f:selectItem id="mode_3" itemValue="3" itemLabel="#{txt.generateFromChampionship}"/>
+                                </h:selectOneRadio>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#{txt.generateFromRound}</td>
+                            <td>
+                                <h:selectOneMenu  id="ronda2"  onchange="submit()" value="#{genPrePool.round}" valueChangeListener="#{genPrePool.roundChangeEvent}">
+                                    <f:selectItems id="dropdown2SelectItems" value="#{genPrePool.roundItemList}"/>
+                                </h:selectOneMenu>
+
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td align="center">
+                                <h:commandButton action="Home" id="cancelar" value="#{txt.Cancel}"/>
+                            </td>
+                            <td align="center">
+                                <h:commandButton action="#{genPrePool.generateProcess}" id="generateClasif" value="#{txt.generate}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td colspan="4">&nbsp;</td>
+                        </tr>
+
+                    </table>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>
