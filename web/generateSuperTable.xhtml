@@ -18,15 +18,16 @@
             </ui:define>
 
             <ui:define name="content">
-                <f:loadBundle basename="com.granq.multilang.granq" var="txt"/>
-                <h3 align="center">#{txt.generateSTC}</h3>
+                <f:loadBundle basename="com.gq2.multilang.superTable" var="txt_stc"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
+                <h3 align="center">#{txt_stc.generateSTC}</h3>
                 <h:form id="genSuperTable_form">
                     <table>
 
                         <tr>
                             <td>
                                 <h:outputLabel for="componentLabel3" id="componentLabel3">
-                                    <h:outputText id="componentLabel3Text" value="#{txt.selectChampionship}"/>
+                                    <h:outputText id="componentLabel3Text" value="#{txt_com.selectChampionship}"/>
                                 </h:outputLabel>
                             </td>
                             <td colspan="2">
@@ -37,16 +38,16 @@
 
                             <td colspan="2">
                                 <h:selectOneRadio id="mode" value="#{genSuperTable.generateMode}" >
-                                    <f:selectItem id="mode_0" itemValue="0" itemLabel="#{txt.generateOnly}"/>
-                                    <f:selectItem id="mode_1" itemValue="1" itemLabel="#{txt.generateFrom}"/>
-                                    <f:selectItem id="mode_2" itemValue="2" itemLabel="#{txt.generateAll}"/>
-                                    <f:selectItem id="mode_3" itemValue="3" itemLabel="#{txt.generateFromChampionship}"/>
+                                    <f:selectItem id="mode_0" itemValue="0" itemLabel="#{txt_com.generateOneRound}"/>
+                                    <f:selectItem id="mode_1" itemValue="1" itemLabel="#{txt_com.generateFromRound}"/>
+                                    <f:selectItem id="mode_2" itemValue="2" itemLabel="#{txt_com.generateAllRounds}"/>
+                                    <f:selectItem id="mode_3" itemValue="3" itemLabel="#{txt_com.generateFromChampionship}"/>
                                 </h:selectOneRadio>
                             </td>
                         </tr>
 
                         <tr>
-                            <td>#{txt.generateFromRound}</td>
+                            <td>#{txt_com.selectRound}</td>
                             <td>
                                 <h:selectOneMenu  id="ronda2"  onchange="submit()" value="#{genSuperTable.round}" valueChangeListener="#{genSuperTable.roundChangeEvent}">
                                     <f:selectItems id="dropdown2SelectItems" value="#{genSuperTable.roundItemList}"/>
@@ -59,10 +60,10 @@
                         <tr>
                             <td colspan="3">&nbsp;</td>
                             <td align="center">
-                                <h:commandButton action="Home" id="cancelar" value="#{txt.Cancel}"/>
+                                <h:commandButton action="Home" id="cancelar" value="#{txt_com.Cancel}"/>
                             </td>
                             <td align="center">
-                                <h:commandButton action="#{genSuperTable.generateProcess}" id="generateClasif" value="#{txt.generate}"/>
+                                <h:commandButton action="#{genSuperTable.generateProcess}" id="generateClasif" value="#{txt_com.generate}"/>
                             </td>
                         </tr>
                         <tr>

@@ -18,22 +18,25 @@
             </ui:define>
 
             <ui:define name="content">
-                <f:loadBundle basename="com.gq2.multilang.granq" var="txt"/>
+                <f:loadBundle basename="com.gq2.multilang.classification" var="txt_cla"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
                 <h:form id="showClasif">
-                    <h:outputLabel for="componentLabel0Text" id="componentLabel0">
-                        <h:outputText id="componentLabel0Text" styleClass="page-title" value="#{txt.showclasif}"/>
-                    </h:outputLabel>
+		    <h3>
+			<h:outputLabel for="componentLabel0Text" id="componentLabel0">
+			    <h:outputText id="componentLabel0Text" styleClass="page-title" value="#{txt_cla.showClasif}"/>
+			</h:outputLabel>
+		    </h3>
                     <table>
                         <tr>
                             <td>
                                 <h:outputLabel for="componentLabel3" id="componentLabel3">
-                                    <h:outputText id="componentLabel3Text" value="#{txt.selectchampionship}"/>
+                                    <h:outputText id="componentLabel3Text" value="#{txt_com.selectChampionship}"/>
                                 </h:outputLabel>
                             </td>
                             <td>
                                 <h:outputLabel for="componentLabel4" id="componentLabel4">
-                                    <h:outputText id="componentLabel4Text" value="#{txt.selectround}"/>
+                                    <h:outputText id="componentLabel4Text" value="#{txt_com.selectRound}"/>
                                 </h:outputLabel>
                             </td>
                         </tr>
@@ -63,133 +66,133 @@
                                     <h:column id="column1">
                                         <h:outputText id="outputText1" value="#{currentRow['claPosition']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText2" value="#{txt.position}"/>
+                                            <h:outputText id="outputText2" value="#{txt_cla.position}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column2" >
                                         <h:outputText  id="outputText3" value="#{currentRow['teamName']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText4" value="#{txt.team}"/>
+                                            <h:outputText id="outputText4" value="#{txt_cla.team}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column3">
                                         <h:outputText id="outputText5" value="#{currentRow['claPoints']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText6" value="#{txt.score}"/>
+                                            <h:outputText id="outputText6" value="#{txt_cla.score}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column4">
                                         <h:outputText id="outputText7" value="#{currentRow['claTotalPlayedGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText8" value="#{txt.pjt}"/>
+                                            <h:outputText id="outputText8" value="#{txt_cla.pjt}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column5">
                                         <h:outputText id="outputText9" value="#{currentRow['claTotalWonGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText10" value="#{txt.pgt}"/>
+                                            <h:outputText id="outputText10" value="#{txt_cla.pgt}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column6">
                                         <h:outputText id="outputText11" value="#{currentRow['claTotalDrawnGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText12" value="#{txt.pet}"/>
+                                            <h:outputText id="outputText12" value="#{txt_cla.pet}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column7">
                                         <h:outputText id="outputText13" value="#{currentRow['claTotalLostGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText14" value="#{txt.ppt}"/>
+                                            <h:outputText id="outputText14" value="#{txt_cla.ppt}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column8">
                                         <h:outputText id="outputText15" value="#{currentRow['claTotalOwnGoals']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText16" value="#{txt.gft}"/>
+                                            <h:outputText id="outputText16" value="#{txt_cla.gft}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column9">
                                         <h:outputText id="outputText17" value="#{currentRow['claTotalAgainstGoals']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText18" value="#{txt.gct}"/>
+                                            <h:outputText id="outputText18" value="#{txt_cla.gct}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column10">
                                         <h:outputText id="outputText19" value="#{currentRow['claHomePlayedGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText20" value="#{txt.pjc}"/>
+                                            <h:outputText id="outputText20" value="#{txt_cla.pjc}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column11">
                                         <h:outputText id="outputText21" value="#{currentRow['claHomeWonGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText22" value="#{txt.pgc}"/>
+                                            <h:outputText id="outputText22" value="#{txt_cla.pgc}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column12">
                                         <h:outputText id="outputText23" value="#{currentRow['claHomeDrawnGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText24" value="#{txt.pec}"/>
+                                            <h:outputText id="outputText24" value="#{txt_cla.pec}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column13">
                                         <h:outputText id="outputText25" value="#{currentRow['claHomeLostGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText26" value="#{txt.ppc}"/>
+                                            <h:outputText id="outputText26" value="#{txt_cla.ppc}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column14">
                                         <h:outputText id="outputText27" value="#{currentRow['claHomeOwnGoals']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText28" value="#{txt.gfc}"/>
+                                            <h:outputText id="outputText28" value="#{txt_cla.gfc}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column15">
                                         <h:outputText id="outputText29" value="#{currentRow['claHomeAgainstGoals']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText30" value="#{txt.gcc}"/>
+                                            <h:outputText id="outputText30" value="#{txt_cla.gcc}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column16">
                                         <h:outputText id="outputText31" value="#{currentRow['claHomePlayedGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText32" value="#{txt.pjf}"/>
+                                            <h:outputText id="outputText32" value="#{txt_cla.pjf}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column17">
                                         <h:outputText id="outputText33" value="#{currentRow['claOutWonGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText34" value="#{txt.pgf}"/>
+                                            <h:outputText id="outputText34" value="#{txt_cla.pgf}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column18">
                                         <h:outputText id="outputText35" value="#{currentRow['claOutDrawnGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText36" value="#{txt.pef}"/>
+                                            <h:outputText id="outputText36" value="#{txt_cla.pef}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column19">
                                         <h:outputText id="outputText37" value="#{currentRow['claOutLostGames']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText38" value="#{txt.ppf}"/>
+                                            <h:outputText id="outputText38" value="#{txt_cla.ppf}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column20">
                                         <h:outputText id="outputText39" value="#{currentRow['claOutOwnGoals']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText40" value="#{txt.gff}"/>
+                                            <h:outputText id="outputText40" value="#{txt_cla.gff}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column21">
                                         <h:outputText id="outputText41" value="#{currentRow['claOutAgainstGoals']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText42" value="#{txt.gcf}"/>
+                                            <h:outputText id="outputText42" value="#{txt_cla.gcf}"/>
                                         </f:facet>
                                     </h:column>
                                     <h:column id="column22">
                                         <h:outputText id="outputText43" value="#{currentRow['claRating']}"/>
                                         <f:facet name="header">
-                                            <h:outputText id="outputText44" value="#{txt.rating}"/>
+                                            <h:outputText id="outputText44" value="#{txt_cla.rating}"/>
                                         </f:facet>
                                     </h:column>
                                 </h:dataTable>
@@ -204,7 +207,7 @@
                         <tr><td></td></tr>
                         <tr><td></td></tr>
                         <tr><td>
-                                <h:commandButton action="Home" id="button9" value="#{txt.close}"/>
+                                <h:commandButton action="Home" id="button9" value="#{txt_com.Close}"/>
                             </td></tr>
                     </table>
                 </h:form>
