@@ -18,32 +18,34 @@
             </ui:define>
 
             <ui:define name="content">
-                <f:loadBundle basename="com.granq.multilang.granq" var="txt"/>
+                <f:loadBundle basename="com.gq2.multilang.bet" var="txt_bet"/>
+                <f:loadBundle basename="com.gq2.multilang.score" var="txt_sco"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
 		<h:form id="form1">
-		    <h:outputLabel for="pagetitle" id="pagetitlelabel" styleClass="page-title">
-			<h:outputText id="pagetitle" value="#{txt.colpagetitle}"/>
-		    </h:outputLabel>
-		    <br/>
-		    <br/>
+		    <h3>
+			<h:outputLabel for="pagetitle" id="pagetitlelabel" styleClass="page-title">
+			    <h:outputText id="pagetitle" value="#{txt_bet.colPageTitle}"/>
+			</h:outputLabel>
+		    </h3>
 		    <table>
 			<tbody>
 			    <tr>
 				<td>
 				    <h:outputLabel for="textseason" id="textseasonlabel">
-					<h:outputText id="textseason" value="#{txt.season}"/>
+					<h:outputText id="textseason" value="#{txt_com.season}"/>
 				    </h:outputLabel>
 				    <h:inputText id="season" maxlength="4" onchange="submit();" size="4" value="#{columns.betSeason}" >
 					<f:validateLongRange maximum="2010" minimum="2000"/>
 				    </h:inputText>
 				    <h:outputLabel for="textround" id="textroundlabel" >
-					<h:outputText id="textround" value="#{txt.round}"/>
+					<h:outputText id="textround" value="#{txt_com.round}"/>
 				    </h:outputLabel>
 				    <h:inputText id="round" maxlength="2" onchange="submit();" size="2" value="#{columns.betOrderNumber}">
 					<f:validateLongRange maximum="60" minimum="1"/>
 				    </h:inputText>
 				    <h:outputLabel for="textdescription" id="textdescriptionlabel" >
-					<h:outputText id="textdescription" value="#{txt.description}"/>
+					<h:outputText id="textdescription" value="#{txt_com.description}"/>
 				    </h:outputLabel>
 				    <h:inputText id="description" maxlength="40" value="#{columns.betDescription}">
 				    </h:inputText>
@@ -51,9 +53,9 @@
 			    </tr>
 			    <tr>
 				<td valign="top">
-				    <h:commandButton action="cancel" id="button1" value="#{txt.cancel}"/>
-				    <h:commandButton action="#{columns.showBets}" id="button2" value="#{txt.betshow}"/>
-				    <h:commandButton action="#{columns.showCols}" id="button6" value="#{txt.colshow}"/>
+				    <h:commandButton action="cancel" id="button1" value="#{txt_com.Cancel}"/>
+				    <h:commandButton action="#{columns.showBets}" id="button2" value="#{txt_bet.betShow}"/>
+				    <h:commandButton action="#{columns.showCols}" id="button6" value="#{txt_bet.colShow}"/>
 				    <br></br>
 				    <br></br>
 				</td>
@@ -69,7 +71,7 @@
 							     value="#{columns.betList}" var="currentRow">
 						    <h:column id="column2">
 							<f:facet name="header" >
-							    <h:outputText id="outputText4" value="#{txt.ID}"/>
+							    <h:outputText id="outputText4" value="#{txt_com.ID}"/>
 							</f:facet>
 							<h:commandLink value="#{currentRow.betId}" action="#{columns.editBet}" >
 							    <f:setPropertyActionListener target="#{columns.betForEdition}" value="#{currentRow}" />
@@ -78,19 +80,19 @@
 						    <h:column id="column3">
 							<h:outputText id="outputText5" value="#{currentRow['betSeason']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText6" value="#{txt.season}"/>
+							    <h:outputText id="outputText6" value="#{txt_com.season}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column4">
 							<h:outputText  id="outputText7" value="#{currentRow['betOrderNumber']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText8" value="#{txt.round}"/>
+							    <h:outputText id="outputText8" value="#{txt_com.round}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column5">
 							<h:outputText id="outputText9" value="#{currentRow['betDescription']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText10" value="#{txt.description}"/>
+							    <h:outputText id="outputText10" value="#{txt_com.description}"/>
 							</f:facet>
 						    </h:column>
 						</h:dataTable>
@@ -107,67 +109,67 @@
 						    <h:column  id="column201">
 							<h:outputText id="outputText201" value="#{currentBetLine['bliTeamName1']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText202" value="#{txt.hometeam}"/>
+							    <h:outputText id="outputText202" value="#{txt_sco.homeTeam}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column202">
 							<h:outputText id="outputText203" value="#{currentBetLine['bliTeamName2']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText204" value="#{txt.outteam}"/>
+							    <h:outputText id="outputText204" value="#{txt_sco.outTeam}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column203">
 							<h:inputText id="inputText205" size="3" maxlength="3" disabled="true" value="#{currentBetLine['bliColumnBase']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText206" value="#{txt.blicolbase}"/>
+							    <h:outputText id="outputText206" value="#{txt_bet.bliColBase}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column204">
 							<h:inputText id="inputText207" size="1" maxlength="1" value="#{currentBetLine['bliSign']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText208" value="#{txt.blisign}"/>
+							    <h:outputText id="outputText208" value="#{txt_bet.bliSign}"/>
 							</f:facet>
 						    </h:column>
 						</h:dataTable>
 						<br></br>
 						<br></br>
 						<h:outputLabel for="outputText222" id="outputText222label">
-						    <h:outputText id="outputText222" value="#{txt.savedreductions}"/>
+						    <h:outputText id="outputText222" value="#{txt_bet.savedReductions}"/>
 						</h:outputLabel>
 						<br></br>
 						<h:selectOneMenu id="select221" value="#{columns.siCol}">
 						    <f:selectItems id="selitems221"  value="#{columns.columnItemList}" />
 						</h:selectOneMenu>
-						<h:commandButton action="#{columns.restoreReduction}" id="button221" value="#{txt.restorereduction}"/>
+						<h:commandButton action="#{columns.restoreReduction}" id="button221" value="#{txt_bet.restoreReduction}"/>
 						<br></br>
 						<br></br>
 						<h:outputLabel for="outputText211" id="outputText211label">
-						    <h:outputText id="outputText211" value="#{txt.reductions}"/>
+						    <h:outputText id="outputText211" value="#{txt_bet.reductions}"/>
 						</h:outputLabel>
 						<br></br>
 						<h:selectOneMenu id="select201" value="#{columns.selReduction}">
-						    <f:selectItem id="selreduce0" itemLabel="#{txt.noreductions}" itemValue="0" />
-						    <f:selectItem id="selreduce1" itemLabel="#{txt.reduction13}" itemValue="1" />
-						    <f:selectItem id="selreduce2" itemLabel="#{txt.reduction12}" itemValue="2" />
-						    <f:selectItem id="selreduce3" itemLabel="#{txt.reduction11}" itemValue="3" />
-						    <f:selectItem id="selreduce4" itemLabel="#{txt.reduction10}" itemValue="4" />
+						    <f:selectItem id="selreduce0" itemLabel="#{txt_bet.noReductions}" itemValue="0" />
+						    <f:selectItem id="selreduce1" itemLabel="#{txt_bet.reduction13}" itemValue="1" />
+						    <f:selectItem id="selreduce2" itemLabel="#{txt_bet.reduction12}" itemValue="2" />
+						    <f:selectItem id="selreduce3" itemLabel="#{txt_bet.reduction11}" itemValue="3" />
+						    <f:selectItem id="selreduce4" itemLabel="#{txt_bet.reduction10}" itemValue="4" />
 						</h:selectOneMenu>
 						<br></br>
 						<br></br>
 						<h:outputLabel for="outputText212" id="outputText212label">
-						    <h:outputText id="outputText212" value="#{txt.reducefromcol}"/>
+						    <h:outputText id="outputText212" value="#{txt_bet.reduceFromCol}"/>
 						</h:outputLabel>
 						<br></br>
 						<h:inputText id="reducefromcol" maxlength="5" size="5" value="#{columns.reduceFromCol}"/>
 						<h:outputLabel for="outputText213" id="outputText213label">
 						    <h:selectBooleanCheckbox id="reducerandom" value="#{columns.reduceRandom}" />
-						    <h:outputText id="outputText213" value="#{txt.randomf}"/>
+						    <h:outputText id="outputText213" value="#{txt_bet.randomF}"/>
 						</h:outputLabel>
-						<h:commandButton action="#{columns.generateReduction}" id="button211" value="#{txt.generatereduction}"/>
+						<h:commandButton action="#{columns.generateReduction}" id="button211" value="#{txt_bet.generateReduction}"/>
 						<br></br>
 						<br></br>
 						<h:inputText id="savereduction" maxlength="20" size="20" value="#{columns.saveReduction}" />
-						<h:commandButton action="#{columns.saveReduction}" id="button212" value="#{txt.savereduction}"/>
+						<h:commandButton action="#{columns.saveReduction}" id="button212" value="#{txt_bet.saveReduction}"/>
 
 					    </td>
 					    <td valign="top">
@@ -225,24 +227,24 @@
 						</h:dataTable>
 						<br></br>
 						<h:outputLabel for="numcols" id="numcolslabel">
-						    <h:outputText id="numcols" value="#{txt.colnumcols}"/>
+						    <h:outputText id="numcols" value="#{txt_bet.colNumCols}"/>
 						</h:outputLabel>
 						<h:outputFormat id="totalcolumns" value="#{columns.numCols}" />
 						<br></br>
-						<h:commandButton action="#{columns.movefirst}" id="button11" value="#{txt.first}"/>
-						<h:commandButton action="#{columns.moveprev}" id="button16" value="#{txt.prev}"/>
-						<h:commandButton action="#{columns.movenext}" id="button12" value="#{txt.next}"/>
-						<h:commandButton action="#{columns.movelast}" id="button13" value="#{txt.last}"/>
+						<h:commandButton action="#{columns.movefirst}" id="button11" value="#{txt_bet.first}"/>
+						<h:commandButton action="#{columns.moveprev}" id="button16" value="#{txt_bet.prev}"/>
+						<h:commandButton action="#{columns.movenext}" id="button12" value="#{txt_bet.next}"/>
+						<h:commandButton action="#{columns.movelast}" id="button13" value="#{txt_bet.last}"/>
 						<br></br>
 						<h:outputLabel for="goto" id="gotolabel">
-						    <h:outputText id="goto" value="#{txt.colgoto}"/>
+						    <h:outputText id="goto" value="#{txt_bet.colGoTo}"/>
 						</h:outputLabel>
 						<h:inputText id="colgoto" required="false" maxlength="5" size="4" style="position:relative; left:20px" value="#{columns.colgoto}" >
 						    <f:validateLongRange maximum="32000" minimum="1"/>
 						</h:inputText>
-						<h:commandButton action="#{columns.movegoto}" id="button14" value="Ir a..."/>
+						<h:commandButton action="#{columns.movegoto}" id="button14" value="#{txt_bet.goTo}"/>
 						<br></br>
-						<h:commandLink action="printBetForms" target="_blank" value="#{txt.print}" />
+						<h:commandLink action="printBetForms" target="_blank" value="#{txt_bet.print}" />
 
 					    </td>
 					</tr>
@@ -252,11 +254,7 @@
 			</tbody>
 		    </table>
 		</h:form>
-
-
-
             </ui:define>
         </ui:composition>
     </h:body>
-
 </html>
