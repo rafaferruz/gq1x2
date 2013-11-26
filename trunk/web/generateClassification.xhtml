@@ -18,16 +18,17 @@
             </ui:define>
 
             <ui:define name="content">
-                <f:loadBundle basename="com.gq2.multilang.clasificaciones" var="txt"/>
+                <f:loadBundle basename="com.gq2.multilang.classification" var="txt_cla"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
-                <h3 align="center">#{txt.generateClasif}</h3>
+                <h3 align="center">#{txt_cla.generateClassifications}</h3>
                 <h:form id="genClasif_form">
                     <table>
 
                         <tr>
                             <td>
                                 <h:outputLabel for="componentLabel3" id="componentLabel3">
-                                    <h:outputText id="componentLabel3Text" value="#{txt.selectChampionship}"/>
+                                    <h:outputText id="componentLabel3Text" value="#{txt_com.selectChampionship}"/>
                                 </h:outputLabel>
                             </td>
                             <td colspan="2">
@@ -38,16 +39,16 @@
 
                             <td colspan="2">
                                 <h:selectOneRadio id="mode" value="#{genClasif.generateMode}" >
-                                    <f:selectItem id="mode_0" itemValue="0" itemLabel="#{txt.generateOnly}"/>
-                                    <f:selectItem id="mode_1" itemValue="1" itemLabel="#{txt.generateFrom}"/>
-                                    <f:selectItem id="mode_2" itemValue="2" itemLabel="#{txt.generateAll}"/>
-                                    <f:selectItem id="mode_3" itemValue="3" itemLabel="#{txt.generateFromChampionship}"/>
+                                    <f:selectItem id="mode_0" itemValue="0" itemLabel="#{txt_com.generateOneRound}"/>
+                                    <f:selectItem id="mode_1" itemValue="1" itemLabel="#{txt_com.generateFromRound}"/>
+                                    <f:selectItem id="mode_2" itemValue="2" itemLabel="#{txt_com.generateAllRounds}"/>
+                                    <f:selectItem id="mode_3" itemValue="3" itemLabel="#{txt_com.generateFromChampionship}"/>
                                 </h:selectOneRadio>
                             </td>
                         </tr>
 
                         <tr>
-                            <td>#{txt.generateFromRound}</td>
+                            <td>#{txt_com.selectRound}</td>
                             <td>
                                 <h:selectOneMenu  id="ronda2"  onchange="submit()" value="#{genClasif.round}" valueChangeListener="#{genClasif.roundChangeEvent}">
                                     <f:selectItems id="dropdown2SelectItems" value="#{genClasif.roundItemList}"/>
@@ -60,10 +61,10 @@
                         <tr>
                             <td colspan="3">&nbsp;</td>
                             <td align="center">
-                                <h:commandButton action="Home" id="cancelar" value="#{txt.Cancel}"/>
+                                <h:commandButton action="Home" id="cancelar" value="#{txt_com.Cancel}"/>
                             </td>
                             <td align="center">
-                                <h:commandButton action="#{genClasif.generateProcess}" id="generateClasif" value="#{txt.generateclasifications}"/>
+                                <h:commandButton action="#{genClasif.generateProcess}" id="generateClassifications" value="#{txt_cla.generateClassifications}"/>
                             </td>
                         </tr>
                         <tr>

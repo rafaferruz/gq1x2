@@ -18,24 +18,25 @@
             </ui:define>
 
             <ui:define name="content">
-                <f:loadBundle basename="com.gq2.multilang.granq" var="txt"/>
+                <f:loadBundle basename="com.gq2.multilang.team" var="txt_tea"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
 		<h:form id="enrolledTeam_form">
 		    <h3>
 			<h:outputLabel for="componentLabel0Text" id="componentLabel0" >
-			    <h:outputText id="componentLabel0Text" value="#{txt.enrollingTeams}"/>
+			    <h:outputText id="componentLabel0Text" value="#{txt_tea.enrollingTeams}"/>
 			</h:outputLabel>
 		    </h3>
 		    <table>
 			<tr>
 			    <td>
 				<h:outputLabel for="componentLabel3" id="componentLabel3">
-				    <h:outputText id="componentLabel3Text" value="#{txt.selectchampionship}"/>
+				    <h:outputText id="componentLabel3Text" value="#{txt_com.selectChampionship}"/>
 				</h:outputLabel>
 			    </td>
 			    <td>
 				<h:outputLabel for="componentLabel4" id="componentLabel4">
-				    <h:outputText id="componentLabel4Text" value="#{txt.enrolledTeams}"/>
+				    <h:outputText id="componentLabel4Text" value="#{txt_tea.enrolledTeams}"/>
 				</h:outputLabel>
 			    </td>
 			</tr>
@@ -51,8 +52,8 @@
 				</h:selectOneListbox>
 			    </td>
 			    <td>
-				<h:commandButton action="#{enrolledTeam.backenrolling}" id="button1" value="Desinscribir"/>
-				<h:commandButton action="#{enrolledTeam.enrolling}" id="button2" value="Inscribir"/>
+				<h:commandButton action="#{enrolledTeam.backenrolling}" id="button1" value="#{txt_tea.toUnenrol}"/>
+				<h:commandButton action="#{enrolledTeam.enrolling}" id="button2" value="#{txt_tea.toEnrol}"/>
 			    </td>
 			    <td>
 				<h:selectOneListbox id="listbox3" value="#{enrolledTeam.selectedDisposableTeam}" size="20">
