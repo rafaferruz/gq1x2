@@ -18,29 +18,31 @@
             </ui:define>
 
             <ui:define name="content">
-                <f:loadBundle basename="com.gq2.multilang.granq" var="txt"/>
+                <f:loadBundle basename="com.gq2.multilang.score" var="txt_sco"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
+                <f:loadBundle basename="com.gq2.multilang.messages" var="txt_msg"/>
 
 		<h:form id="showScores_form">
 		    <h3>
 			<h:outputLabel for="componentLabel0Text" id="componentLabel0" >
-			    <h:outputText id="componentLabel0Text" value="#{txt.showResults}"/>
+			    <h:outputText id="componentLabel0Text" value="#{txt_sco.showScores}"/>
 			</h:outputLabel>
 		    </h3>
 		    <table>
 			<tr>
 			    <td>
 				<h:outputLabel for="componentLabel3" id="componentLabel3">
-				    <h:outputText id="componentLabel3Text" value="#{txt.selectchampionship}"/>
+				    <h:outputText id="componentLabel3Text" value="#{txt_com.selectChampionship}"/>
 				</h:outputLabel>
 			    </td>
 			    <td>
 				<h:outputLabel for="componentLabel4" id="componentLabel4">
-				    <h:outputText id="componentLabel4Text" value="#{txt.selectround}"/>
+				    <h:outputText id="componentLabel4Text" value="#{txt_com.selectRound}"/>
 				</h:outputLabel>
 			    </td>
 			    <td>
 				<h:outputLabel for="componentLabel5Text" id="componentLabel5">
-				    <h:outputText id="componentLabel5Text" value="#{txt.rounddate}"/>
+				    <h:outputText id="componentLabel5Text" value="#{txt_com.roundDate}"/>
 				</h:outputLabel>
 			    </td>
 
@@ -57,16 +59,16 @@
 				</h:selectOneMenu>
 			    </td>
 			    <td>
-				<h:inputText converterMessage="#{txt.errordate}" id="rounddate" maxlength="10" size="10"
+				<h:inputText converterMessage="#{txt_msg.errorDate}" id="rounddate" maxlength="10" size="10"
 					     validator="#{showScores.roundDateValidator}" value="#{showScores.scoDate}">
-				    <f:convertDateTime pattern="#{txt.datepattern}" type="date"/>
+				    <f:convertDateTime pattern="#{txt_com.datePattern}" type="date"/>
 				</h:inputText>
 				<h:outputLabel for="componentLabel6Text" id="componentLabel6">
-				    <h:outputText id="componentLabel6Text" value="#{txt.rounddatepattern}"/>
+				    <h:outputText id="componentLabel6Text" value="#{txt_sco.roundDatePattern}"/>
 				</h:outputLabel>
 			    </td>
 			    <td>
-				<h:commandButton action="#{showScores.changeRoundDate}" id="button2" value="#{txt.changerounddate}"/>
+				<h:commandButton action="#{showScores.changeRoundDate}" id="button2" value="#{txt_sco.changeRoundDate}"/>
 			    </td>
 			</tr>
 			<tr>
@@ -75,13 +77,13 @@
 				    <h:column id="column1">
 					<h:outputText id="outputText1" value="#{currentRow['scoTeamName1']}"/>
 					<f:facet name="header">
-					    <h:outputText id="outputText2" value="#{txt.hometeam}"/>
+					    <h:outputText id="outputText2" value="#{txt_sco.homeTeam}"/>
 					</f:facet>
 				    </h:column>
 				    <h:column id="column2">
 					<h:outputText id="outputText3" value="#{currentRow['scoTeamName2']}"/>
 					<f:facet name="header">
-					    <h:outputText id="outputText4" value="#{txt.outteam}"/>
+					    <h:outputText id="outputText4" value="#{txt_sco.outTeam}"/>
 					</f:facet>
 				    </h:column>
 				    <h:column id="column3">
@@ -89,7 +91,7 @@
 					    <f:validateLongRange maximum="20" minimum="0"/>
 					</h:inputText>
 					<f:facet name="header">
-					    <h:outputText id="outputText6" value="#{txt.GC}"/>
+					    <h:outputText id="outputText6" value="#{txt_sco.GC}"/>
 					</f:facet>
 				    </h:column>
 				    <h:column id="column4">
@@ -97,7 +99,7 @@
 					    <f:validateLongRange maximum="20" minimum="0"/>
 					</h:inputText>
 					<f:facet name="header">
-					    <h:outputText id="outputText8" value="#{txt.GF}"/>
+					    <h:outputText id="outputText8" value="#{txt_sco.GF}"/>
 					</f:facet>
 				    </h:column>
 				</h:dataTable>
@@ -105,8 +107,8 @@
 			</tr>
 			<tr>
 			    <td colspan="4">
-				<h:commandButton action="#{showScores.updateScores}" id="button8" value="#{txt.saveresults}"/>
-				<h:commandButton action="#{showScores.generateClassifications}" id="generateclasif8" value="#{txt.generateclassifications}"/>
+				<h:commandButton action="#{showScores.updateScores}" id="button8" value="#{txt_sco.saveScores}"/>
+				<h:commandButton action="#{showScores.generateClassifications}" id="generateclasif8" value="#{txt_sco.generateClassifications}"/>
 			    </td>
 			</tr>
 			<tr>
@@ -117,7 +119,7 @@
 			<tr>
 			    <td colspan="3"></td>
 			    <td>
-				<h:commandButton action="close" id="button9" value="#{txt.close}"/>
+				<h:commandButton action="close" id="button9" value="#{txt_com.Close}"/>
 			    </td>
 			</tr>
 		    </table>

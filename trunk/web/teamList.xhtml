@@ -18,10 +18,11 @@
             </ui:define>
 
             <ui:define name="content">
-		<f:loadBundle basename="com.gq2.multilang.team" var="txt"/>
+		<f:loadBundle basename="com.gq2.multilang.team" var="txt_tea"/>
+		<f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
 		<h3 align="left">
-                    <h:outputFormat value="#{txt.teamList}"/>
+                    <h:outputFormat value="#{txt_tea.teamList}"/>
                 </h3>
 
                 <h:form id="teamList_form">
@@ -34,16 +35,16 @@
 			<tr>
 			    <td>
 				<c:if test="#{team.rowCount == 0}">
-				    <h3 align="left">#{txt.NoListTeams}</h3>
+				    <h3 align="left">#{txt_tea.NoListTeams}</h3>
 				</c:if>
 				<c:if test="#{team.rowCount > 0}">
 				    <table>
 					<!-- column headers -->
 					<tr>
-					    <th>#{txt.Id}</th>
-					    <th>#{txt.Code}</th>
-					    <th>#{txt.TeamName}</th>
-					    <th>#{txt.Action}</th>
+					    <th>#{txt_tea.Id}</th>
+					    <th>#{txt_com.Code}</th>
+					    <th>#{txt_tea.TeamName}</th>
+					    <th>#{txt_com.Action}</th>
 					</tr>
 					<!-- column data -->
 					<c:forEach var="row" items="#{sessionScope.teamList}">
@@ -52,8 +53,8 @@
 						<td><h:outputText value="#{row.teaCode}"/></td>
 						<td><h:outputText value="#{row.teaName}"/></td>
 						<td align="center">
-						    <h:commandButton action="#{team.edit}" value="#{txt.Edit}"   onclick="window.document.getElementById('teamList_form:keyId').value = #{row.teaId};"/>
-						    <h:commandButton action="#{team.delete}" value="#{txt.Delete}"   onclick="window.document.getElementById('teamList_form:keyId').value = #{row.teaId};"/>
+						    <h:commandButton action="#{team.edit}" value="#{txt_com.Edit}"   onclick="window.document.getElementById('teamList_form:keyId').value = #{row.teaId};"/>
+						    <h:commandButton action="#{team.delete}" value="#{txt_com.Delete}"   onclick="window.document.getElementById('teamList_form:keyId').value = #{row.teaId};"/>
 						</td>
 					    </tr>
 					</c:forEach>
@@ -66,34 +67,19 @@
 				<table class="commandBoxInList">
 				    <tr>
 					<td>
-					    <h:commandButton action="#{team.newTeam}" value="#{txt.newTeam}"/>
+					    <h:commandButton action="#{team.newTeam}" value="#{txt_com.New}"/>
 					</td>
 				    </tr>
 				    <tr>
 					<td>
-    					    <h:commandButton action="#{team.searchTeam}" value="#{txt.searchTeam}"/>
+    					    <h:commandButton action="#{team.searchTeam}" value="#{txt_com.Search}"/>
 					</td>
 				    </tr>
 				</table>
 			    </td>
 			</tr>
                     </table>
-		    <script type="text/javascript" >
-							function runCommand(command) {
-							    window.document.teamList_form.runAction.value = command;
-							    window.document.teamList_form.submit();
-							    return 0;
-							}
-							function teamEdit(id) {
-							    window.document.teamList_form.keyId.value = id;
-							    runCommand('edit');
-							    return 0;
-							}
-		    </script>
-
                 </h:form>
-
-
             </ui:define>
         </ui:composition>
     </h:body>
