@@ -18,10 +18,11 @@
 
             <ui:define name="content">
 
-                <f:loadBundle basename="com.gq2.multilang.championship" var="txt"/>
+                <f:loadBundle basename="com.gq2.multilang.championship" var="txt_cha"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
                 <h3>
-                    <h:outputFormat value="#{txt.editChampionship}"/>
+                    <h:outputFormat value="#{txt_cha.editChampionship}"/>
                 </h3>
 		<h:messages />
                 <h:form id="championship_form" >
@@ -30,55 +31,55 @@
                         <tr>
                             <td>
                                 <h:panelGrid columns="2">
-                                    <h:outputLabel value="#{txt.Id}:" for="keyId" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_cha.Id}:" for="keyId" ></h:outputLabel>
                                     <h:inputText id="keyId" size="5" maxlength="5" disabled="true" value="#{championship.chaId}" />
 
 
-                                    <h:outputLabel value="#{txt.Status}:" for="status" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_com.Status}:" for="status" ></h:outputLabel>
                                     <h:selectOneRadio id="status" value="#{championship.chaStatus}" >
-                                        <f:selectItem id="status_0" itemValue="0" itemLabel="#{txt.Activ}"/>
-                                        <f:selectItem id="status_1" itemValue="1" itemLabel="#{txt.Finished}"/>
-                                        <f:selectItem id="status_2" itemValue="2" itemLabel="#{txt.Locked}"/>
+                                        <f:selectItem id="status_0" itemValue="0" itemLabel="#{txt_com.Activ}"/>
+                                        <f:selectItem id="status_1" itemValue="1" itemLabel="#{txt_com.Finished}"/>
+                                        <f:selectItem id="status_2" itemValue="2" itemLabel="#{txt_com.Locked}"/>
                                     </h:selectOneRadio>
 
-                                    <h:outputLabel value="#{txt.Code}:" for="code" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_com.Code}:" for="code" ></h:outputLabel>
                                     <h:inputText id="code" size="12" maxlength="12" value="#{championship.chaCode}" />
 
 
-                                    <h:outputLabel value="#{txt.Description}:" for="description" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_com.Description}:" for="description" ></h:outputLabel>
                                     <h:inputText id="description" size="60" maxlength="60" value="#{championship.chaDescription}" />
 
 
-                                    <h:outputLabel value="#{txt.Phase}:" for="season" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_cha.Phase}:" for="season" ></h:outputLabel>
                                     <h:inputText id="season" size="12" maxlength="12" value="#{championship.chaSeason}" />
 
 
-                                    <h:outputLabel value="#{txt.startDate}:" for="startDate" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_cha.startDate}:" for="startDate" ></h:outputLabel>
                                     <h:panelGroup>
                                         <h:inputText id="startDate" size="10" maxlength="10" value="#{championship.chaStartDate}"  >
                                             <f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
 					</h:inputText>
-                                        #{txt.dateFormat}
+                                        #{txt_com.dateFormat}
                                     </h:panelGroup>
 
-                                    <h:outputLabel value="#{txt.pointsForWin}:" for="pointsForWin" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_cha.pointsForWin}:" for="pointsForWin" ></h:outputLabel>
                                     <h:inputText id="pointsForWin" size="5" maxlength="5" value="#{championship.chaPointsWin}" >
 					<f:validateLongRange minimum="0" maximum="3"/>
 				    </h:inputText>
 
 
-                                    <h:outputLabel value="#{txt.pointsForDraw}:" for="pointsForDraw" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_cha.pointsForDraw}:" for="pointsForDraw" ></h:outputLabel>
                                     <h:inputText id="pointsForDraw" size="5" maxlength="5" value="#{championship.chaPointsDraw}" >
 					<f:validateLongRange minimum="0" maximum="3"/>
 				    </h:inputText>
 
-                                    <h:outputLabel value="#{txt.pointsForLose}:" for="pointsForLose" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_cha.pointsForLose}:" for="pointsForLose" ></h:outputLabel>
                                     <h:inputText id="pointsForLose" size="5" maxlength="5" value="#{championship.chaPointsLose}" >
 					<f:validateLongRange minimum="0" maximum="3"/>
 				    </h:inputText>
 
 
-                                    <h:outputLabel value="#{txt.maxTeams}:" for="maxTeams" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_cha.maxTeams}:" for="maxTeams" ></h:outputLabel>
                                     <h:inputText id="maxTeams" size="5" maxlength="5" value="#{championship.chaMaxTeams}"  onblur="validar_campo_entero(this);"/>
 
                                     <h:panelGroup/>
@@ -86,8 +87,8 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    <h:commandButton id="cancel" action="#{championship.cancelAction}" value="#{txt.Cancel}" />
-                                                    <h:commandButton id="save" action="#{championship.saveNewChampionship}" value="#{txt.Save}" />
+                                                    <h:commandButton id="cancel" action="#{championship.cancelAction}" value="#{txt_com.Cancel}" />
+                                                    <h:commandButton id="save" action="#{championship.saveNewChampionship}" value="#{txt_com.Save}" />
                                                 </td>
                                             </tr>
                                         </table>

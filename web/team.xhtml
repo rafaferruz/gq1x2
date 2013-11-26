@@ -18,10 +18,11 @@
 
             <ui:define name="content">
 
-                <f:loadBundle basename="com.gq2.multilang.team" var="txt"/>
+                <f:loadBundle basename="com.gq2.multilang.team" var="txt_tea"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
                 <h3>
-                    <h:outputFormat value="#{txt.editTeams}"/>
+                    <h:outputFormat value="#{txt_tea.editTeams}"/>
                 </h3>
                 <h:form id="team_form" >
                     <h:inputHidden id="runAction" value="#{team.runAction}" />
@@ -30,26 +31,26 @@
                         <tr>
                             <td>
                                 <h:panelGrid columns="2">
-                                    <h:outputLabel value="#{txt.Id}:" for="keyId" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_tea.Id}:" for="keyId" ></h:outputLabel>
                                     <h:inputText id="keyId" size="5" maxlength="5" disabled="true" value="#{team.teaId}" />
 
 
-                                    <h:outputLabel value="#{txt.Status}:" for="status" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_tea.Status}:" for="status" ></h:outputLabel>
                                     <h:selectOneRadio id="status" value="#{team.teaStatus}" >
-                                        <f:selectItem id="status_0" itemValue="0" itemLabel="#{txt.Activ}"/>
-                                        <f:selectItem id="status_1" itemValue="1" itemLabel="#{txt.Unactiv}"/>
-                                        <f:selectItem id="status_2" itemValue="2" itemLabel="#{txt.Locked}"/>
+                                        <f:selectItem id="status_0" itemValue="0" itemLabel="#{txt_com.Activ}"/>
+                                        <f:selectItem id="status_1" itemValue="1" itemLabel="#{txt_com.Unactiv}"/>
+                                        <f:selectItem id="status_2" itemValue="2" itemLabel="#{txt_com.Locked}"/>
                                     </h:selectOneRadio>
 
-                                    <h:outputLabel value="#{txt.Code}:" for="code" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_com.Code}:" for="code" ></h:outputLabel>
                                     <h:inputText id="code" required="true" size="12" maxlength="12" value="#{team.teaCode}" />
 
 
-                                    <h:outputLabel value="#{txt.TeamName}:" for="name" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_tea.TeamName}:" for="name" ></h:outputLabel>
                                     <h:inputText id="name" required="true" size="60" maxlength="40" value="#{team.teaName}" />
 
 
-                                    <h:outputLabel value="#{txt.Rating}:" for="rating" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_tea.Rating}:" for="rating" ></h:outputLabel>
                                     <h:inputText id="rating" size="5" maxlength="5" value="#{team.teaRating}">
 					<f:validateLongRange minimum="0"/>
 				    </h:inputText>
@@ -59,8 +60,8 @@
                                         <table>
 					    <tr>
 						<td>
-                                                    <h:commandButton id="cancel" action="#{team.cancelAction}" value="#{txt.Cancel}" />
-                                                    <h:commandButton id="save" action="#{team.saveNewTeam}" value="#{txt.Save}" />
+                                                    <h:commandButton id="cancel" action="#{team.cancelAction}" value="#{txt_com.Cancel}" />
+                                                    <h:commandButton id="save" action="#{team.saveNewTeam}" value="#{txt_com.Save}" />
                                                 </td>
 					    </tr>
 					</table>
