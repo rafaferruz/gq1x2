@@ -18,33 +18,34 @@
             </ui:define>
 
             <ui:define name="content">
-                <f:loadBundle basename="com.granq.multilang.granq" var="txt"/>
+                <f:loadBundle basename="com.gq2.multilang.bet" var="txt_bet"/>
+                <f:loadBundle basename="com.gq2.multilang.score" var="txt_sco"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
 		<h:form id="form1">
-		    <h:outputLabel for="pagetitle" id="pagetitlelabel" styleClass="page-title">
-			<h:outputText id="pagetitle" value="#{txt.betpagetitle}"/>
-		    </h:outputLabel>
-		    <br/>
-		    <br/>
-
+		    <h3>
+			<h:outputLabel for="pagetitle" id="pagetitlelabel" styleClass="page-title">
+			    <h:outputText id="pagetitle" value="#{txt_bet.betPageTitle}"/>
+			</h:outputLabel>
+		    </h3>
 		    <table>
 			<tbody>
 			    <tr>
 				<td>
 				    <h:outputLabel for="textseason" id="textseasonlabel">
-					<h:outputText id="textseason" value="#{txt.season}"/>
+					<h:outputText id="textseason" value="#{txt_com.season}"/>
 				    </h:outputLabel>
 				    <h:inputText id="season" maxlength="4" onchange="submit();" size="4" value="#{bets.betSeason}" >
 					<f:validateLongRange maximum="2010" minimum="2000"/>
 				    </h:inputText>
 				    <h:outputLabel for="textround" id="textroundlabel">
-					<h:outputText id="textround" value="#{txt.round}"/>
+					<h:outputText id="textround" value="#{txt_com.round}"/>
 				    </h:outputLabel>
 				    <h:inputText id="round" maxlength="2" onchange="submit();" size="2" value="#{bets.betOrderNumber}">
 					<f:validateLongRange maximum="60" minimum="1"/>
 				    </h:inputText>
 				    <h:outputLabel for="textdescription"  id="textdescriptionlabel">
-					<h:outputText id="textdescription" value="#{txt.description}"/>
+					<h:outputText id="textdescription" value="#{txt_com.description}"/>
 				    </h:outputLabel>
 				    <h:inputText id="description" maxlength="40" size="40" value="#{bets.betDescription}">
 				    </h:inputText>
@@ -52,11 +53,11 @@
 			    </tr>
 			    <tr>
 				<td valign="top">
-				    <h:commandButton action="cancel" id="button1" value="#{txt.cancel}"/>
-				    <h:commandButton action="#{bets.showBets}" id="button2" value="#{txt.betshow}"/>
-				    <h:commandButton action="#{bets.saveBet}" id="button3" value="#{txt.betsave}"/>
-				    <h:commandButton action="#{bets.insertBet}" id="button4" value="#{txt.betinsert}"/>
-				    <h:commandButton action="#{bets.generateCols}" id="button5" value="#{txt.generatecols}"/>
+				    <h:commandButton action="cancel" id="button1" value="#{txt_com.Cancel}"/>
+				    <h:commandButton action="#{bets.showBets}" id="button2" value="#{txt_bet.betShow}"/>
+				    <h:commandButton action="#{bets.saveBet}" id="button3" value="#{txt_bet.betSave}"/>
+				    <h:commandButton action="#{bets.insertBet}" id="button4" value="#{txt_bet.betInsert}"/>
+				    <h:commandButton action="#{bets.generateCols}" id="button5" value="#{txt_bet.generateCols}"/>
 				    <br></br>
 				    <br></br>
 				</td>
@@ -72,7 +73,7 @@
 							     value="#{bets.betList}" var="currentRow">
 						    <h:column id="column2">
 							<f:facet name="header"  >
-							    <h:outputText id="outputText4" value="#{txt.ID}"/>
+							    <h:outputText id="outputText4" value="#{txt_com.ID}"/>
 							</f:facet>
 							<h:commandLink value="#{currentRow.betId}" action="#{bets.editBet}" >
 							    <f:setPropertyActionListener target="#{bets.betForEdition}" value="#{currentRow}" />
@@ -81,26 +82,26 @@
 						    <h:column id="column3">
 							<h:outputText id="outputText5" value="#{currentRow['betSeason']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText6" value="#{txt.season}"/>
+							    <h:outputText id="outputText6" value="#{txt_com.season}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column4">
 							<h:outputText  id="outputText7" value="#{currentRow['betOrderNumber']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText8" value="#{txt.round}"/>
+							    <h:outputText id="outputText8" value="#{txt_com.round}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column5">
 							<h:outputText id="outputText9" value="#{currentRow['betDescription']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText10" value="#{txt.description}"/>
+							    <h:outputText id="outputText10" value="#{txt_com.description}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column6">
 							<f:facet name="header">
-							    <h:outputText id="outputText11" value="#{txt.action}"/>
+							    <h:outputText id="outputText11" value="#{txt_com.Action}"/>
 							</f:facet>
-							<h:commandButton action="#{bets.deleteBet}" id="button11" styleClass="button-short" value="#{txt.delete}">
+							<h:commandButton action="#{bets.deleteBet}" id="button11" styleClass="button-short" value="#{txt_com.Delete}">
 							    <f:setPropertyActionListener target="#{bets.betToDelete}" value="#{currentRow}"/>
 							</h:commandButton>
 						    </h:column>
@@ -118,13 +119,13 @@
 						    <h:column  id="column201">
 							<h:outputText id="outputText201" value="#{currentBetLine['bliTeamName1']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText202" value="#{txt.hometeam}"/>
+							    <h:outputText id="outputText202" value="#{txt_sco.homeTeam}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column202">
 							<h:outputText id="outputText203" value="#{currentBetLine['bliTeamName2']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText204" value="#{txt.outteam}"/>
+							    <h:outputText id="outputText204" value="#{txt_sco.outTeam}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column202a">
@@ -154,14 +155,14 @@
 						    <h:column id="column203">
 							<h:inputText id="outputText205" size="3" maxlength="3" value="#{currentBetLine['bliColumnBase']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText206" value="#{txt.blicolbase}"/>
+							    <h:outputText id="outputText206" value="#{txt_bet.bliColBase}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column204">
 							<h:selectBooleanCheckbox id="checkbox201" value="#{currentBetLine['bliColumnGroup1']}"/>
 							<f:facet name="header">
 							    <h:outputLabel for="outputText208"  id="outputText208label" onclick="clickCol(1);" >
-								<h:outputText id="outputText208" value="#{txt.group1}"/>
+								<h:outputText id="outputText208" value="#{txt_bet.group1}"/>
 							    </h:outputLabel>
 							</f:facet>
 						    </h:column>
@@ -169,7 +170,7 @@
 							<h:selectBooleanCheckbox id="checkbox202" value="#{currentBetLine['bliColumnGroup2']}"/>
 							<f:facet name="header">
 							    <h:outputLabel for="outputText210"  id="outputText210label" onclick="clickCol(2);" >
-								<h:outputText id="outputText210" value="#{txt.group2}"/>
+								<h:outputText id="outputText210" value="#{txt_bet.group2}"/>
 							    </h:outputLabel>
 							</f:facet>
 						    </h:column>
@@ -177,7 +178,7 @@
 							<h:selectBooleanCheckbox id="checkbox203" value="#{currentBetLine['bliColumnGroup3']}"/>
 							<f:facet name="header">
 							    <h:outputLabel for="outputText212"  id="outputText212label" onclick="clickCol(3);" >
-								<h:outputText id="outputText212" value="#{txt.group3}"/>
+								<h:outputText id="outputText212" value="#{txt_bet.group3}"/>
 							    </h:outputLabel>
 							</f:facet>
 						    </h:column>
@@ -185,7 +186,7 @@
 							<h:selectBooleanCheckbox id="checkbox204" value="#{currentBetLine['bliColumnGroup4']}"/>
 							<f:facet name="header">
 							    <h:outputLabel for="outputText214"  id="outputText214label" onclick="clickCol(4);" >
-								<h:outputText id="outputText214" value="#{txt.group4}"/>
+								<h:outputText id="outputText214" value="#{txt_bet.group4}"/>
 							    </h:outputLabel>
 							</f:facet>
 						    </h:column>
@@ -193,18 +194,18 @@
 							<h:selectBooleanCheckbox  id="checkbox205" value="#{currentBetLine['bliColumnGroup5']}"/>
 							<f:facet name="header">
 							    <h:outputLabel for="outputText215"  id="outputText215label" onclick="clickCol(5);" >
-								<h:outputText id="outputText215" value="#{txt.group5}"/>
+								<h:outputText id="outputText215" value="#{txt_bet.group5}"/>
 							    </h:outputLabel>
 							</f:facet>
 						    </h:column>
 						</h:dataTable>
 						<br></br>
 						<h:outputLabel for="textradio" id="textradiolabel">
-						    <h:outputText id="textradio" value="#{txt.sorting}"/>
+						    <h:outputText id="textradio" value="#{txt_bet.sorting}"/>
 						</h:outputLabel>
 						<h:selectOneRadio id="radioButtonList1" immediate="true" layout="lineDirection" onchange="submit();" value="#{bets.sortby}">
-						    <f:selectItem itemLabel="#{txt.byrating}" itemValue="rating"/>
-						    <f:selectItem itemLabel="#{txt.byorder}" itemValue="order"/>
+						    <f:selectItem itemLabel="#{txt_bet.byRating}" itemValue="rating"/>
+						    <f:selectItem itemLabel="#{txt_bet.byOrder}" itemValue="order"/>
 						</h:selectOneRadio>
 						<br></br>
 						<h:dataTable columnClasses="col-right,col-center,
@@ -213,7 +214,7 @@
 							     rowClasses="list-row-even,list-row-odd"
 							     value="#{bets.dataBetGroups}" var="currentBetGroup">
 						    <h:column  id="column301">
-							<h:outputText id="outputText301" value="#{txt.betnummatchestoplay}"/>
+							<h:outputText id="outputText301" value="#{txt_bet.betNumMatchesToPlay}"/>
 							<f:facet name="header">
 							    <h:outputText id="outputText302" value=""/>
 							</f:facet>
@@ -221,37 +222,37 @@
 						    <h:column  id="column302">
 							<h:outputText id="outputText303" value="#{currentBetGroup['bgrSign']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText304" value="#{txt.sign}"/>
+							    <h:outputText id="outputText304" value="#{txt_bet.sign}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column303">
 							<h:inputText id="inputText305" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup1Values']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText306" value="#{txt.group1}"/>
+							    <h:outputText id="outputText306" value="#{txt_bet.group1}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column304">
 							<h:inputText id="inputText306" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup2Values']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText307" value="#{txt.group2}"/>
+							    <h:outputText id="outputText307" value="#{txt_bet.group2}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column305">
 							<h:inputText id="inputText307" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup3Values']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText308" value="#{txt.group3}"/>
+							    <h:outputText id="outputText308" value="#{txt_bet.group3}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column306">
 							<h:inputText id="inputText308" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup4Values']}"/>
 							<f:facet name="header">
-							    <h:outputText id="outputText309" value="#{txt.group4}"/>
+							    <h:outputText id="outputText309" value="#{txt_bet.group4}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column id="column307">
 							<h:inputText id="inputText309" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup5Values']}"/>
 							<f:facet name="header">
-							    <h:outputText  id="outputText310" value="#{txt.group5}"/>
+							    <h:outputText  id="outputText310" value="#{txt_bet.group5}"/>
 							</f:facet>
 						    </h:column>
 						</h:dataTable>
