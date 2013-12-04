@@ -1,0 +1,65 @@
+<!--			<tr>
+			    <td colspan="4">
+				<em:champround  classBean="#{showScores}"
+						championshipList="#{showScores.championshipItemList}"
+						roundList="#{showScores.roundItemList}"
+						txtChampionship="#{txt_com.selectChampionship}"
+						txtRound="#{txt_com.selectRound}"
+						chaId="#{showScores.scoChaId}"
+						round="#{showScores.scoRound}">
+				</em:champround>
+			    </td>
+			</tr>
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <composite:interface>
+	<composite:attribute name="txtChampionship" required="true"/>
+	<composite:attribute name="txtRound" required="true"/>
+	<composite:attribute name="championshipList" required="true"/>
+	<composite:attribute name="roundList" required="true"/>
+	<composite:attribute name="chaId" required="false"/>
+	<composite:attribute name="round" required="false"/>
+	<composite:attribute name="championshipChangeEvent" 
+			     method-signature="void championshipChangeEvent(javax.faces.event.ValueChangeEvent)"/>
+	<composite:attribute name="roundChangeEvent" 
+			     method-signature="void roundChangeEvent(javax.faces.event.ValueChangeEvent)"/>
+	<composite:attribute name="classBean"/>
+    </composite:interface>
+    <composite:implementation>
+	<table>
+	    <tr>
+		<td>
+		    <h:outputLabel for="champroundLabel1Text" id="champroundLabel1">
+			<h:outputText id="champroundLabel1Text" value="#{cc.attrs.txtChampionship}"/>
+		    </h:outputLabel>
+		</td>
+		<td>
+		    <h:outputLabel for="champroundLabel2Text" id="champroundLabel2">
+			<h:outputText id="champroundLabel2Text" value="#{cc.attrs.txtRound}"/>
+		    </h:outputLabel>
+		</td>
+
+	    </tr>
+	    <tr>
+		<td>
+		    <h:selectOneMenu id="champroundDropdown1" value="#{cc.attrs.chaId}" onchange="submit();" >
+			<f:selectItems id="champroundDropdown1SelectItems" value="#{cc.attrs.championshipList}"/>
+			<f:valueChangeListener for="champroundDropdown1" binding="#{cc.attrs.classBean.championshipChangeEvent}"/>
+		    </h:selectOneMenu>
+		</td>
+		<td>
+		    <h:selectOneMenu disabled="#{cc.attrs.classBean.disabledRounds}" id="champroundDropdown2" value="#{cc.attrs.round}" onchange="submit();" >
+			<f:selectItems id="champroundDropdown2SelectItems" value="#{cc.attrs.roundList}"/>
+			<f:valueChangeListener for="champroundDropdown2" binding="#{cc.attrs.classBean.roundChangeEvent}"/>
+		    </h:selectOneMenu>
+		</td>
+	    </tr>
+	</table>
+    </composite:implementation>
+</html>
+

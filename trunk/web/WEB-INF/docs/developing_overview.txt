@@ -66,7 +66,6 @@ Lista de Errores detectados a corregir
 
 Lista de Tareas Pendientes
 
-- Modificar estilos CSS para reducir el tamaño de letra, centrar vista en pantalla, etc., en definitiva, conseguir el estilo anterior a la incorporacion de Web Resources
 - En las vistas de mantenimiento de tablas no funciona el boton 'Buscar/Seleccionar'. 
 - En las vistas de mantenimiento de tablas, en los mensajes de error de validacion o conversion, se debe modificar el identificador del campo y poner su texto de etiqueta. 
 - Estudio del funcionamiento de caracteres 'UTF-8' en la base de datos y en la aplicacion.
@@ -134,11 +133,23 @@ Lista de Tareas Realizadas
 19/11/2013 - Arrancar servidor de Mysql en el arranque del sistema
 		Se ha copiado mysql.server script al directorio /etc/init.d y el fichero de configuracion my.cnf al directorio /etc.
 20/11/2013 - Incorporacion del proyecto 'gq1x2' al servidor svn 'code.google.com' para la gestion de versiones del mismo.
-
-
+26/11/2013 - Modificacion de la ubicacion de textos internacionalizados para su distribucion en ficheros 'properties' mas pequeños
+		y separados por objetos y pantallas a los que se aplican.
+02/12/2013 - Modificar estilos CSS para reducir el tamaño de letra, centrar vista en pantalla, etc., en definitiva, conseguir el estilo anterior a la incorporacion de Web Resources
+		Se modificaron las llamadas a los ficheros de estilo CSS y se volvio al estilo ya definido anteriormente. (Ver notas sobre implementacion de JSF 2.2)
 
 Estudiar:
 - JSF 2.2
+    - Utilizacion de Resources para la ubicacion de los ficheros de estilos CSS.
+	- Se siguen las indicaciones de la documentacion de Java EE 7.
+	    - Se encuentran problemas cuando se usa un fichero css que intenta importar otros ficheros css con la directiva @import.
+	    - Se resuelven los problemas cuando se llaman a dichos ficheros directamente usando una etiqueta h:outputStylesheet para cada uno de los ficheros utilizados.
+    - Creacion de Componentes Compuestos.
+	- Se encuentran problemas si se siguen las indicaciones de la documentacion de Java EE 7.
+	- Se resuelven algunos de dichos problemas si se suprime del fichero de declaracion e implementacion del componente compuesto
+	    el bloque compuesto por las etiquetas <head></head>
+	- Se mantiene un problema al intentar usar un metodo de la clase Bean que actua como listener del evento ChangeValueEvent.    
+	    
 - CSS
 - Repasar J2EE (session, JSP, Tags)
     - Revisar de vez en cuando:
