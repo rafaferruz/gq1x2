@@ -2,6 +2,7 @@ package com.gq2.beans;
 
 import com.gq2.DAO.DAOFactory;
 import com.gq2.domain.Score;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -11,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean(name = "score")
 @ViewScoped
 
-public class ScoreBean extends Score {
+public class ScoreBean extends Score  implements Serializable{
 
     public String scoTeamName1;
     public String scoTeamName2;

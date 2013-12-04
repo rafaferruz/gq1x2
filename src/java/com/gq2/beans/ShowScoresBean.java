@@ -7,6 +7,7 @@ import com.gq2.services.MakePrognostic;
 import com.gq2.services.MakeSuperTable;
 import com.gq2.services.ScoreService;
 import com.gq2.services.TeamService;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,11 +25,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author ESTHER
+ * @author RAFAEL FERRUZ
  */
 @ManagedBean(name = "showScores")
 @ViewScoped
-public class ShowScoresBean extends ScoreBean {
+public class ShowScoresBean extends ScoreBean  implements Serializable{
 
     private List<SelectItem> championshipItemList = new ArrayList();
     private List<SelectItem> roundItemList = new ArrayList();

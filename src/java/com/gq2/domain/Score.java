@@ -1,12 +1,13 @@
 package com.gq2.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author RAFAEL FERRUZ
  */
-public class Score {
+public class Score implements Serializable{
 
     public int scoId;
     public int scoChaId;
