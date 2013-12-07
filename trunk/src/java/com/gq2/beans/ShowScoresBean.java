@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @ManagedBean(name = "showScores")
 @ViewScoped
-public class ShowScoresBean extends ScoreBean  implements Serializable{
+public class ShowScoresBean extends ScoreBean implements Serializable {
 
     private List<SelectItem> championshipItemList = new ArrayList();
     private List<SelectItem> roundItemList = new ArrayList();
@@ -41,9 +41,9 @@ public class ShowScoresBean extends ScoreBean  implements Serializable{
     private Date tempDate;
     private int tempRound;
     private String disabledCreateCommand = "true";
-    private ChampionshipService championshipService=new ChampionshipService();
-    private TeamService teamService=new TeamService();
-    private ScoreService scoreService=new ScoreService();
+    private ChampionshipService championshipService = new ChampionshipService();
+    private TeamService teamService = new TeamService();
+    private ScoreService scoreService = new ScoreService();
 
     /**
      * Creates a new instance of ShowScoresBean
@@ -136,9 +136,10 @@ public class ShowScoresBean extends ScoreBean  implements Serializable{
 	setTeamItemList(teamService.getTeamItemListInChampionship(chaId));
 	reloadTeamItemLists();
     }
+
     public void getRoundScores() {
 	scoreList.clear();
-	if (scoChaId == 0 || scoRound == 0 ) {
+	if (scoChaId == 0 || scoRound == 0) {
 	    tempDate = null;
 	    return;
 	}
@@ -156,25 +157,24 @@ public class ShowScoresBean extends ScoreBean  implements Serializable{
 	scoreService.updateScoreList(scoreList);
     }
 
-    public void generateClassifications(){
-	
-	 updateScores();
-	 FacesContext fcClasifications = FacesContext.getCurrentInstance();
-	 HttpServletRequest request = (HttpServletRequest) fcClasifications.getExternalContext().getRequest();
-	 HttpServletResponse response = (HttpServletResponse) fcClasifications.getExternalContext().getResponse();
-	 request.setAttribute("campeonatos", scoChaId);
-	 request.setAttribute("generartodos", null);
-	 request.setAttribute("generardesde", null);
-	 request.setAttribute("scoRound", scoRound);
-	 request.setAttribute("roundfinal", scoRound);
-	 MakeClassification clasif = new MakeClassification();
-	 clasif.processRound(scoChaId, scoRound);
-	 MakeSuperTable supertable = new MakeSuperTable();
-	 supertable.processRound(scoChaId, scoRound);
-	 MakePrognostic prognostic = new MakePrognostic();
-	 prognostic.processRound(scoChaId, scoRound);
-    }
+    public void generateClassifications() {
 
+	updateScores();
+	FacesContext fcClasifications = FacesContext.getCurrentInstance();
+	HttpServletRequest request = (HttpServletRequest) fcClasifications.getExternalContext().getRequest();
+	HttpServletResponse response = (HttpServletResponse) fcClasifications.getExternalContext().getResponse();
+	request.setAttribute("campeonatos", scoChaId);
+	request.setAttribute("generartodos", null);
+	request.setAttribute("generardesde", null);
+	request.setAttribute("scoRound", scoRound);
+	request.setAttribute("roundfinal", scoRound);
+	MakeClassification clasif = new MakeClassification();
+	clasif.processRound(scoChaId, scoRound);
+	MakeSuperTable supertable = new MakeSuperTable();
+	supertable.processRound(scoChaId, scoRound);
+	MakePrognostic prognostic = new MakePrognostic();
+	prognostic.processRound(scoChaId, scoRound);
+    }
 
     private void reloadTeamItemLists() {
 	teamItemList_1.clear();
@@ -251,9 +251,7 @@ public class ShowScoresBean extends ScoreBean  implements Serializable{
     }
 
     public void dateChangeEvent(ValueChangeEvent ev) {
-	if (ev.getNewValue() != null) {
-	    disabledCreateCommand = "false";
-	} else {
+	if (ev.getNewValue() == null) {
 	    disabledCreateCommand = "true";
 	}
     }
@@ -271,15 +269,16 @@ public class ShowScoresBean extends ScoreBean  implements Serializable{
     private void checkTeamItemListSizes() {
 	if (scoreList.isEmpty()) {
 	    scoDate = null;
+	    tempDate = null;
+	    disabledCreateCommand = "true";
+	}
+	removeTeamsFromLists();
+	if (teamItemList_1.isEmpty() && teamItemList_2.isEmpty()) {
 	    disabledCreateCommand = "true";
 	} else {
-	    removeTeamsFromLists();
-	    if (teamItemList_1.isEmpty() && teamItemList_2.isEmpty()) {
-		disabledCreateCommand = "true";
-	    } else {
-		disabledCreateCommand = "false";
-	    }
+	    disabledCreateCommand = "false";
 	}
+
     }
 
     private void removeTeamsFromLists() {

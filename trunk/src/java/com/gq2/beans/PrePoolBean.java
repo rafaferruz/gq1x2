@@ -55,66 +55,6 @@ public class PrePoolBean {
     private PrognosticService prognosticService = new PrognosticService();
     private PrePoolService prePoolService = new PrePoolService();
     private Map<Integer, Team> teamMap = new HashMap<>();
-    private Integer[][] tableRatings = {
-	{-34, 0, 0, 1},
-	{- 31, 0, 0, 1},
-	{-26, 1, 1, 3},
-	{-25, 0, 2, 0},
-	{-24, 0, 0, 4},
-	{-23, 0, 2, 7},
-	{-22, 6, 3, 13},
-	{-21, 7, 4, 9},
-	{-20, 4, 6, 19},
-	{-19, 8, 11, 25},
-	{-18, 9, 12, 25},
-	{-17, 19, 26, 32},
-	{-16, 23, 27, 40},
-	{-15, 29, 28, 60},
-	{-14, 45, 49, 72},
-	{-13, 73, 72, 83},
-	{-12, 100, 79, 101},
-	{-11, 108, 100, 116},
-	{-10, 175, 136, 123},
-	{-9, 187, 172, 151},
-	{-8, 290, 217, 176},
-	{-7, 318, 246, 251},
-	{-6, 401, 284, 253},
-	{-5, 504, 335, 281},
-	{-4, 517, 383, 336},
-	{-3, 659, 436, 356},
-	{-2, 742, 482, 333},
-	{-1, 782, 434, 360},
-	{0, 1130, 617, 442},
-	{1, 814, 483, 297},
-	{2, 751, 420, 258},
-	{3, 770, 386, 258},
-	{4, 715, 371, 200},
-	{5, 553, 298, 192},
-	{6, 505, 236, 174},
-	{7, 448, 205, 128},
-	{8, 390, 161, 104},
-	{9, 308, 104, 66},
-	{10, 267, 91, 67},
-	{11, 205, 72, 34},
-	{12, 166, 48, 30},
-	{13, 131, 44, 25},
-	{14, 105, 33, 19},
-	{15, 85, 23, 15},
-	{16, 61, 7, 7},
-	{17, 52, 10, 6},
-	{18, 33, 5, 0},
-	{19, 30, 4, 6},
-	{20, 23, 3, 1},
-	{21, 16, 3, 1},
-	{22, 11, 2, 0},
-	{23, 7, 1, 1},
-	{24, 3, 0, 0},
-	{25, 3, 0, 0},
-	{26, 4, 1, 0},
-	{27, 7, 0, 1},
-	{28, 1, 0, 0},
-	{31, 1, 0, 0}
-    };
 
     public PrePoolBean() {
     }
@@ -385,6 +325,13 @@ public class PrePoolBean {
 	}
     }
 
+    public void changeValueSortby(ValueChangeEvent ev) {
+	if (ev.getNewValue() != ev.getOldValue()) {
+	    sortby = (String) ev.getNewValue();
+	    sortPrePoolList();
+	}
+    }
+
     public void showMatches() {
 	dataMatches.clear();
 	List<Prognostic> prognosticList = prognosticService.loadPrognosticRoundList(chaId, round);
@@ -512,38 +459,16 @@ public class PrePoolBean {
 	prePool.setPreTeaName2(teamMap.get(prognostic.getPro_sco_team2_id()).getTeaName());
 	prePool.setPreScoScore1(prognostic.getPro_sco_score1());
 	prePool.setPreScoScore2(prognostic.getPro_sco_score2());
-	Long ratPuntos = Math.round(100.0 * (prognostic.getPro_cla_previous1_home_won_games() * 2
-		+ prognostic.getPro_cla_previous1_home_drawn_games()
-		- prognostic.getPro_cla_previous2_out_won_games() * 2
-		- prognostic.getPro_cla_previous2_out_drawn_games())
-		/ prognostic.getPro_cla_previous1_total_played_games());
-	prePool.setPreRatPoints(ratPuntos.intValue());
-	prePool.setPreRat4PreviousDiference(prognostic.getPro_rat4_previous_diference());
-	for (int i = 0; i
-		< tableRatings.length; i++) {
-	    if (tableRatings[i][0] > (prognostic.getPro_rat4_previous_diference() / 10)) {
-		prePool.setPrePercentWin(100 * tableRatings[i][1]
-			/ (tableRatings[i][1]
-			+ tableRatings[i][2]
-			+ tableRatings[i][3]));
-		prePool.setPrePercentDraw(100 * tableRatings[i][2]
-			/ (tableRatings[i][1]
-			+ tableRatings[i][2]
-			+ tableRatings[i][3]));
-		prePool.setPrePercentLose(100 * tableRatings[i][3]
-			/ (tableRatings[i][1]
-			+ tableRatings[i][2]
-			+ tableRatings[i][3]));
-		i =
-			tableRatings.length;
-	    }
 
-	}
-	if (prePool.getPrePercentWin() >= 50) {
-	    prePool.setPrePrognostic("GE");
-	} else {
-	    prePool.setPrePrognostic("EP");
-	}
+	/* Calcula el Rating segun Puntos en un metodo estatico de PrePoolService */
+	prePool.setPreRatPoints(PrePoolService.getPrePoolRatPointsFromPrognostic(prognostic).intValue());
+	prePool.setPreRat4PreviousDiference(prognostic.getPro_rat4_previous_diference());
+
+	/* Calcula los porcentajes de probabilidades de ganar, empatar, perder en un metodo estatico de PrePoolService */
+	PrePoolService.setPrePoolPercentsFromPrognosticPreviousDiference(prognostic, prePool);
+
+	/* Calcula el Prognostic en un metodo estatico de PrePoolService */
+	prePool.setPrePrognostic(PrePoolService.getPrePoolPrognosticFromPercents(prePool));
 	prePool.setPreRat4ScoreSign(prognostic.getPro_rat4_score_sign());
 	return prePool;
     }

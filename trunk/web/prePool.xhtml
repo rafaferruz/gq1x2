@@ -53,7 +53,7 @@
 				    <h:outputLabel for="textradio" id="textradiolabel">
 					<h:outputText id="textradio" value="#{txt_pre.sorting}"/>
 				    </h:outputLabel>
-				    <h:selectOneRadio id="radioButtonList1" layout="lineDirection" onchange="submit();" value="#{prePool.sortby}" immediate="true">
+				    <h:selectOneRadio id="radioButtonList1" layout="lineDirection" onchange="submit();" value="#{prePool.sortby}" valueChangeListener="#{prePool.changeValueSortby}">
 					<f:selectItem itemLabel="#{txt_pre.byRating}" itemValue="rating"/>
 					<f:selectItem itemLabel="#{txt_pre.byOrder}" itemValue="order"/>
 				    </h:selectOneRadio>
@@ -67,7 +67,8 @@
 				    <br/>
 				    <h:dataTable cellpadding="0px" cellspacing="0px"
 						 columnClasses=",,col-center,col-center,col-center,col-center,col-center,col-center,col-center,col-center"
-						 headerClass="list-header" id="dataTable1" rowClasses="list-row-even,list-row-odd" value="#{prePool.prePoolList}" var="currentRow" width="950pt">
+						 headerClass="list-header" id="dataTable1" rowClasses="list-row-even,list-row-odd" 
+						 value="#{prePool.prePoolList}" var="currentRow" width="950pt">
 					<h:column id="column2">
 					    <h:outputText id="outputText3" value="#{currentRow['preTeaName1']}"/>
 					    <f:facet name="header">
