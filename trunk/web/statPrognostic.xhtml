@@ -40,166 +40,206 @@
                     <h:inputText id="lastRound" maxlength="2" size="2" value="#{statPrognostic.lastRound}"  onchange="submit();" valueChangeListener="#{statPrognostic.changeValueRound}">
                         <f:validateLongRange maximum="60" minimum="1"/>
                     </h:inputText>
-
-                    <h:dataTable  width="950 pt"     headerClass="list-header" id="dataTable1"
+		    <table cellpadding="0 px" cellspacing="0 px">
+			<tr>
+			    <td class="col-center" style="width:7.5em">
+				#{txt_pre.roundSigns}
+			    </td>
+			    <td class="col-center" style="width:7.5em">
+				#{txt_pre.signsLast4}
+			    </td>
+			    <td class="col-center" style="width:7.5em">
+				#{txt_pre.signsPercents}
+			    </td>
+			    <td class="col-center" style="width:7.5em">
+				#{txt_pre.expectedRanges}
+			    </td>
+			    <td class="col-center" style="width:7.5em">
+				#{txt_pre.scoresOutOfRange}
+			    </td>
+			    <td class="col-center" style="width:7.5em">
+				#{txt_pre.expectedRangesOnRatingDiferenceA}
+			    </td>
+			    <td class="col-center" style="width:7.5em">
+				#{txt_pre.scoresOutOfRangeOnRatingDiferenceA}
+			    </td>
+			    <td class="col-center" style="width:7.5em">
+				#{txt_pre.expectedRangesOnRatingDiferenceB}
+			    </td>
+			    <td class="col-center" style="width:7.5em">
+				#{txt_pre.scoresOutOfRangeOnRatingDiferenceB}
+			    </td>
+			</tr>
+			<tr>
+			    <td>
+				
+			    </td>
+			</tr>
+		    </table>
+                    <h:dataTable  columnClasses="col-right,col-right,col-right,col-right,
+				  col-right,col-right,col-right,col-right,col-right,col-right,
+				  col-right,col-right,col-right,col-right,col-right,col-right,
+				  col-right,col-right,col-right,col-right,col-right,col-right,
+				  col-right,col-right,col-right,col-right,col-right" 
+				  headerClass="list-header" id="dataTable1"
                                   value="#{statPrognostic.statBeanList}" var="currentRow">
-                        <h:column id="column2"     >
+                        <h:column id="column2" headerClass="col-center col-width35"      >
                             <h:outputText id="outputText3" value="#{currentRow['sp1']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputText4" value="#{txt_pre.signWin}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="column3">
+                        <h:column id="column3" headerClass="col-center col-width35">
                             <h:outputText id="outputText5" value="#{currentRow['spX']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputText6" value="#{txt_pre.signDraw}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="column4">
+                        <h:column id="column4" headerClass="col-center col-width35">
                             <h:outputText id="outputText7" value="#{currentRow['sp2']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputText8" value="#{txt_pre.signLose}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="column5" >
+                        <h:column id="column5" headerClass="col-center col-width35" >
                             <h:outputText id="outputText9" value="#{currentRow['a41']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputText10" value="#{txt_pre.signWin}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="column6">
+                        <h:column id="column6" headerClass="col-center col-width35">
                             <h:outputText id="outputText11" value="#{currentRow['a4X']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputText12" value="#{txt_pre.signDraw}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="column7">
+                        <h:column id="column7" headerClass="col-center col-width35">
                             <h:outputText id="outputText13" value="#{currentRow['a42']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputText14" value="#{txt_pre.signLose}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="column8" >
+                        <h:column id="column8" headerClass="col-center col-width35" >
                             <h:outputText id="outputText15" value="#{currentRow['porc1']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputText16" value="#{txt_pre.signWin}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="column9">
+                        <h:column id="column9" headerClass="col-center col-width35">
                             <h:outputText id="outputText17" value="#{currentRow['porcX']}"/>
                             <f:facet name="header">
                                 <h:outputText  id="outputText18" value="#{txt_pre.signDraw}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="column10">
+                        <h:column id="column10" headerClass="col-center col-width35">
                             <h:outputText id="outputText19" value="#{currentRow['porc2']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputText20" value="#{txt_pre.signLose}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columnse1" >
+                        <h:column id="columnse1" headerClass="col-center col-width35" >
                             <h:outputText id="outputTextse1" value="#{currentRow['se1']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextse11" value="#{txt_pre.signWin}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columnsex">
+                        <h:column id="columnsex" headerClass="col-center col-width35">
                             <h:outputText id="outputTextsex" value="#{currentRow['seX']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextsexx" value="#{txt_pre.signDraw}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columnse2">
+                        <h:column id="columnse2" headerClass="col-center col-width35">
                             <h:outputText id="outputTextse2" value="#{currentRow['se2']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextse22" value="#{txt_pre.signLose}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columndse1" >
+                        <h:column id="columndse1" headerClass="col-center col-width35" >
                             <h:outputText id="outputTextdse1" value="#{currentRow['dse1']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextdse11" value="#{txt_pre.signWin}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columndsex">
+                        <h:column id="columndsex" headerClass="col-center col-width35">
                             <h:outputText id="outputTextdsex" value="#{currentRow['dseX']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextdsexx" value="#{txt_pre.signDraw}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columndse2">
+                        <h:column id="columndse2" headerClass="col-center col-width35">
                             <h:outputText id="outputTextdse2" value="#{currentRow['dse2']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextdse22" value="#{txt_pre.signLose}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columnsesra1" >
+                        <h:column id="columnsesra1" headerClass="col-center col-width35" >
                             <h:outputText id="outputTextsesra1" value="#{currentRow['sesra1']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextsesra11" value="#{txt_pre.signWin}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columnsesrax">
+                        <h:column id="columnsesrax" headerClass="col-center col-width35">
                             <h:outputText id="outputTextsesrax" value="#{currentRow['sesraX']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextsesraxx" value="#{txt_pre.signDraw}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columnsesra2">
+                        <h:column id="columnsesra2" headerClass="col-center col-width35">
                             <h:outputText id="outputTextsesra2" value="#{currentRow['sesra2']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextsesra22" value="#{txt_pre.signLose}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columndsesra1" >
+                        <h:column id="columndsesra1" headerClass="col-center col-width35" >
                             <h:outputText id="outputTextdsesra1" value="#{currentRow['dsesra1']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextdsesra11" value="#{txt_pre.signWin}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columndsesrax">
+                        <h:column id="columndsesrax" headerClass="col-center col-width35">
                             <h:outputText id="outputTextdsesrax" value="#{currentRow['dsesraX']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextdsesraxx" value="#{txt_pre.signDraw}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columndsesra2">
+                        <h:column id="columndsesra2" headerClass="col-center col-width35">
                             <h:outputText id="outputTextdsesra2" value="#{currentRow['dsesra2']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextdsesra22" value="#{txt_pre.signLose}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columnsesrb1" >
+                        <h:column id="columnsesrb1" headerClass="col-center col-width35" >
                             <h:outputText id="outputTextsesrb1" value="#{currentRow['sesrb1']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextsesrb11" value="#{txt_pre.signWin}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columnsesrbx">
+                        <h:column id="columnsesrbx" headerClass="col-center col-width35">
                             <h:outputText id="outputTextsesrbx" value="#{currentRow['sesrbX']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextsesrbxx" value="#{txt_pre.signDraw}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columnsesrb2">
+                        <h:column id="columnsesrb2" headerClass="col-center col-width35">
                             <h:outputText id="outputTextsesrb2" value="#{currentRow['sesrb2']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextsesrb22" value="#{txt_pre.signLose}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columndsesrb1" >
+                        <h:column id="columndsesrb1" headerClass="col-center col-width35" >
                             <h:outputText id="outputTextdsesrb1" value="#{currentRow['dsesrb1']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextdsesrb11" value="#{txt_pre.signWin}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columndsesrbx">
+                        <h:column id="columndsesrbx" headerClass="col-center col-width35">
                             <h:outputText id="outputTextdsesrbx" value="#{currentRow['dsesrbX']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextdsesrbxx" value="#{txt_pre.signDraw}"/>
                             </f:facet>
                         </h:column>
-                        <h:column id="columndsesrb2">
+                        <h:column id="columndsesrb2" headerClass="col-center col-width35">
                             <h:outputText id="outputTextdsesrb2" value="#{currentRow['dsesrb2']}"/>
                             <f:facet name="header">
                                 <h:outputText id="outputTextdsesrb22" value="#{txt_pre.signLose}"/>

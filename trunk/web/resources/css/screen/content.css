@@ -195,7 +195,10 @@
     tbody tr:hover td { background:#fff8f8; }
 */
     .col-left {text-align: left;}
+    .col-right {text-align: right;}
     .col-center {text-align: center;}
+    
+    .col-width35{width: 2.5em;}
 
     .list-row-even {background-color: #66FF66; }
     .list-row-odd {background-color: #FFFF00; }

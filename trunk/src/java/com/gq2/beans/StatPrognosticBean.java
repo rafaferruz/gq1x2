@@ -17,13 +17,26 @@ import javax.faces.event.ValueChangeEvent;
 public class StatPrognosticBean {
 
     static final int MINIMUN_SIGN_1 = 4;    // m�nimo n�mero de 1 esperados
-    static final int MAXIMUN_SIGN_1 = 9;    // maximo n�mero de 1 esperados
+    static final int MAXIMUN_SIGN_1 = 10;    // maximo n�mero de 1 esperados
     static final int MINIMUN_SIGN_X = 2;    // m�nimo n�mero de X esperados
-    static final int MAXIMUN_SIGN_X = 5;    // maximo n�mero de X esperados
+    static final int MAXIMUN_SIGN_X = 6;    // maximo n�mero de X esperados
     static final int MINIMUN_SIGN_2 = 2;    // m�nimo n�mero de 2 esperados
-    static final int MAXIMUN_SIGN_2 = 2;    // maximo n�mero de 2 esperados
+    static final int MAXIMUN_SIGN_2 = 6;    // maximo n�mero de 2 esperados
     static final int RMINUS = -2;
     static final int RPLUS = 2;
+    
+    static final int HISTORIC_PERCENT_SIGN_1 = 45;  // Porcentaje historico de signos 1 en la decada 2006-2015
+    static final int HISTORIC_PERCENT_SIGN_X = 29;  // Porcentaje historico de signos 1 en la decada 2006-2015
+    static final int HISTORIC_PERCENT_SIGN_2 = 26;  // Porcentaje historico de signos 1 en la decada 2006-2015
+    
+    static final int HISTORIC_BETS_1 = 6;	//  numero de signos 1 por quiniela historico
+    static final int HISTORIC_BETS_X = 4;	//  numero de signos 1 por quiniela historico
+    static final int HISTORIC_BETS_2 = 4;	//  numero de signos 1 por quiniela historico
+    
+    static final int MAX_MIN_RANGE = 2;	    // Rango entre minimo y maximo numero de un signo
+    
+    static final int DIFERENCE_RATING_FOR_CUTTING_SIGN_1=15;
+    static final int DIFERENCE_RATING_FOR_CUTTING_SIGN_2=-125;
     
     private List<StatBean> statBeanList = new ArrayList();
     private StatBean regstat = null;
@@ -147,13 +160,15 @@ public class StatPrognosticBean {
 		    break;
 	    }
 // Se calculan n�meros de signos seg�n diferencias de rating, en modalidad A y B
-	    if (prePool.getPreRat4PreviousDiference() > -10) {
+	    // Se sustituyen las comparaciones > -10, <=-10 y >=-50, <-50 por >15, >=-125 y <=15, <-125
+	    if (prePool.getPreRat4PreviousDiference() > DIFERENCE_RATING_FOR_CUTTING_SIGN_1  ) {
 		regstat.setSsra1(regstat.getSsra1() + 1);
 	    }
-	    if (prePool.getPreRat4PreviousDiference() <= -10 && prePool.getPreRat4PreviousDiference() >= -50) {
+	    if (prePool.getPreRat4PreviousDiference() <=DIFERENCE_RATING_FOR_CUTTING_SIGN_1 && 
+		    prePool.getPreRat4PreviousDiference() >= DIFERENCE_RATING_FOR_CUTTING_SIGN_2 ) {
 		regstat.setSsraX(regstat.getSsraX() + 1);
 	    }
-	    if (prePool.getPreRat4PreviousDiference() < -50) {
+	    if (prePool.getPreRat4PreviousDiference() < DIFERENCE_RATING_FOR_CUTTING_SIGN_2) {
 		regstat.setSsra2(regstat.getSsra2() + 1);
 	    }
 	    if (prePool.getPreRat4PreviousDiference() > 0) {
@@ -182,38 +197,41 @@ public class StatPrognosticBean {
 
     private void calculateExpedtedSignsRange() {
 // C�lculo de horquilla de signos esperados
-	Integer min1 = Math.max(MINIMUN_SIGN_1, (-1 * ((regstat.getPorc1() < 45 ? regstat.getPorc1() + RMINUS : regstat.getPorc1() + RPLUS) - 45) / 5) - 1 + 6);
-	min1 = Math.min(min1, MAXIMUN_SIGN_1 - 2);
-	String minstr1 = min1.toString() + "--" + Integer.toString(min1 + 2);
+	Integer min1 = Math.max(MINIMUN_SIGN_1, (-1 * ((regstat.getPorc1() < HISTORIC_PERCENT_SIGN_1 ? 
+		regstat.getPorc1() + RMINUS : regstat.getPorc1() + RPLUS) - HISTORIC_PERCENT_SIGN_1) / 5) - 1 + HISTORIC_BETS_1);
+	min1 = Math.min(min1, MAXIMUN_SIGN_1 - MAX_MIN_RANGE);
+	String minstr1 = min1.toString() + "--" + Integer.toString(min1 + MAX_MIN_RANGE);
 	regstat.setSe1(minstr1);
 
-	Integer minX = Math.max(MINIMUN_SIGN_X, (-1 * ((regstat.getPorcX() < 29 ? regstat.getPorcX() + RMINUS : regstat.getPorcX() + RPLUS) - 29) / 5) - 1 + 4);
-	minX = Math.min(minX, MAXIMUN_SIGN_X - 2);
-	String minstrX = minX.toString() + "--" + Integer.toString(minX + 2);
+	Integer minX = Math.max(MINIMUN_SIGN_X, (-1 * ((regstat.getPorcX() < HISTORIC_PERCENT_SIGN_X ? 
+		regstat.getPorcX() + RMINUS : regstat.getPorcX() + RPLUS) - HISTORIC_PERCENT_SIGN_X) / 5) - 1 + HISTORIC_BETS_X);
+	minX = Math.min(minX, MAXIMUN_SIGN_X - MAX_MIN_RANGE);
+	String minstrX = minX.toString() + "--" + Integer.toString(minX + MAX_MIN_RANGE);
 	regstat.setSeX(minstrX);
 
-	Integer min2 = Math.max(MINIMUN_SIGN_2, (-1 * ((regstat.getPorc2() < 26 ? regstat.getPorc2() + RMINUS : regstat.getPorc2() + RPLUS) - 26) / 5) - 1 + 4);
-	min2 = Math.min(min2, MAXIMUN_SIGN_2 - 2);
-	String minstr2 = min2.toString() + "--" + Integer.toString(min2 + 2);
+	Integer min2 = Math.max(MINIMUN_SIGN_2, (-1 * ((regstat.getPorc2() < HISTORIC_PERCENT_SIGN_2 ? 
+		regstat.getPorc2() + RMINUS : regstat.getPorc2() + RPLUS) - HISTORIC_PERCENT_SIGN_2) / 5) - 1 + HISTORIC_BETS_2);
+	min2 = Math.min(min2, MAXIMUN_SIGN_2 - MAX_MIN_RANGE);
+	String minstr2 = min2.toString() + "--" + Integer.toString(min2 + MAX_MIN_RANGE);
 	regstat.setSe2(minstr2);
 
 	if ((regstat.getSp1() - min1) < 0) {
 	    regstat.setDse1(regstat.getSp1() - min1);
 	}
-	if ((regstat.getSp1() - min1 - 2) > 0) {
-	    regstat.setDse1(regstat.getSp1() - min1 - 2);
+	if ((regstat.getSp1() - min1 - MAX_MIN_RANGE) > 0) {
+	    regstat.setDse1(regstat.getSp1() - min1 - MAX_MIN_RANGE);
 	}
 	if ((regstat.getSpX() - minX) < 0) {
 	    regstat.setDseX(regstat.getSpX() - minX);
 	}
-	if ((regstat.getSpX() - minX - 2) > 0) {
-	    regstat.setDseX(regstat.getSpX() - minX - 2);
+	if ((regstat.getSpX() - minX - MAX_MIN_RANGE) > 0) {
+	    regstat.setDseX(regstat.getSpX() - minX - MAX_MIN_RANGE);
 	}
 	if ((regstat.getSp2() - min2) < 0) {
 	    regstat.setDse2(regstat.getSp2() - min2);
 	}
-	if ((regstat.getSp2() - min2 - 2) > 0) {
-	    regstat.setDse2(regstat.getSp2() - min2 - 2);
+	if ((regstat.getSp2() - min2 - MAX_MIN_RANGE) > 0) {
+	    regstat.setDse2(regstat.getSp2() - min2 - MAX_MIN_RANGE);
 	}
 
     }
@@ -221,74 +239,74 @@ public class StatPrognosticBean {
     private void calculateExpedtedSignsRangeOnRatingDiferenceA() {
 // C�lculo de horquilla de signos esperados segun diferencia rating A y B
 	Integer min1 = Math.max(MINIMUN_SIGN_1, regstat.getSsra1() - 1);
-	min1 = Math.min(min1, MAXIMUN_SIGN_1 - 2);
-	String minstr1 = min1.toString() + "--" + Integer.toString(min1 + 2);
+	min1 = Math.min(min1, MAXIMUN_SIGN_1 - MAX_MIN_RANGE);
+	String minstr1 = min1.toString() + "--" + Integer.toString(min1 + MAX_MIN_RANGE);
 	regstat.setSesra1(minstr1);
 
 	Integer minX = Math.max(MINIMUN_SIGN_X, regstat.getSsraX() - 1);
-	minX = Math.min(minX, MAXIMUN_SIGN_X - 2);
-	String minstrX = minX.toString() + "--" + Integer.toString(minX + 2);
+	minX = Math.min(minX, MAXIMUN_SIGN_X - MAX_MIN_RANGE);
+	String minstrX = minX.toString() + "--" + Integer.toString(minX + MAX_MIN_RANGE);
 	regstat.setSesraX(minstrX);
 
 	Integer min2 = Math.max(MINIMUN_SIGN_2, regstat.getSsra2() - 1);
-	min2 = Math.min(min2, MAXIMUN_SIGN_2 - 2);
-	String minstr2 = min2.toString() + "--" + Integer.toString(min2 + 2);
+	min2 = Math.min(min2, MAXIMUN_SIGN_2 - MAX_MIN_RANGE);
+	String minstr2 = min2.toString() + "--" + Integer.toString(min2 + MAX_MIN_RANGE);
 	regstat.setSesra2(minstr2);
 
 	if ((regstat.getSp1() - min1) < 0) {
 	    regstat.setDsesra1(regstat.getSp1() - min1);
 	}
-	if ((regstat.getSp1() - min1 - 2) > 0) {
-	    regstat.setDsesra1(regstat.getSp1() - min1 - 2);
+	if ((regstat.getSp1() - min1 - MAX_MIN_RANGE) > 0) {
+	    regstat.setDsesra1(regstat.getSp1() - min1 - MAX_MIN_RANGE);
 	}
 	if ((regstat.getSpX() - minX) < 0) {
 	    regstat.setDsesraX(regstat.getSpX() - minX);
 	}
-	if ((regstat.getSpX() - minX - 2) > 0) {
-	    regstat.setDsesraX(regstat.getSpX() - minX - 2);
+	if ((regstat.getSpX() - minX - MAX_MIN_RANGE) > 0) {
+	    regstat.setDsesraX(regstat.getSpX() - minX - MAX_MIN_RANGE);
 	}
 	if ((regstat.getSp2() - min2) < 0) {
 	    regstat.setDsesra2(regstat.getSp2() - min2);
 	}
-	if ((regstat.getSp2() - min2 - 2) > 0) {
-	    regstat.setDsesra2(regstat.getSp2() - min2 - 2);
+	if ((regstat.getSp2() - min2 - MAX_MIN_RANGE) > 0) {
+	    regstat.setDsesra2(regstat.getSp2() - min2 - MAX_MIN_RANGE);
 	}
     }
 
     private void calculateExpedtedSignsRangeOnRatingDiferenceB() {
 // Modo B    
 	Integer min1 = Math.max(MINIMUN_SIGN_1, regstat.getSsrb1() - 1);
-	min1 = Math.min(min1, MAXIMUN_SIGN_1 - 2);
-	String minstr1 = min1.toString() + "--" + Integer.toString(min1 + 2);
+	min1 = Math.min(min1, MAXIMUN_SIGN_1 - MAX_MIN_RANGE);
+	String minstr1 = min1.toString() + "--" + Integer.toString(min1 + MAX_MIN_RANGE);
 	regstat.setSesrb1(minstr1);
 
 	Integer minX = Math.max(MINIMUN_SIGN_X, regstat.getSsrbX() - 1);
-	minX = Math.min(minX, MAXIMUN_SIGN_X - 2);
-	String minstrX = minX.toString() + "--" + Integer.toString(minX + 2);
+	minX = Math.min(minX, MAXIMUN_SIGN_X - MAX_MIN_RANGE);
+	String minstrX = minX.toString() + "--" + Integer.toString(minX + MAX_MIN_RANGE);
 	regstat.setSesrbX(minstrX);
 
 	Integer min2 = Math.max(MINIMUN_SIGN_2, regstat.getSsrb2() - 1);
-	min2 = Math.min(min2, MAXIMUN_SIGN_2 - 2);
-	String minstr2 = min2.toString() + "--" + Integer.toString(min2 + 2);
+	min2 = Math.min(min2, MAXIMUN_SIGN_2 - MAX_MIN_RANGE);
+	String minstr2 = min2.toString() + "--" + Integer.toString(min2 + MAX_MIN_RANGE);
 	regstat.setSesrb2(minstr2);
 
 	if ((regstat.getSp1() - min1) < 0) {
 	    regstat.setDsesrb1(regstat.getSp1() - min1);
 	}
-	if ((regstat.getSp1() - min1 - 2) > 0) {
-	    regstat.setDsesrb1(regstat.getSp1() - min1 - 2);
+	if ((regstat.getSp1() - min1 - MAX_MIN_RANGE) > 0) {
+	    regstat.setDsesrb1(regstat.getSp1() - min1 - MAX_MIN_RANGE);
 	}
 	if ((regstat.getSpX() - minX) < 0) {
 	    regstat.setDsesrbX(regstat.getSpX() - minX);
 	}
-	if ((regstat.getSpX() - minX - 2) > 0) {
-	    regstat.setDsesrbX(regstat.getSpX() - minX - 2);
+	if ((regstat.getSpX() - minX - MAX_MIN_RANGE) > 0) {
+	    regstat.setDsesrbX(regstat.getSpX() - minX - MAX_MIN_RANGE);
 	}
 	if ((regstat.getSp2() - min2) < 0) {
 	    regstat.setDsesrb2(regstat.getSp2() - min2);
 	}
-	if ((regstat.getSp2() - min2 - 2) > 0) {
-	    regstat.setDsesrb2(regstat.getSp2() - min2 - 2);
+	if ((regstat.getSp2() - min2 - MAX_MIN_RANGE) > 0) {
+	    regstat.setDsesrb2(regstat.getSp2() - min2 - MAX_MIN_RANGE);
 	}
     }
 

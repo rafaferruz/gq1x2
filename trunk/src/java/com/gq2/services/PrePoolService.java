@@ -152,7 +152,8 @@ public class PrePoolService {
     }
 
     public static String getPrePoolPrognosticFromPercents(PrePool prePool) {
-	if (prePool.getPrePercentWin() >= 50) {
+	if ((prePool.getPrePercentWin() + prePool.getPrePercentDraw())
+		>= (prePool.getPrePercentDraw() + prePool.getPrePercentLose())) {
 	    return "WD";
 	} else {
 	    return "DL";

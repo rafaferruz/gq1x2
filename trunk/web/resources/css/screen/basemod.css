@@ -106,10 +106,10 @@
   #col1 { width:25%; display: none;}
   #col1_content { padding:10px 10px 10px 20px; }
 
-  #col2 { width:25%; }
+  #col2 { width:25%; display: none}
   #col2_content { padding:10px 20px 10px 10px; }
 
-  #col3 { margin:0 25% 0 0; }
+  #col3 { margin:0 0 0 0; }
   #col3_content { padding:10px; }
 
  /**
