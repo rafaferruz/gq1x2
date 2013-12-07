@@ -73,7 +73,9 @@
 			</tr>
 			<tr>
 			    <td colspan="4">
-				<h:dataTable  id="dataTable1" value="#{showScores.scoreList}" var="currentRow">
+				<h:dataTable  id="dataTable1" value="#{showScores.scoreList}" var="currentRow"
+					      columnClasses="col-left,col-left,col-center,col-center"
+					      headerClass="list-header" rowClasses="list-row-even,list-row-odd" >
 				    <h:column id="column1">
 					<h:outputText id="outputText1" value="#{currentRow['scoTeamName1']}"/>
 					<f:facet name="header">

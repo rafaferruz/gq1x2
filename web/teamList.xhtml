@@ -38,28 +38,42 @@
 				    <h3 align="left">#{txt_tea.NoListTeams}</h3>
 				</c:if>
 				<c:if test="#{team.rowCount > 0}">
-				    <table>
-					<!-- column headers -->
-					<tr>
-					    <th>#{txt_tea.Id}</th>
-					    <th>#{txt_com.Code}</th>
-					    <th>#{txt_tea.TeamName}</th>
-					    <th>#{txt_com.Action}</th>
-					</tr>
-					<!-- column data -->
-					<c:forEach var="row" items="#{sessionScope.teamList}">
-					    <tr>
-						<td><h:outputText value="#{row.teaId}"/></td>
-						<td><h:outputText value="#{row.teaCode}"/></td>
-						<td><h:outputText value="#{row.teaName}"/></td>
-						<td align="center">
-						    <h:commandButton action="#{team.edit}" value="#{txt_com.Edit}"   onclick="window.document.getElementById('teamList_form:keyId').value = #{row.teaId};"/>
-						    <h:commandButton action="#{team.delete}" value="#{txt_com.Delete}"   onclick="window.document.getElementById('teamList_form:keyId').value = #{row.teaId};"/>
-						</td>
-					    </tr>
-					</c:forEach>
-
-				    </table>
+				    <h:dataTable cellpadding="0px" cellspacing="0px"
+						 columnClasses="col-center,col-left,col-left,col-center"
+						 headerClass="list-header" id="dataTable1" rowClasses="list-row-even,list-row-odd" 
+						 value="#{team.teamList}"  var="currentRow" width="950pt">
+					<h:column id="column2"> 
+					    <h:outputText id="outputText3" value="#{currentRow['teaId']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText4" value="#{txt_tea.Id}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column3">
+					    <h:outputText id="outputText5" value="#{currentRow['teaCode']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText6" value="#{txt_com.Code}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column4">
+					    <h:outputText id="outputText7" value="#{currentRow['teaName']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText8" value="#{txt_tea.TeamName}  "/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column11" headerClass="col-center">
+					    <f:facet name="header">
+						<h:outputText id="outputText21" value="#{txt_com.Action}"/>
+					    </f:facet>
+					    <h:commandButton action="#{team.edit}" id="button20" styleClass="button-short" 
+							     value="#{txt_com.Edit}"   
+							     onclick="window.document.getElementById('teamList_form:keyId').value = #{currentRow['teaId']};">
+					    </h:commandButton>
+					    <h:commandButton action="#{team.delete}" id="button21" styleClass="button-short" 
+							     value="#{txt_com.Delete}"   
+							     onclick="window.document.getElementById('championshipList_form:keyId').value = #{currentRow['teaId']};">
+					    </h:commandButton>
+					</h:column>
+				    </h:dataTable>
 				</c:if>
 
 			    </td>
@@ -72,7 +86,7 @@
 				    </tr>
 				    <tr>
 					<td>
-    					    <h:commandButton action="#{team.searchTeam}" value="#{txt_com.Search}"/>
+					    <h:commandButton action="#{team.searchTeam}" value="#{txt_com.Search}"/>
 					</td>
 				    </tr>
 				</table>

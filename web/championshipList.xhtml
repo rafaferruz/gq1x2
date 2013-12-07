@@ -7,76 +7,90 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<h:body>
-    <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
-	<ui:define name="top">
-	    <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
-	</ui:define>
-	<ui:define name="bottom">
-	    <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
-	</ui:define>
+    <h:body>
+	<ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+	    <ui:define name="top">
+		<ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+	    </ui:define>
+	    <ui:define name="bottom">
+		<ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+	    </ui:define>
 
-	<ui:define name="content">
-	    <f:loadBundle basename="com.gq2.multilang.championship" var="txt_cha"/>
-	    <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
+	    <ui:define name="content">
+		<f:loadBundle basename="com.gq2.multilang.championship" var="txt_cha"/>
+		<f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
-	    <h3 align="left">
-		<h:outputFormat value="#{txt_cha.listChampionships}"/>
-	    </h3>
-	    <h:form id="championshipList_form">
-		<h:inputHidden id="runAction" value="#{championship.runAction}" />
-		<h:inputHidden id="keyId" value="#{championship.chaId}"/>
+		<h3 align="left">
+		    <h:outputFormat value="#{txt_cha.listChampionships}"/>
+		</h3>
+		<h:form id="championshipList_form">
+		    <h:inputHidden id="runAction" value="#{championship.runAction}" />
+		    <h:inputHidden id="keyId" value="#{championship.chaId}"/>
 
-		<c:set var="championshipList" value="#{championship.championshipList}" scope="session"/>
+		    <c:set var="championshipList" value="#{championship.championshipList}" scope="session"/>
 
-		<table>
-		    <tr>
-			<td>
-			    <table>
-				<!-- column headers -->
-				<tr>
-				    <th>#{txt_cha.Id}</th>
-				    <th>#{txt_com.Code}</th>
-				    <th>#{txt_com.Description}</th>
-				    <th>#{txt_com.Action}</th>
-				</tr>
-				<!-- column data -->
-				<c:forEach var="row" items="#{championship.championshipList}">
+		    <table>
+			<tr>
+			    <td>
+				<h:dataTable cellpadding="0px" cellspacing="0px"
+					     columnClasses="col-center,col-left,col-left,col-center"
+					     headerClass="list-header" id="dataTable1" rowClasses="list-row-even,list-row-odd" 
+					     value="#{championship.championshipList}"  var="currentRow" width="950pt">
+				    <h:column id="column2"> 
+					<h:outputText id="outputText3" value="#{currentRow['chaId']}"/>
+					<f:facet name="header">
+					    <h:outputText id="outputText4" value="#{txt_cha.Id}"/>
+					</f:facet>
+				    </h:column>
+				    <h:column id="column3">
+					<h:outputText id="outputText5" value="#{currentRow['chaCode']}"/>
+					<f:facet name="header">
+					    <h:outputText id="outputText6" value="#{txt_com.Code}"/>
+					</f:facet>
+				    </h:column>
+				    <h:column id="column4">
+					<h:outputText id="outputText7" value="#{currentRow['chaDescription']}"/>
+					<f:facet name="header">
+					    <h:outputText id="outputText8" value="#{txt_com.Description}  "/>
+					</f:facet>
+				    </h:column>
+				    <h:column id="column11" headerClass="col-center">
+					<f:facet name="header">
+					    <h:outputText id="outputText21" value="#{txt_com.Action}"/>
+					</f:facet>
+					<h:commandButton action="#{championship.edit}" id="button20" styleClass="button-short" 
+							 value="#{txt_com.Edit}"   
+							 onclick="window.document.getElementById('championshipList_form:keyId').value = #{currentRow['chaId']};">
+					</h:commandButton>
+					<h:commandButton action="#{championship.delete}" id="button21" styleClass="button-short" 
+							 value="#{txt_com.Delete}"   
+							 onclick="window.document.getElementById('championshipList_form:keyId').value = #{currentRow['chaId']};">
+					</h:commandButton>
+				    </h:column>
+				</h:dataTable>
+				<c:if test="#{championship.championshipList.size() == 0}">
+				    <h3 align="left">#{txt_cha.NoListCtos}</h3>
+				</c:if>
+			    </td>
+			    <td>
+				<table class="commandBoxInList">
 				    <tr>
-					<td><h:outputText value="#{row.chaId}"/></td>
-					<td><h:outputText value="#{row.chaCode}"/></td>
-					<td><h:outputText value="#{row.chaDescription}"/></td>
-					<td align="center">
-					    <h:commandButton action="#{championship.edit}" value="#{txt_com.Edit}"   onclick="window.document.getElementById('championshipList_form:keyId').value = #{row.chaId};"/>
-					    <h:commandButton action="#{championship.delete}" value="#{txt_com.Delete}"   onclick="window.document.getElementById('championshipList_form:keyId').value = #{row.chaId};"/>
+					<td>
+					    <h:commandButton action="#{championship.newChampionship}" value="#{txt_com.New}"/>
 					</td>
 				    </tr>
-				</c:forEach>
-
-			    </table>
-			    <c:if test="#{championship.rowCount == 0}">
-				<h3 align="left">#{txt_cha.NoListCtos}</h3>
-			    </c:if>
-			</td>
-			<td>
-			    <table class="commandBoxInList">
-				<tr>
-				    <td>
-					<h:commandButton action="#{championship.newChampionship}" value="#{txt_com.New}"/>
-				    </td>
-				</tr>
-				<tr>
-				    <td>
-					<h:commandButton action="#{championship.searchChampionship}" value="#{txt_com.Search}"/>
-				    </td>
-				</tr>
-			    </table>
-			</td>
-		    </tr>
-		</table>
-	    </h:form>
-	</ui:define>
-    </ui:composition>
+				    <tr>
+					<td>
+					    <h:commandButton action="#{championship.searchChampionship}" value="#{txt_com.Search}"/>
+					</td>
+				    </tr>
+				</table>
+			    </td>
+			</tr>
+		    </table>
+		</h:form>
+	    </ui:define>
+	</ui:composition>
     </h:body>
 </html>
 

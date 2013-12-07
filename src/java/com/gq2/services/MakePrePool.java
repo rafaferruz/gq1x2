@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class MakePrePool {
 
+    private final int HITTED_PROGNOSTIC = 0;
+    private final int FAILED_PROGNOSTIC = 1;
     private List<ScoreBean> scoreOneList = new ArrayList();
     private List<ScoreBean> scoreTwoList = new ArrayList();
     private List<PrePool> prePoolList = new ArrayList<>();
@@ -146,6 +148,7 @@ public class MakePrePool {
     private void generatePrePoolsCurrentRound() {
 	/* Se generan todos los partidos de 1ª division y cuatro de 2ª division */
 	/* Se generan todos los partidos de 1ª division */
+	prePoolList.clear();
 	for (ScoreBean score : scoreOneList) {
 	    for (Prognostic prognostic : prognosticOneList) {
 		if (prognostic.getPro_sco_team1_id() == score.getScoTeam1Id()) {
@@ -203,13 +206,17 @@ public class MakePrePool {
 	prePool.setPreTeaName2(score.getScoTeamName2());
 	prePool.setPreScoScore1(prognostic.getPro_sco_score1());
 	prePool.setPreScoScore2(prognostic.getPro_sco_score2());
-//    prePool.setPreRatPoints(99999999);
+
+	/* Calcula el Rating segun Puntos en un metodo estatico de PrePoolService */
+	prePool.setPreRatPoints(PrePoolService.getPrePoolRatPointsFromPrognostic(prognostic).intValue());
 	prePool.setPreRat4PreviousDiference(prognostic.getPro_rat4_previous_diference());
-//    prePool.setPrePercentWin;
-//    prePool.setPrePercentDraw;
-//    prePool.setPrePercentLose;
-	prePool.setPrePrognostic("");
+
+	/* Calcula los porcentajes de probabilidades de ganar, empatar, perder en un metodo estatico de PrePoolService */
+	PrePoolService.setPrePoolPercentsFromPrognosticPreviousDiference(prognostic, prePool);
+
+	/* Calcula el Prognostic en un metodo estatico de PrePoolService */
+	prePool.setPrePrognostic(PrePoolService.getPrePoolPrognosticFromPercents(prePool));
 	prePool.setPreRat4ScoreSign(prognostic.getPro_rat4_score_sign());
-	prePool.setPreFailedPrognostic(999999);
+	prePool.setPreFailedPrognostic(prePool.getPrePrognostic().contains(prePool.getPreRat4ScoreSign()) ? HITTED_PROGNOSTIC : FAILED_PROGNOSTIC);
     }
 }
