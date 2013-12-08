@@ -1,9 +1,3 @@
-/*
- * Rating4DAO.java
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 package com.gq2.DAO;
 
 import com.gq2.domain.Rating4;

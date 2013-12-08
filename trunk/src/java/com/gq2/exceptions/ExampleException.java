@@ -1,22 +1,22 @@
 package com.gq2.exceptions;
 
-public class ClasifException extends Exception {
+public class ExampleException extends Exception {
 
     /**
      * Creates new
      * <code>Rating4Exception</code> without detail message.
      */
-    public ClasifException() {
+    public ExampleException() {
 	this("ClasifException");
     }
 
     /**
      * Constructs an
-     * <code>ClasifException</code> with the specified detail message.
+     * <code>ExampleException</code> with the specified detail message.
      *
      * @param msg the detail message.
      */
-    public ClasifException(String msg) {
+    public ExampleException(String msg) {
 	super(msg);
     }
 }
