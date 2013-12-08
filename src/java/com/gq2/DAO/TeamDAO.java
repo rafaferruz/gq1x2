@@ -131,11 +131,6 @@ public class TeamDAO implements InjectableDAO {
 	}
     }
 
-    //TODO Pendiente de programacion los dos siguientes metodos    
-    /**
-     * ------------------------------------------------------------- Returns all
-     * Teams in the Team model
-     */
     public List<Team> loadAllTeams() {
 	List<Team> teamList = new ArrayList<>();
 	try {
@@ -176,20 +171,6 @@ public class TeamDAO implements InjectableDAO {
 	    log.error(ex);
 	}
 	return teamList;
-    }
-
-    /**
-     *
-     * @param sqlWhereClause
-     * @return
-     * @throws SQLException
-     */
-    public List<Team> readAllTeams(String sqlWhereClause) throws SQLException {
-	Connection connection = null;
-	//** crear la frase SELECT SQL
-	String request = "SELECT * FROM EQUIPOS " + sqlWhereClause;
-	List<Team> aList = new ArrayList<>();
-	return null;
     }
 
     /**

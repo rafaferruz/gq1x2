@@ -121,8 +121,9 @@ public class ScoreDAO implements InjectableDAO {
 	    throw new RuntimeException(ex);
 	}
     }
+
     public void updateScoreList(List<ScoreBean> scoreList) {
-	for (Score score:scoreList){
+	for (Score score : scoreList) {
 	    update(score);
 	}
     }
@@ -145,29 +146,6 @@ public class ScoreDAO implements InjectableDAO {
 	} catch (SQLException ex) {
 	    throw new RuntimeException(ex);
 	}
-    }
-
-    //TODO Pendiente de programacion los tres siguientes metodos    
-    /**
-     * ------------------------------------------------------------- Returns all
-     * Results in the Result model
-     */
-    public void readAllResults() throws SQLException {
-    }
-
-    public void readAllResults(String sqlWhereClause) throws SQLException {
-	Connection connection = null;
-	//** crear la frase SELECT SQL
-	String request = "SELECT * FROM RESULTADOS " + sqlWhereClause;
-
-    }
-
-    public Integer[] readRoundsOn(String sqlWhereClause) throws SQLException {
-	Connection connection = null;
-	//** crear la frase SELECT SQL
-	String request = sqlWhereClause;
-	Integer[] all = null;
-	return all;
     }
 
     public List<Integer> loadChampionshipRounds(int id) {
@@ -202,7 +180,7 @@ public class ScoreDAO implements InjectableDAO {
 	    ps.setInt(2, round);
 	    log.debug("loadChampionshipRoundScores: " + ps.toString());
 	    try (ResultSet rs = ps.executeQuery()) {
-		while ( rs.next()) {
+		while (rs.next()) {
 		    scoreBeanList.add(populateScoreBeanFromResultSet(rs));
 		}
 	    }
@@ -275,5 +253,4 @@ public class ScoreDAO implements InjectableDAO {
 	scoreBean.setScoTeamName2(rs.getString("name2"));
 	return scoreBean;
     }
-
 }

@@ -1,7 +1,6 @@
 package com.gq2.beans;
 
 import com.gq2.domain.Bet;
-import com.gq2.DAO.JDBCHelper;
 import com.gq2.services.BetService;
 import com.gq2.services.Tasks;
 import java.io.BufferedReader;
@@ -12,9 +11,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;

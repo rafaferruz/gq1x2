@@ -289,32 +289,6 @@ public class PrePoolDAO implements InjectableDAO {
 
     }
 
-    /*
-     public List<PrePoolBean> loadRoundPrePoolBeanList(Integer chaId, Integer round) {
-     List<PrePoolBean> prePoolBeanList = new ArrayList<>();
-     try {
-     String sql = "SELECT tea.tea_name, cla.* "
-     + "FROM prePools AS cla, teams AS tea "
-     + "WHERE cla_cha_id = ? AND cla_round = ? "
-     + "AND tea.tea_id = cla.cla_tea_id "
-     + "ORDER BY cla.cla_position";
-     try (PreparedStatement ps = conn.prepareStatement(sql)) {
-     ps.setInt(1, chaId);
-     ps.setInt(2, round);
-     log.debug("loadRoundPrePoolBeanList: " + ps.toString());
-     try (ResultSet rs = ps.executeQuery()) {
-     while (rs.next()) {
-     prePoolBeanList.add(populatePrePoolBeanFromResultSet(rs));
-     }
-     }
-     }
-     } catch (SQLException ex) {
-     throw new RuntimeException(ex);
-     }
-
-     return prePoolBeanList;
-     }
-     */
     private PrePool populatePrePoolFromResultSet(ResultSet rs) {
 	PrePool pre = new PrePool();
 	try {
@@ -345,26 +319,6 @@ public class PrePoolDAO implements InjectableDAO {
 	}
 	return pre;
     }
-    /*
-     private PrePoolBean populatePrePoolBeanFromResultSet(ResultSet rs) {
-     PrePoolBean preBean = new PrePoolBean();
-     try {
-     preBean.setPreId(rs.getInt("pre_id"));
-     preBean.setPreChaId(rs.getInt("pre_cha_id"));
-     preBean.setPreRound(rs.getInt("pre_round"));
-     preBean.setPreDate(rs.getDate("pre_date"));
-     preBean.setPrePosition(rs.getInt("pre_position"));
-     preBean.setPreTeaId(rs.getInt("pre_tea_id"));
-     preBean.setPrePoints(rs.getInt("pre_points"));
-     claBean.setPreRating(rs.getInt("cla_rating"));
-
-     claBean.setTeamName(rs.getString("tea_name"));
-     } catch (SQLException ex) {
-     java.util.logging.Logger.getLogger(PrePoolDAO.class.getName()).log(Level.SEVERE, null, ex);
-     }
-     return claBean;
-     }
-     */
 
     public int deleteSeasons(int first_season, int last_season) {
 	try {
@@ -403,26 +357,26 @@ public class PrePoolDAO implements InjectableDAO {
     }
 
     public List<PrePool> loadNlastPreTool(Integer season, Integer orderNumber, Integer orderNumber4) {
-	    List<PrePool> preOrderNumberList = new ArrayList<>();
-	    try {
-		String sql = "SELECT * FROM prePools "
-			+ " WHERE pre_season = ? "
+	List<PrePool> preOrderNumberList = new ArrayList<>();
+	try {
+	    String sql = "SELECT * FROM prePools "
+		    + " WHERE pre_season = ? "
 		    + " AND pre_order_number <= ? "
 		    + " AND pre_order_number >= ? "
-			+ " ORDER BY pre_order_number DESC, pre_id";
-		PreparedStatement ps = conn.prepareStatement(sql);
-		ps.setInt(1, season);
-		ps.setInt(2, orderNumber);
-		ps.setInt(3, orderNumber4);
-		log.debug("loadNlastPreTool: " + ps.toString());
-		try (ResultSet rs = ps.executeQuery()) {
-		    while (rs.next()) {
-			preOrderNumberList.add(populatePrePoolFromResultSet(rs));
-		    }
+		    + " ORDER BY pre_order_number DESC, pre_id";
+	    PreparedStatement ps = conn.prepareStatement(sql);
+	    ps.setInt(1, season);
+	    ps.setInt(2, orderNumber);
+	    ps.setInt(3, orderNumber4);
+	    log.debug("loadNlastPreTool: " + ps.toString());
+	    try (ResultSet rs = ps.executeQuery()) {
+		while (rs.next()) {
+		    preOrderNumberList.add(populatePrePoolFromResultSet(rs));
 		}
+	    }
 	} catch (SQLException ex) {
 	    java.util.logging.Logger.getLogger(PrePoolDAO.class.getName()).log(Level.SEVERE, null, ex);
 	}
-	    return preOrderNumberList;
+	return preOrderNumberList;
     }
 }

@@ -3,7 +3,6 @@ package com.gq2.DAO;
 import com.gq2.domain.Setup;
 import java.sql.*;
 import java.util.*;
-import java.util.logging.Level;
 import javax.faces.model.SelectItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
