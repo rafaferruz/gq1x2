@@ -203,6 +203,7 @@
     .list-row-even {background-color: #66FF66; }
     .list-row-odd {background-color: #FFFF00; }
 
+    .list-header {text-align: center;}
 
     /**
      * ------------------------------------------------------------------------------------------------- #

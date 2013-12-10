@@ -7,7 +7,7 @@ public class ExampleException extends Exception {
      * <code>Rating4Exception</code> without detail message.
      */
     public ExampleException() {
-	this("ClasifException");
+	this("ExampleException");
     }
 
     /**

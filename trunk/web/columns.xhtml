@@ -174,52 +174,54 @@
 					    </td>
 					    <td valign="top">
 						<h:dataTable id="dataTableCols"
-							     rowClasses="list-row-even,list-row-odd"
+							     columnClasses="col-center,col-center,col-center,col-center,
+							     col-center,col-center,col-center,col-center"
+							     headerClass="list-header" rowClasses="list-row-even,list-row-odd"
 							     value="#{columns.dataShowCols}" var="currentCol">
-						    <h:column  id="column301" >
-							<h:inputText disabled="true" id="inputText301" value="#{currentCol.col1}"/>
+						    <h:column  id="column301">
+							<h:inputText disabled="true" id="inputText301" size="1" value="#{currentCol.col1}"/>
 							<f:facet name="header">
 							    <h:outputText id="outputText301" value="#{columns.numcol1}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column302">
-							<h:inputText disabled="true" id="inputText302" value="#{currentCol.col2}"/>
+							<h:inputText disabled="true" id="inputText302" size="1" value="#{currentCol.col2}"/>
 							<f:facet name="header">
 							    <h:outputText id="outputText302" value="#{columns.numcol2}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column303">
-							<h:inputText disabled="true" id="inputText303" value="#{currentCol.col3}"/>
+							<h:inputText disabled="true" id="inputText303" size="1" value="#{currentCol.col3}"/>
 							<f:facet name="header">
 							    <h:outputText id="outputText303" value="#{columns.numcol3}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column304">
-							<h:inputText disabled="true" id="inputText304" value="#{currentCol.col4}"/>
+							<h:inputText disabled="true" id="inputText304" size="1" value="#{currentCol.col4}"/>
 							<f:facet name="header">
 							    <h:outputText id="outputText304" value="#{columns.numcol4}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column305">
-							<h:inputText disabled="true" id="inputText305" value="#{currentCol.col5}"/>
+							<h:inputText disabled="true" id="inputText305" size="1" value="#{currentCol.col5}"/>
 							<f:facet name="header">
 							    <h:outputText id="outputText305" value="#{columns.numcol5}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column306">
-							<h:inputText disabled="true" id="inputText306" value="#{currentCol.col6}"/>
+							<h:inputText disabled="true" id="inputText306" size="1" value="#{currentCol.col6}"/>
 							<f:facet name="header">
 							    <h:outputText id="outputText306" value="#{columns.numcol6}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column307">
-							<h:inputText disabled="true" id="inputText307" value="#{currentCol.col7}"/>
+							<h:inputText disabled="true" id="inputText307" size="1" value="#{currentCol.col7}"/>
 							<f:facet name="header">
 							    <h:outputText id="outputText307" value="#{columns.numcol7}"/>
 							</f:facet>
 						    </h:column>
 						    <h:column  id="column308">
-							<h:inputText disabled="true" id="inputText308" value="#{currentCol.col8}"/>
+							<h:inputText disabled="true" id="inputText308" size="1" value="#{currentCol.col8}"/>
 							<f:facet name="header">
 							    <h:outputText id="outputText308" value="#{columns.numcol8}"/>
 							</f:facet>
@@ -239,7 +241,7 @@
 						<h:outputLabel for="goto" id="gotolabel">
 						    <h:outputText id="goto" value="#{txt_bet.colGoTo}"/>
 						</h:outputLabel>
-						<h:inputText id="colgoto" required="false" maxlength="5" size="4" style="position:relative; left:20px" value="#{columns.colgoto}" >
+						<h:inputText id="colgoto" required="false" maxlength="5" size="4" value="#{columns.colgoto}" >
 						    <f:validateLongRange maximum="32000" minimum="1"/>
 						</h:inputText>
 						<h:commandButton action="#{columns.movegoto}" id="button14" value="#{txt_bet.goTo}"/>
