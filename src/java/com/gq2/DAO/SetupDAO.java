@@ -147,9 +147,50 @@ public class SetupDAO implements InjectableDAO {
 	return setupList;
     }
 
+    public Map<String, String> loadPrinterParams(String printerName) {
+	Map<String, String> printerParamsMap = new HashMap<>();
+	try {
+	    String sql = "SELECT * "
+		    + "FROM setup WHERE stp_section = ?";
+	    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+		    ps.setString(1, printerName);
+		log.debug("loadPrinterParams: " + ps.toString());
+		try (ResultSet rs = ps.executeQuery()) {
+		    while (rs.next()) {
+			printerParamsMap.put(rs.getString("stp_parameter"), rs.getString("stp_value"));
+		    }
+		}
+	    }
+	} catch (SQLException ex) {
+	    throw new RuntimeException(ex);
+	}
+
+	return printerParamsMap;
+    }
+
+    public void saveOrUpdatePrinterParams(String printerName, Map<String, String> printerParamsMap) {
+	String sql;
+	for (String paramName : printerParamsMap.keySet()) {
+	    try {
+		sql = "INSERT INTO setup (stp_section, stp_parameter, stp_value) "
+			+ " VALUES (?,?,?)"
+			+ " ON DUPLICATE KEY UPDATE stp_value = ?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+		    ps.setString(1, printerName);
+		    ps.setString(2, paramName);
+		    ps.setString(3, printerParamsMap.get(paramName));
+		    ps.setString(4, printerParamsMap.get(paramName));
+		    log.debug("savePrinterParams: " + ps.toString());
+		    ps.executeUpdate();
+		}
+	    } catch (SQLException ex) {
+		throw new RuntimeException(ex);
+	    }
+	}
+    }
+
     /**
-     * Lee los datos del Setup de un resultset y devuelve un objeto
-     * Setup
+     * Lee los datos del Setup de un resultset y devuelve un objeto Setup
      *
      * @param rs resultSet
      * @return setup le�do
@@ -170,5 +211,4 @@ public class SetupDAO implements InjectableDAO {
 	}
 	return setupItemList;
     }
-
 }

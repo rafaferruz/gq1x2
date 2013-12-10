@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.gq2.print;
 
 import java.awt.Color;
@@ -13,6 +9,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import javax.print.Doc;
@@ -26,24 +23,23 @@ import javax.print.attribute.PrintRequestAttributeSet;
 
 /**
  *
- * @author ESTHER
+ * @author RAFAEL FERRUZ
  */
 public class Zprint implements Printable {
 
     // Set the document type
-    private DocFlavor myFormat = null;
+    private DocFlavor myFormat;
     // Create a Doc
-    private Doc myDoc = null;    // Build a set of attributes
+    private Doc myDoc;    // Build a set of attributes
     private PrintRequestAttributeSet attset = new HashPrintRequestAttributeSet();    // discover the printers that can print the format according to the
     // instructions in the attribute set
-    private PrintService[] services = null;
-    private Integer numPrinter = null;
+    private PrintService[] services;
 // Create a print job from one of the print services (after services are discovered)
-    private DocPrintJob docJob = null;
+    private DocPrintJob docJob;
 //  Obtain a print job.
-    private PrinterJob printJob = PrinterJob.getPrinterJob();
+    private PrinterJob printJob;
     private String modeLookup = "";
-    private List<String> dataPrint = null;
+    private List<String> dataPrint;
     private Double marginleft = 61.0;
     private Double margintop = 13.0;
     private Double widthcolumn = 31.85;
@@ -54,13 +50,13 @@ public class Zprint implements Printable {
     private Integer topage = 1;
 
     public Zprint() {
-	printJob.setPrintable(this);
     }
 
+    @Override
     public int print(Graphics g, PageFormat pf, int pageIndex) throws PrinterException {
 
 	if (pageIndex > (topage - frompage)) {
-	    return Printable.NO_SUCH_PAGE;
+	    return NO_SUCH_PAGE;
 	}
 	Boolean lastPage = (pageIndex == (topage - frompage) ? true : false);
 
@@ -73,7 +69,7 @@ public class Zprint implements Printable {
 	for (Integer i = 0; i < 8; i++) {
 	    if (lastPage && (topage * 8 >= dataPrint.size()) && (i > (dataPrint.size() - 1) % 8)) {
 // Reached end of report
-		return Printable.PAGE_EXISTS;
+		return PAGE_EXISTS;
 	    }
 	    if (((pageIndex + frompage - 1) * 8 + i) == 23) {
 		boolean nada = true;
@@ -82,16 +78,20 @@ public class Zprint implements Printable {
 	    for (Integer j = 0; j < 14; j++) {
 		Double d1 = marginleft + ((i % 8) * widthcolumn);
 		Double d2 = margintop + (j * highrow);
-		if (s.substring(j, j + 1).toUpperCase().equals("1")) {
-		} else if (s.substring(j, j + 1).toUpperCase().equals("X")) {
-		    d1 = d1 + widthcell;
-		} else if (s.substring(j, j + 1).toUpperCase().equals("2")) {
-		    d1 = d1 + (widthcell * 2);
+		switch (s.substring(j, j + 1).toUpperCase()) {
+		    case "1":
+			break;
+		    case "X":
+			d1 = d1 + widthcell;
+			break;
+		    case "2":
+			d1 = d1 + (widthcell * 2);
+			break;
 		}
 		g2d.drawString("x", Float.parseFloat(d1.toString()), Float.parseFloat(d2.toString()));
 	    }
 	}
-	return Printable.PAGE_EXISTS;
+	return PAGE_EXISTS;
     }
 
     public void setDocFlavor() {
@@ -102,42 +102,51 @@ public class Zprint implements Printable {
 	this.myDoc = new SimpleDoc(docStream, this.myFormat, null);
     }
 
-    public Collection getPrinters(String modeLookup) {
+    public List<String> getPrinters(String modeLookup) {
 	this.modeLookup = modeLookup;
-	List<String> printers = new ArrayList();
+	List<String> printers = new ArrayList<>();
 	printers.clear();
-	if (modeLookup.equals("doc")) {
-	    this.services = PrintServiceLookup.lookupPrintServices(myFormat, attset);
-	} else if (modeLookup.equals("2D")) {
-	    this.services = PrinterJob.lookupPrintServices();
-	} else {
-	    services = null;
+	switch (modeLookup) {
+	    case "doc":
+		this.services = PrintServiceLookup.lookupPrintServices(myFormat, attset);
+		break;
+	    case "2D":
+		this.services = PrinterJob.lookupPrintServices();
+		break;
+	    default:
+		services = null;
+		break;
 	}
-	if (this.services != null && this.services.length > 0) {
-	    for (int i = 0; i < this.services.length; i++) {
-		printers.add(this.services[i].getName());
-	    }
+	for (PrintService service : Arrays.asList(services)) {
+	    printers.add(service.getName());
 	}
 	return printers;
     }
 
-    public void initPrinterJob(Integer numPrinter) throws PrinterException {
-	this.numPrinter = numPrinter;
-// Create a print job from one of the print services
-	if (this.services.length > 0) {
-	    if (modeLookup.equals("doc")) {
-		this.docJob = services[numPrinter].createPrintJob();
-	    } else if (modeLookup.equals("2D")) {
-		this.printJob.setPrintService(services[numPrinter]);
+    public void initPrinterJob(String printerName) throws PrinterException {
+	for (PrintService service : Arrays.asList(services)) {
+	    if (service.getName().equals(printerName)) {
+		// Create a print job from one of the print services
+		switch (modeLookup) {
+		    case "doc":
+			this.docJob = service.createPrintJob();
+			break;
+		    case "2D":
+			this.printJob.setPrintService(service);
+			break;
+		}
+		break;
 	    }
 	}
     }
 
     public void startPrinting() throws PrinterException {
-	if (modeLookup.equals("doc")) {
-//                this.docJob = services[numPrinter].createPrintJob();
-	} else if (modeLookup.equals("2D")) {
-	    this.printJob.print();
+	switch (modeLookup) {
+	    case "doc":
+		break;
+	    case "2D":
+		this.printJob.print();
+		break;
 	}
 
     }
@@ -209,4 +218,13 @@ public class Zprint implements Printable {
     public void setTopage(Integer topage) {
 	this.topage = topage;
     }
+
+    public PrinterJob getPrintJob() {
+	return printJob;
+    }
+
+    public void setPrintJob(PrinterJob printJob) {
+	this.printJob = printJob;
+    }
+    
 }
