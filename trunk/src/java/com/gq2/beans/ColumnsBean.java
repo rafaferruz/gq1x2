@@ -24,7 +24,7 @@ import javax.faces.model.SelectItem;
  */
 @ManagedBean(name = "columns")
 @ViewScoped
-public class ColumnsBean extends BetBean{
+public class ColumnsBean extends BetBean {
 
     static final int MAXIMUN_COLUMNS_BY_FORM = 8;
     static final int MAXIMUN_LINES_BY_FORM = 14;
@@ -49,7 +49,6 @@ public class ColumnsBean extends BetBean{
     private List<SelectItem> columnItemList = new ArrayList();
     private String siCol = "";
     private FacesContext fc = null;
-
 
     public ColumnsBean() {
     }
@@ -214,7 +213,7 @@ public class ColumnsBean extends BetBean{
 	this.columnItemList = columnItemList;
     }
 
-    private void readFileColumns(String combinatedName){
+    private void readFileColumns(String combinatedName) {
 
 	// Abre el fichero externo para leer las columnas
 	BufferedReader fr = null;
@@ -223,7 +222,7 @@ public class ColumnsBean extends BetBean{
 	fc.getExternalContext().getSessionMap().put("coldataCols", dataCols);
 
 	try {
-	    fr = new BufferedReader(new FileReader(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason()+ "_"
+	    fr = new BufferedReader(new FileReader(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
 		    + getBetOrderNumber() + "_" + getBetId() + combinatedName + ".col")));
 	    String record;
 	    while ((record = fr.readLine()) != null) {
@@ -251,6 +250,7 @@ public class ColumnsBean extends BetBean{
 		}
 	    }
 	}
+	setNumCols(dataCols.size());
     }
 
     public void showCols() {
@@ -287,7 +287,7 @@ public class ColumnsBean extends BetBean{
 
 	} else {
 	    firstCol = 1;
-	    lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM-1);
+	    lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
 	}
 	numcol1 = firstCol;
 	numcol2 = firstCol + 1;
@@ -301,31 +301,31 @@ public class ColumnsBean extends BetBean{
 
     public void movenext() {
 	firstCol = Math.min(firstCol + MAXIMUN_COLUMNS_BY_FORM, (((numCols - 1) / MAXIMUN_COLUMNS_BY_FORM) * MAXIMUN_COLUMNS_BY_FORM) + 1);
-	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM-1);
+	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
     public void moveprev() {
 	firstCol = Math.max(firstCol - MAXIMUN_COLUMNS_BY_FORM, 1);
-	lastCol = firstCol +  (MAXIMUN_COLUMNS_BY_FORM-1);
+	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
     public void movefirst() {
 	firstCol = 1;
-	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM-1);
+	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
     public void movelast() {
 	firstCol = (((numCols - 1) / MAXIMUN_COLUMNS_BY_FORM) * MAXIMUN_COLUMNS_BY_FORM) + 1;
-	lastCol = firstCol +  (MAXIMUN_COLUMNS_BY_FORM-1);
+	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
     public void movegoto() {
 	firstCol = Math.min((((colgoto - 1) / MAXIMUN_COLUMNS_BY_FORM) * MAXIMUN_COLUMNS_BY_FORM) + 1, (((numCols - 1) / MAXIMUN_COLUMNS_BY_FORM) * MAXIMUN_COLUMNS_BY_FORM) + 1);
-	lastCol = firstCol +  (MAXIMUN_COLUMNS_BY_FORM-1);
+	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
@@ -370,9 +370,11 @@ public class ColumnsBean extends BetBean{
 	    fc.getExternalContext().getSessionMap().put("coldataCols", dataCols);
 	    numCols = dataCols.size();
 	    firstCol = 1;
-	    lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM-1);
+	    lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
 	}
 	setShowColumns(firstCol, lastCol);
+	setNumCols(dataCols.size());
+
     }
 
     public void saveReduction() throws IOException {
@@ -381,7 +383,7 @@ public class ColumnsBean extends BetBean{
 
 	try {
 	    fw = new PrintWriter(new FileWriter(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
-		    + getBetOrderNumber()+ "_" + getBetId() + saveReduction + ".col")));
+		    + getBetOrderNumber() + "_" + getBetId() + saveReduction + ".col")));
 
 	    fw.println("//selReduction:" + selReduction.toString());
 	    fw.println("//reduceFromCol:" + reduceFromCol.toString());
@@ -406,7 +408,7 @@ public class ColumnsBean extends BetBean{
 	if (fr.exists()) {
 	    File[] fileNames = fr.listFiles();
 	    for (File nameFile : fileNames) {
-		if (nameFile.getName().startsWith(getBetSeason()+ "_"
+		if (nameFile.getName().startsWith(getBetSeason() + "_"
 			+ getBetOrderNumber() + "_" + getBetId().toString())
 			&& nameFile.getName().endsWith(".col")) {
 		    String combinatedName = nameFile.getName().substring(
@@ -423,15 +425,14 @@ public class ColumnsBean extends BetBean{
 	}
     }
 
-    public void restoreReduction(){
+    public void restoreReduction() {
 	if (!siCol.equals("Seleccionar reducci�n")) {
 	    this.firstCol = 1;
-	    this.lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM-1);
+	    this.lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
 	    readFileColumns(siCol);
 	    setShowColumns(this.firstCol, this.lastCol);
 	    saveReduction = siCol;
 
 	}
     }
-
 }

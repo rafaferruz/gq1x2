@@ -35,14 +35,12 @@
 				    <h:outputLabel for="textseason" id="textseasonlabel">
 					<h:outputText id="textseason" value="#{txt_com.season}"/>
 				    </h:outputLabel>
-				    <h:inputText id="season" maxlength="4" onchange="submit();" size="4" value="#{bets.betSeason}" >
-					<f:validateLongRange maximum="2010" minimum="2000"/>
+				    <h:inputText id="season" maxlength="4" size="4" value="#{bets.betSeason}" >
 				    </h:inputText>
 				    <h:outputLabel for="textround" id="textroundlabel">
 					<h:outputText id="textround" value="#{txt_com.round}"/>
 				    </h:outputLabel>
-				    <h:inputText id="round" maxlength="2" onchange="submit();" size="2" value="#{bets.betOrderNumber}">
-					<f:validateLongRange maximum="60" minimum="1"/>
+				    <h:inputText id="round" maxlength="2" size="2" value="#{bets.betOrderNumber}">
 				    </h:inputText>
 				    <h:outputLabel for="textdescription"  id="textdescriptionlabel">
 					<h:outputText id="textdescription" value="#{txt_com.description}"/>
