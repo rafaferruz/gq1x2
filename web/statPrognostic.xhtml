@@ -25,20 +25,17 @@
                     <h:outputLabel for="textseason" id="textseasonlabel">
                         <h:outputText id="textseason" value="#{txt_pre.prePoolSeason}"/>
                     </h:outputLabel>
-                    <h:inputText id="season" maxlength="4" size="4" value="#{statPrognostic.season}"  onchange="submit();" valueChangeListener="#{statPrognostic.changeValueSeason}">
-                        <f:validateLongRange maximum="2010" minimum="2000"/>
+                    <h:inputText id="season" maxlength="4" size="4" value="#{statPrognostic.season}" valueChangeListener="#{statPrognostic.changeValueSeason}">
                     </h:inputText>
                     <h:outputLabel for="textfirstRound" id="textfirstRoundlabel">
                         <h:outputText id="textfirstRound" value="#{txt_pre.roundStart}"/>
                     </h:outputLabel>
-                    <h:inputText id="firstRound" maxlength="2" size="2" value="#{statPrognostic.firstRound}"  onchange="submit();" valueChangeListener="#{statPrognostic.changeValueRound}">
-                        <f:validateLongRange maximum="60" minimum="1"/>
+                    <h:inputText id="firstRound" maxlength="2" size="2" value="#{statPrognostic.firstRound}" valueChangeListener="#{statPrognostic.changeValueRound}">
                     </h:inputText>
                     <h:outputLabel for="textlastRound" id="textlastRoundlabel">
                         <h:outputText id="textlastRound" value="#{txt_pre.roundEnd}"/>
                     </h:outputLabel>
                     <h:inputText id="lastRound" maxlength="2" size="2" value="#{statPrognostic.lastRound}"  onchange="submit();" valueChangeListener="#{statPrognostic.changeValueRound}">
-                        <f:validateLongRange maximum="60" minimum="1"/>
                     </h:inputText>
 		    <table cellpadding="0 px" cellspacing="0 px">
 			<tr>
