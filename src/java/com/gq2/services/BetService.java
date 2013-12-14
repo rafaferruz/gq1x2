@@ -66,7 +66,6 @@ public class BetService {
 		} else if (result < 0) {
 		    betLine.setBliSign("2");
 		}
-		betLine.setBliSign("1");
 		betLines.add(betLine);
 	    }
 	}

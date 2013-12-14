@@ -55,7 +55,9 @@
 				    <h:commandButton action="#{bets.showBets}" id="button2" value="#{txt_bet.betShow}"/>
 				    <h:commandButton action="#{bets.saveBet}" id="button3" value="#{txt_bet.betSave}"/>
 				    <h:commandButton action="#{bets.insertBet}" id="button4" value="#{txt_bet.betInsert}"/>
-				    <h:commandButton action="#{bets.generateCols}" id="button5" value="#{txt_bet.generateCols}"/>
+				    <h:commandButton action="#{bets.generateBets}" id="button5" value="#{txt_bet.generateBets}"/>
+				    <h:commandButton action="#{bets.generateCols}" id="button6" value="#{txt_bet.generateCols}"/>
+				    <h:outputText id="outputTextNumColumns" value="#{bets.numColumns}"/>
 				    <br></br>
 				    <br></br>
 				</td>
@@ -196,6 +198,12 @@
 							    </h:outputLabel>
 							</f:facet>
 						    </h:column>
+						    <h:column id="column209">
+							<h:inputText id="outputText209" size="1" maxlength="1" value="#{currentBetLine['bliSign']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText216" value="S"/>
+							</f:facet>
+						    </h:column>
 						</h:dataTable>
 						<br></br>
 						<h:outputLabel for="textradio" id="textradiolabel">
@@ -251,6 +259,55 @@
 							<h:inputText id="inputText309" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup5Values']}"/>
 							<f:facet name="header">
 							    <h:outputText  id="outputText310" value="#{txt_bet.group5}"/>
+							</f:facet>
+						    </h:column>
+						</h:dataTable>
+						<br></br>
+						<h:dataTable columnClasses="col-right,col-center,
+							     col-center,col-center,col-center,col-center,col-center"
+							     headerClass="list-header" id="dataTableBetErrors"
+							     rowClasses="list-row-even,list-row-odd"
+							     value="#{bets.dataBetGroups}" var="currentBetGroup">
+						    <h:column  id="column301error">
+							<h:outputText id="outputText301error" value="#{txt_bet.betNumMatchesToPlay}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText302error" value=""/>
+							</f:facet>
+						    </h:column>
+						    <h:column  id="column302error">
+							<h:outputText id="outputText303error" value="#{currentBetGroup['bgrSign']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText304error" value="#{txt_bet.sign}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column303error">
+							<h:inputText id="inputText305error" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup1Errors']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText306error" value="#{txt_bet.group1}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column304error">
+							<h:inputText id="inputText306error" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup2Errors']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText307error" value="#{txt_bet.group2}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column305error">
+							<h:inputText id="inputText307error" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup3Errors']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText308error" value="#{txt_bet.group3}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column306error">
+							<h:inputText id="inputText308error" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup4Errors']}"/>
+							<f:facet name="header">
+							    <h:outputText id="outputText309error" value="#{txt_bet.group4}"/>
+							</f:facet>
+						    </h:column>
+						    <h:column id="column307error">
+							<h:inputText id="inputText309error" size="4" maxlength="20" value="#{currentBetGroup['bgrGroup5Errors']}"/>
+							<f:facet name="header">
+							    <h:outputText  id="outputText310error" value="#{txt_bet.group5}"/>
 							</f:facet>
 						    </h:column>
 						</h:dataTable>

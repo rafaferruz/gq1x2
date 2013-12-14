@@ -1,6 +1,5 @@
 package com.gq2.beans;
 
-import java.io.Serializable;
 
 /**
  * @author RAFAEL FERRUZ

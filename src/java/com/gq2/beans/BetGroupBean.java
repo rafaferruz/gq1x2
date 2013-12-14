@@ -11,6 +11,11 @@ public class BetGroupBean {
     private String bgrGroup3Values;
     private String bgrGroup4Values;
     private String bgrGroup5Values;
+    private int bgrGroup1Errors;
+    private int bgrGroup2Errors;
+    private int bgrGroup3Errors;
+    private int bgrGroup4Errors;
+    private int bgrGroup5Errors;
 
     public BetGroupBean() {
     }
@@ -62,4 +67,45 @@ public class BetGroupBean {
     public void setBgrSign(String bgrSign) {
 	this.bgrSign = bgrSign;
     }
+
+    public int getBgrGroup1Errors() {
+	return bgrGroup1Errors;
+    }
+
+    public void setBgrGroup1Errors(int bgrGroup1Errors) {
+	this.bgrGroup1Errors = bgrGroup1Errors;
+    }
+
+    public int getBgrGroup2Errors() {
+	return bgrGroup2Errors;
+    }
+
+    public void setBgrGroup2Errors(int bgrGroup2Errors) {
+	this.bgrGroup2Errors = bgrGroup2Errors;
+    }
+
+    public int getBgrGroup3Errors() {
+	return bgrGroup3Errors;
+    }
+
+    public void setBgrGroup3Errors(int bgrGroup3Errors) {
+	this.bgrGroup3Errors = bgrGroup3Errors;
+    }
+
+    public int getBgrGroup4Errors() {
+	return bgrGroup4Errors;
+    }
+
+    public void setBgrGroup4Errors(int bgrGroup4Errors) {
+	this.bgrGroup4Errors = bgrGroup4Errors;
+    }
+
+    public int getBgrGroup5Errors() {
+	return bgrGroup5Errors;
+    }
+
+    public void setBgrGroup5Errors(int bgrGroup5Errors) {
+	this.bgrGroup5Errors = bgrGroup5Errors;
+    }
+  
 }
