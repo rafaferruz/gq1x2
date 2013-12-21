@@ -1,5 +1,6 @@
 package com.gq2.beans;
 
+import com.gq2.domain.HitBet;
 import com.gq2.services.ColumnService;
 import com.gq2.tools.Const;
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class ColumnsBean extends BetBean {
 
     private List<String> dataCols = new ArrayList();
     private List<Map<String, String>> dataShowCols = new ArrayList<>();
+    private Map<Integer, HitBet> dataShowHits = new HashMap<>();
     private Integer firstCol = 1;
     private Integer lastCol = 8;
     private Integer numcol1 = 1;
@@ -63,6 +65,14 @@ public class ColumnsBean extends BetBean {
 
     public void setDataShowCols(List<Map<String, String>> dataShowCols) {
 	this.dataShowCols = dataShowCols;
+    }
+
+    public Map<Integer, HitBet> getDataShowHits() {
+	return dataShowHits;
+    }
+
+    public void setDataShowHits(Map<Integer, HitBet> dataShowHits) {
+	this.dataShowHits = dataShowHits;
     }
 
     public Integer getColgoto() {
@@ -257,6 +267,8 @@ public class ColumnsBean extends BetBean {
 	readFileColumns("");
 	loadReductions();
 	setShowColumns(this.firstCol, this.lastCol);
+	dataShowHits.clear();
+
     }
 
     private void setShowColumns(Integer firstCol, Integer lastCol) {
@@ -336,6 +348,8 @@ public class ColumnsBean extends BetBean {
 	lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
 	setNumCols(dataCols.size());
+	dataShowHits.clear();
+
     }
 
     public void saveReduction() {
@@ -363,7 +377,29 @@ public class ColumnsBean extends BetBean {
 	    readFileColumns(siCol);
 	    setShowColumns(this.firstCol, this.lastCol);
 	    saveReduction = siCol;
+	    dataShowHits.clear();
 
 	}
     }
+
+    public void dataShowHits() {
+	dataShowHits.clear();
+	List<SelectItem> hitBetList = new ArrayList<>();
+	for (String column : dataCols) {
+	    Integer targets = 0;
+	    for (int c = 0; c < Const.MAXIMUN_LINES_BY_FORM; c++) {
+		if (column.substring(c, c + 1).toUpperCase().equals(
+			getDataBetLines().get(c).getBliSign().toUpperCase())) {
+		    // Se incrementa el numero de aciertos en la columna
+		    targets++;
+		}
+	    }
+	    if (dataShowHits.get(targets) == null) {
+		dataShowHits.put(targets, new HitBet(1, dataCols.indexOf(column) + 1));
+	    } else {
+		dataShowHits.put(targets, dataShowHits.get(targets).addHit(dataCols.indexOf(column) + 1));
+	    }
+	}
+    }
+
 }
