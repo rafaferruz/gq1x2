@@ -61,6 +61,13 @@ public class ColumnService {
 		    break;
 		}
 	    }
+	    /* Reduciendo columnas hasta un maximo de columnas solicitado */
+	    if (columnsBean.getMaximumColumnsNumber() != null
+		    && columnsBean.getMaximumColumnsNumber() > 0) {
+		while (dataColsWork.size() > columnsBean.getMaximumColumnsNumber()) {
+		    dataColsWork.remove(new Double(dataColsWork.size() * Math.random()).intValue());
+		}
+	    }
 	}
 	return dataColsWork;
 
@@ -112,7 +119,7 @@ public class ColumnService {
 	BufferedReader fr = null;
 	List<String> dataCols = new ArrayList();
 	try {
-	    fr = new BufferedReader(new FileReader(columnsFileName ));
+	    fr = new BufferedReader(new FileReader(columnsFileName));
 	    String record;
 	    while ((record = fr.readLine()) != null) {
 		dataCols.add(record);
