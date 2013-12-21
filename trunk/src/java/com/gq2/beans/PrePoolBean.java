@@ -7,6 +7,7 @@ import com.gq2.services.ChampionshipService;
 import com.gq2.services.PrePoolService;
 import com.gq2.services.PrognosticService;
 import com.gq2.services.TeamService;
+import com.gq2.tools.Const;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,8 +27,6 @@ import javax.faces.model.SelectItem;
 @ViewScoped
 public class PrePoolBean {
 
-    static final int FIRST_SEASON = 2000;
-    static final int LAST_SEASON = 2013;
     private List<PrePool> prePoolList = new ArrayList();
     private List<SelectItem> championshipItemList = new ArrayList();
     private List<SelectItem> roundItemList = new ArrayList();
@@ -381,8 +380,8 @@ public class PrePoolBean {
 
     public void insertTotal() {
 	deleteTotal();
-	for (season = FIRST_SEASON; season
-		<= LAST_SEASON; season++) {
+	for (season = Const.FIRST_SEASON; season
+		<= Const.LAST_SEASON; season++) {
 	    // Toma el numero de rondas de 1ª division por ser menor que el de 2ª division
 	    chaId = championshipService.getChaIdOfSeason(season, "1�");
 
@@ -406,7 +405,7 @@ public class PrePoolBean {
     }
 
     private int deleteTotal() {
-	return prePoolService.deleteSeasons(FIRST_SEASON, LAST_SEASON);
+	return prePoolService.deleteSeasons(Const.FIRST_SEASON, Const.LAST_SEASON);
     }
 
     public void createMatch() {

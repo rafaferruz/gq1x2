@@ -119,10 +119,6 @@ public class PrePoolService {
 	return new DAOFactory().getPrePoolDAO().deleteMatch(prePool);
     }
 
-    public List<PrePool> loadRoundPrePoolList(int season, int order_number) {
-	return new DAOFactory().getPrePoolDAO().loadRoundPrePoolList(season, order_number);
-    }
-
     public int deleteSeasons(int first_season, int last_season) {
 	return new DAOFactory().getPrePoolDAO().deleteSeasons(first_season, last_season);
     }

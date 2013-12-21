@@ -132,17 +132,17 @@ public class PrePoolDAO implements InjectableDAO {
      * Elimina de la base de datos todos los registros de PrePool que
      * pertenezcan a una ronda de un campeonato
      *
-     * @param chaId	Id del campeonato
-     * @param round	Id de la ronda a eliminar
+     * @param season	Id de la temporada
+     * @param orderNumber	Id de la jornada de apuestas a eliminar
      * @return	Numero de filas eliminadas
      */
-    public int deleteRoundPrePool(int chaId, int round) {
+    public int deleteRoundPrePool(int season, int orderNumber) {
 	try {
 	    //** crear la frase DELETE SQL de tabla1
-	    String sql = "DELETE FROM prePools WHERE pre_cha_id = ? AND pre_round = ?";
+	    String sql = "DELETE FROM prePools WHERE pre_season = ? AND pre_order_number = ?";
 	    PreparedStatement ps = conn.prepareStatement(sql);
-	    ps.setInt(1, chaId);
-	    ps.setInt(2, round);
+	    ps.setInt(1, season);
+	    ps.setInt(2, orderNumber);
 	    log.debug("deleteRoundPrePool: " + ps.toString());
 	    return ps.executeUpdate();
 	} catch (SQLException ex) {
@@ -197,29 +197,6 @@ public class PrePoolDAO implements InjectableDAO {
 	    log.error(ex);
 	}
 	return false;
-    }
-
-    public List<PrePool> loadRoundPrePoolList(Integer chaId, Integer round) {
-	List<PrePool> prePoolList = new ArrayList<>();
-	try {
-	    String sql = "SELECT * "
-		    + "FROM prePools WHERE pre_cha_id = ? AND pre_round = ? "
-		    + "ORDER BY pre_order_number";
-	    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-		ps.setInt(1, chaId);
-		ps.setInt(2, round);
-		log.debug("loadRoundPrePoolList: " + ps.toString());
-		try (ResultSet rs = ps.executeQuery()) {
-		    while (rs.next()) {
-			prePoolList.add(populatePrePoolFromResultSet(rs));
-		    }
-		}
-	    }
-	} catch (SQLException ex) {
-	    throw new RuntimeException(ex);
-	}
-
-	return prePoolList;
     }
 
     public List<PrePool> loadSeasonPrePoolListOrderByRating(int season, int order_number) {

@@ -60,6 +60,14 @@
 	    <to-view-id>/generatePrePool.xhtml</to-view-id>
 	</navigation-case>
 	<navigation-case>
+	    <from-outcome>generateAuthomaticBet</from-outcome>
+	    <to-view-id>/generateAuthomaticBet.xhtml</to-view-id>
+	</navigation-case>
+	<navigation-case>
+	    <from-outcome>generateAuthomaticReduction</from-outcome>
+	    <to-view-id>/generateAuthomaticReduction.xhtml</to-view-id>
+	</navigation-case>
+	<navigation-case>
 	    <from-outcome>prePool</from-outcome>
 	    <to-view-id>/prePool.xhtml</to-view-id>
 	</navigation-case>

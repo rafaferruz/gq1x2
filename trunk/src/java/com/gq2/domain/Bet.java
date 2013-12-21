@@ -19,22 +19,37 @@ public class Bet {
     public String betGroup1Values1 = "";
     public String betGroup1ValuesX = "";
     public String betGroup1Values2 = "";
+    public int betGroup1Errors1;
+    public int betGroup1ErrorsX;
+    public int betGroup1Errors2;
     public String betGroup2 = "";
     public String betGroup2Values1 = "";
     public String betGroup2ValuesX = "";
     public String betGroup2Values2 = "";
+    public int betGroup2Errors1;
+    public int betGroup2ErrorsX;
+    public int betGroup2Errors2;
     public String betGroup3 = "";
     public String betGroup3Values1 = "";
     public String betGroup3ValuesX = "";
     public String betGroup3Values2 = "";
+    public int betGroup3Errors1;
+    public int betGroup3ErrorsX;
+    public int betGroup3Errors2;
     public String betGroup4 = "";
     public String betGroup4Values1 = "";
     public String betGroup4ValuesX = "";
     public String betGroup4Values2 = "";
+    public int betGroup4Errors1;
+    public int betGroup4ErrorsX;
+    public int betGroup4Errors2;
     public String betGroup5 = "";
     public String betGroup5Values1 = "";
     public String betGroup5ValuesX = "";
     public String betGroup5Values2 = "";
+    public int betGroup5Errors1;
+    public int betGroup5ErrorsX;
+    public int betGroup5Errors2;
 
     public Bet() {
     }
@@ -238,4 +253,125 @@ public class Bet {
     public void setBetGroup5Values2(String betGroup5Values2) {
 	this.betGroup5Values2 = betGroup5Values2;
     }
+
+    public int getBetGroup1Errors1() {
+	return betGroup1Errors1;
+    }
+
+    public void setBetGroup1Errors1(int betGroup1Errors1) {
+	this.betGroup1Errors1 = betGroup1Errors1;
+    }
+
+    public int getBetGroup1ErrorsX() {
+	return betGroup1ErrorsX;
+    }
+
+    public void setBetGroup1ErrorsX(int betGroup1ErrorsX) {
+	this.betGroup1ErrorsX = betGroup1ErrorsX;
+    }
+
+    public int getBetGroup1Errors2() {
+	return betGroup1Errors2;
+    }
+
+    public void setBetGroup1Errors2(int betGroup1Errors2) {
+	this.betGroup1Errors2 = betGroup1Errors2;
+    }
+
+    public int getBetGroup2Errors1() {
+	return betGroup2Errors1;
+    }
+
+    public void setBetGroup2Errors1(int betGroup2Errors1) {
+	this.betGroup2Errors1 = betGroup2Errors1;
+    }
+
+    public int getBetGroup2ErrorsX() {
+	return betGroup2ErrorsX;
+    }
+
+    public void setBetGroup2ErrorsX(int betGroup2ErrorsX) {
+	this.betGroup2ErrorsX = betGroup2ErrorsX;
+    }
+
+    public int getBetGroup2Errors2() {
+	return betGroup2Errors2;
+    }
+
+    public void setBetGroup2Errors2(int betGroup2Errors2) {
+	this.betGroup2Errors2 = betGroup2Errors2;
+    }
+
+    public int getBetGroup3Errors1() {
+	return betGroup3Errors1;
+    }
+
+    public void setBetGroup3Errors1(int betGroup3Errors1) {
+	this.betGroup3Errors1 = betGroup3Errors1;
+    }
+
+    public int getBetGroup3ErrorsX() {
+	return betGroup3ErrorsX;
+    }
+
+    public void setBetGroup3ErrorsX(int betGroup3ErrorsX) {
+	this.betGroup3ErrorsX = betGroup3ErrorsX;
+    }
+
+    public int getBetGroup3Errors2() {
+	return betGroup3Errors2;
+    }
+
+    public void setBetGroup3Errors2(int betGroup3Errors2) {
+	this.betGroup3Errors2 = betGroup3Errors2;
+    }
+
+    public int getBetGroup4Errors1() {
+	return betGroup4Errors1;
+    }
+
+    public void setBetGroup4Errors1(int betGroup4Errors1) {
+	this.betGroup4Errors1 = betGroup4Errors1;
+    }
+
+    public int getBetGroup4ErrorsX() {
+	return betGroup4ErrorsX;
+    }
+
+    public void setBetGroup4ErrorsX(int betGroup4ErrorsX) {
+	this.betGroup4ErrorsX = betGroup4ErrorsX;
+    }
+
+    public int getBetGroup4Errors2() {
+	return betGroup4Errors2;
+    }
+
+    public void setBetGroup4Errors2(int betGroup4Errors2) {
+	this.betGroup4Errors2 = betGroup4Errors2;
+    }
+
+    public int getBetGroup5Errors1() {
+	return betGroup5Errors1;
+    }
+
+    public void setBetGroup5Errors1(int betGroup5Errors1) {
+	this.betGroup5Errors1 = betGroup5Errors1;
+    }
+
+    public int getBetGroup5ErrorsX() {
+	return betGroup5ErrorsX;
+    }
+
+    public void setBetGroup5ErrorsX(int betGroup5ErrorsX) {
+	this.betGroup5ErrorsX = betGroup5ErrorsX;
+    }
+
+    public int getBetGroup5Errors2() {
+	return betGroup5Errors2;
+    }
+
+    public void setBetGroup5Errors2(int betGroup5Errors2) {
+	this.betGroup5Errors2 = betGroup5Errors2;
+    }
+    
 }

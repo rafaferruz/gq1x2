@@ -1,5 +1,6 @@
 package com.gq2.print;
 
+import com.gq2.tools.Const;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -75,7 +76,7 @@ public class Zprint implements Printable {
 		boolean nada = true;
 	    }
 	    String s = dataPrint.get((pageIndex + frompage - 1) * 8 + i);
-	    for (Integer j = 0; j < 14; j++) {
+	    for (Integer j = 0; j < Const.MAXIMUN_LINES_BY_FORM; j++) {
 		Double d1 = marginleft + ((i % 8) * widthcolumn);
 		Double d2 = margintop + (j * highrow);
 		switch (s.substring(j, j + 1).toUpperCase()) {
