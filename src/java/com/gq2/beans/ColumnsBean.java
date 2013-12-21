@@ -1,12 +1,8 @@
 package com.gq2.beans;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import com.gq2.services.ColumnService;
+import com.gq2.tools.Const;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +22,6 @@ import javax.faces.model.SelectItem;
 @ViewScoped
 public class ColumnsBean extends BetBean {
 
-    static final int MAXIMUN_COLUMNS_BY_FORM = 8;
-    static final int MAXIMUN_LINES_BY_FORM = 14;
     private List<String> dataCols = new ArrayList();
     private List<Map<String, String>> dataShowCols = new ArrayList<>();
     private Integer firstCol = 1;
@@ -49,6 +43,7 @@ public class ColumnsBean extends BetBean {
     private List<SelectItem> columnItemList = new ArrayList();
     private String siCol = "";
     private FacesContext fc = null;
+    private ColumnService columnService = new ColumnService();
 
     public ColumnsBean() {
     }
@@ -213,43 +208,37 @@ public class ColumnsBean extends BetBean {
 	this.columnItemList = columnItemList;
     }
 
-    private void readFileColumns(String combinatedName) {
+    public ColumnService getColumnService() {
+	return columnService;
+    }
 
-	// Abre el fichero externo para leer las columnas
-	BufferedReader fr = null;
+    public void setColumnService(ColumnService columnService) {
+	this.columnService = columnService;
+    }
+
+    public List<String> getDataColumns(String combinatedName) {
+	readFileColumns(combinatedName);
+	return getDataCols();
+    }
+
+    private void readFileColumns(String combinatedName) {
 	dataCols.clear();
 	fc = FacesContext.getCurrentInstance();
-	fc.getExternalContext().getSessionMap().put("coldataCols", dataCols);
-
-	try {
-	    fr = new BufferedReader(new FileReader(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
-		    + getBetOrderNumber() + "_" + getBetId() + combinatedName + ".col")));
-	    String record;
-	    while ((record = fr.readLine()) != null) {
-		if (record.startsWith("//selReduction:")) {
-		    selReduction = Integer.parseInt(record.substring(record.indexOf(":") + 1));
-		} else if (record.startsWith("//reduceFromCol:")) {
-		    reduceFromCol = Integer.parseInt(record.substring(record.indexOf(":") + 1));
-		} else {
-		    dataCols.add(record);
-		}
-	    }
-	    fc = FacesContext.getCurrentInstance();
-	    fc.getExternalContext().getSessionMap().put("coldataCols", dataCols);
-
-	} catch (FileNotFoundException e) {
-	    fc.getExternalContext().log("URL mal formada");
-	} catch (IOException ex) {
-	    Logger.getLogger(ColumnsBean.class.getName()).log(Level.SEVERE, null, ex);
-	} finally {
-	    if (fr != null) {
-		try {
-		    fr.close();
-		} catch (IOException ex) {
-		    Logger.getLogger(ColumnsBean.class.getName()).log(Level.SEVERE, null, ex);
-		}
+	fc.getExternalContext().getSessionMap().remove("coldataCols");
+	List<String> dataColsWork = new ArrayList<>();
+	dataColsWork = columnService.readFileColumns(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
+		+ getBetOrderNumber() + "_" + getBetId() + combinatedName + ".col"));
+	for (String record : dataColsWork) {
+	    if (record.startsWith("//selReduction:")) {
+		selReduction = Integer.parseInt(record.substring(record.indexOf(":") + 1));
+	    } else if (record.startsWith("//reduceFromCol:")) {
+		reduceFromCol = Integer.parseInt(record.substring(record.indexOf(":") + 1));
+	    } else {
+		dataCols.add(record);
 	    }
 	}
+	fc.getExternalContext().getSessionMap().put("coldataCols", dataCols);
+
 	setNumCols(dataCols.size());
     }
 
@@ -264,9 +253,9 @@ public class ColumnsBean extends BetBean {
     private void setShowColumns(Integer firstCol, Integer lastCol) {
 	dataShowCols.clear();
 	if (dataCols.size() > 0) {
-	    int maxCols = Math.min(MAXIMUN_COLUMNS_BY_FORM, dataCols.size() - firstCol + 1);
+	    int maxCols = Math.min(Const.MAXIMUN_COLUMNS_BY_FORM, dataCols.size() - firstCol + 1);
 	    int[] targets = new int[maxCols];
-	    for (int c = 0; c < MAXIMUN_LINES_BY_FORM; c++) {
+	    for (int c = 0; c < Const.MAXIMUN_LINES_BY_FORM; c++) {
 		Map<String, String> show = new HashMap();
 		for (int i = 1; i <= maxCols; i++) {
 		    show.put("col" + i, dataCols.get(firstCol - 2 + i).substring(c, c + 1));
@@ -287,7 +276,7 @@ public class ColumnsBean extends BetBean {
 
 	} else {
 	    firstCol = 1;
-	    lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
+	    lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	}
 	numcol1 = firstCol;
 	numcol2 = firstCol + 1;
@@ -300,135 +289,67 @@ public class ColumnsBean extends BetBean {
     }
 
     public void movenext() {
-	firstCol = Math.min(firstCol + MAXIMUN_COLUMNS_BY_FORM, (((numCols - 1) / MAXIMUN_COLUMNS_BY_FORM) * MAXIMUN_COLUMNS_BY_FORM) + 1);
-	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
+	firstCol = Math.min(firstCol + Const.MAXIMUN_COLUMNS_BY_FORM, (((numCols - 1) / Const.MAXIMUN_COLUMNS_BY_FORM) * Const.MAXIMUN_COLUMNS_BY_FORM) + 1);
+	lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
     public void moveprev() {
-	firstCol = Math.max(firstCol - MAXIMUN_COLUMNS_BY_FORM, 1);
-	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
+	firstCol = Math.max(firstCol -Const. MAXIMUN_COLUMNS_BY_FORM, 1);
+	lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
     public void movefirst() {
 	firstCol = 1;
-	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
+	lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
     public void movelast() {
-	firstCol = (((numCols - 1) / MAXIMUN_COLUMNS_BY_FORM) * MAXIMUN_COLUMNS_BY_FORM) + 1;
-	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
+	firstCol = (((numCols - 1) / Const.MAXIMUN_COLUMNS_BY_FORM) * Const.MAXIMUN_COLUMNS_BY_FORM) + 1;
+	lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
     public void movegoto() {
-	firstCol = Math.min((((colgoto - 1) / MAXIMUN_COLUMNS_BY_FORM) * MAXIMUN_COLUMNS_BY_FORM) + 1, (((numCols - 1) / MAXIMUN_COLUMNS_BY_FORM) * MAXIMUN_COLUMNS_BY_FORM) + 1);
-	lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
+	firstCol = Math.min((((colgoto - 1) / Const.MAXIMUN_COLUMNS_BY_FORM) * Const.MAXIMUN_COLUMNS_BY_FORM) + 1, (((numCols - 1) / Const.MAXIMUN_COLUMNS_BY_FORM) * Const.MAXIMUN_COLUMNS_BY_FORM) + 1);
+	lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
 
     public void generateReduction() {
-	List<String> dataColsWork = new ArrayList();
-	if (selReduction != 0) {
-	    if (reduceFromCol > 1) {
-		dataColsWork.addAll(dataCols.subList(reduceFromCol - 1, numCols));
-		dataColsWork.size();
-		dataColsWork.addAll(dataCols.subList(0, reduceFromCol - 1));
-	    } else {
-		dataColsWork.addAll(dataCols);
-	    }
-	    int i = 1;
-	    int k;
-	    int m;
-	    while (i < dataColsWork.size()) {
-		for (int j = 0; j < i; j++) {
-		    char[] s1 = dataColsWork.get(j).toCharArray();
-		    char[] s2 = dataColsWork.get(i).toCharArray();
-		    m = 0;
-		    for (k = 0; k < 14; k++) {
-			if (s1[k] != s2[k]) {
-			    m++;
-			}
-		    }
-		    if (m <= selReduction) {
-			dataColsWork.remove(i);
-			i--;
-			break;
-		    }
-
-		}
-		i++;
-		if (i >= dataColsWork.size()) {
-		    break;
-		}
-	    }
-	    dataCols.clear();
-	    dataCols.addAll(dataColsWork);
-	    fc = FacesContext.getCurrentInstance();
-	    fc.getExternalContext().getSessionMap().put("coldataCols", dataCols);
-	    numCols = dataCols.size();
-	    firstCol = 1;
-	    lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
-	}
+	dataCols = columnService.generateReduction(this);
+	fc = FacesContext.getCurrentInstance();
+	fc.getExternalContext().getSessionMap().put("coldataCols", dataCols);
+	numCols = dataCols.size();
+	firstCol = 1;
+	lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
 	setNumCols(dataCols.size());
-
     }
 
-    public void saveReduction() throws IOException {
-	PrintWriter fw = null;
-	fc = FacesContext.getCurrentInstance();
-
+    public void saveReduction() {
 	try {
-	    fw = new PrintWriter(new FileWriter(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
-		    + getBetOrderNumber() + "_" + getBetId() + saveReduction + ".col")));
-
-	    fw.println("//selReduction:" + selReduction.toString());
-	    fw.println("//reduceFromCol:" + reduceFromCol.toString());
-	    for (String record : dataCols) {
-		fw.println(record);
-	    }
-	} catch (FileNotFoundException e) {
-	    fc.getExternalContext().log("URL mal formada");
-	} finally {
-	    if (fw != null) {
-		fw.close();
-	    }
+	    columnService.saveReduction(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
+		    + getBetOrderNumber() + "_" + getBetId() + saveReduction + ".col"),
+		    selReduction, reduceFromCol, dataCols);
+	} catch (IOException ex) {
+	    Logger.getLogger(ColumnsBean.class.getName()).log(Level.SEVERE, null, ex);
 	}
     }
 
     private void loadReductions() {
 	fc = FacesContext.getCurrentInstance();
-	columnItemList.clear();
-//        File fr = new File(sc.getRealPath("/WEB-INF/" + season.toString() + "_" +
-//                getBetOrderNumber().toString() + "_" + dataBet.getBet_id().toString() + ".col"));
-	File fr = new File(fc.getExternalContext().getRealPath("/WEB-INF/"));
-	if (fr.exists()) {
-	    File[] fileNames = fr.listFiles();
-	    for (File nameFile : fileNames) {
-		if (nameFile.getName().startsWith(getBetSeason() + "_"
-			+ getBetOrderNumber() + "_" + getBetId().toString())
-			&& nameFile.getName().endsWith(".col")) {
-		    String combinatedName = nameFile.getName().substring(
-			    (getBetSeason() + "_" + getBetOrderNumber() + "_" + getBetId()).length(),
-			    nameFile.getName().indexOf(".col"));
-		    if (combinatedName.equals("")) {
-			combinatedName = "Seleccionar reducci�n";
-		    }
-		    SelectItem siCombi = new SelectItem(combinatedName, combinatedName);
-		    columnItemList.add(siCombi);
-
-		}
-	    }
-	}
+	String dirPathName = fc.getExternalContext().getRealPath("/WEB-INF/");
+	String suffixFileName = getBetSeason() + "_" + getBetOrderNumber() + "_" + getBetId();
+	setColumnItemList(columnService.loadReductionFileNames(dirPathName, suffixFileName));
     }
 
     public void restoreReduction() {
 	if (!siCol.equals("Seleccionar reducci�n")) {
 	    this.firstCol = 1;
-	    this.lastCol = firstCol + (MAXIMUN_COLUMNS_BY_FORM - 1);
+	    this.lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	    readFileColumns(siCol);
 	    setShowColumns(this.firstCol, this.lastCol);
 	    saveReduction = siCol;

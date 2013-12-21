@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.gq2.services;
 
 import com.gq2.DAO.DAOFactory;
@@ -303,26 +299,8 @@ public class MakeSuperTable {
 	return null;
     }
 
-    private Classification getTeamPreviousRoundClassificationFromList(int teamId) {
-	for (Classification classification : previousRoundClassificationList) {
-	    if (classification.getClaTeaId() == teamId) {
-		return classification;
-	    }
-	}
-	return null;
-    }
-
     private ClassificationWonDrawnLost getTeamRoundClassificationWDLFromList(int teamId) {
 	for (ClassificationWonDrawnLost classificationWDL : roundClassificationWDLList) {
-	    if (classificationWDL.getWdlTeaId() == teamId) {
-		return classificationWDL;
-	    }
-	}
-	return null;
-    }
-
-    private ClassificationWonDrawnLost getTeamPreviousRoundClassificationWDLFromList(int teamId) {
-	for (ClassificationWonDrawnLost classificationWDL : previousRoundClassificationWDLList) {
 	    if (classificationWDL.getWdlTeaId() == teamId) {
 		return classificationWDL;
 	    }

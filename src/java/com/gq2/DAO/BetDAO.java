@@ -67,12 +67,19 @@ public class BetDAO implements InjectableDAO {
 	    String sql;
 	    sql = "INSERT INTO bets (bet_season,bet_order_number,bet_description ,bet_base ,"
 		    + "bet_group_1 ,bet_group1_values_1 ,bet_group1_values_X ,bet_group1_values_2 ,"
+		    + "bet_group1_errors_1,bet_group1_errors_X,bet_group1_errors_2,"
 		    + "bet_group_2 ,bet_group2_values_1 ,bet_group2_values_X ,bet_group2_values_2 ,"
+		    + "bet_group2_errors_1,bet_group2_errors_X,bet_group2_errors_2,"
 		    + "bet_group_3 ,bet_group3_values_1 ,bet_group3_values_X ,bet_group3_values_2 ,"
+		    + "bet_group3_errors_1,bet_group3_errors_X,bet_group3_errors_2,"
 		    + "bet_group_4 ,bet_group4_values_1 ,bet_group4_values_X ,bet_group4_values_2 ,"
-		    + "bet_group_5 ,bet_group5_values_1 ,bet_group5_values_X ,bet_group5_values_2) "
+		    + "bet_group4_errors_1,bet_group4_errors_X,bet_group4_errors_2,"
+		    + "bet_group_5 ,bet_group5_values_1 ,bet_group5_values_X ,bet_group5_values_2, "
+		    + "bet_group5_errors_1,bet_group5_errors_X,bet_group5_errors_2) "
 		    + "VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
-		    + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		    + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+		    + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+		    + " ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	    int identifierGenerated;
 	    try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 		ps.setInt(1, bet.getBetSeason());
@@ -83,22 +90,37 @@ public class BetDAO implements InjectableDAO {
 		ps.setString(6, bet.getBetGroup1Values1());
 		ps.setString(7, bet.getBetGroup1ValuesX());
 		ps.setString(8, bet.getBetGroup1Values2());
-		ps.setString(9, bet.getBetGroup2());
-		ps.setString(10, bet.getBetGroup2Values1());
-		ps.setString(11, bet.getBetGroup2ValuesX());
-		ps.setString(12, bet.getBetGroup2Values2());
-		ps.setString(13, bet.getBetGroup3());
-		ps.setString(14, bet.getBetGroup3Values1());
-		ps.setString(15, bet.getBetGroup3ValuesX());
-		ps.setString(16, bet.getBetGroup3Values2());
-		ps.setString(17, bet.getBetGroup4());
-		ps.setString(18, bet.getBetGroup4Values1());
-		ps.setString(19, bet.getBetGroup4ValuesX());
-		ps.setString(20, bet.getBetGroup4Values2());
-		ps.setString(21, bet.getBetGroup5());
-		ps.setString(22, bet.getBetGroup5Values1());
-		ps.setString(23, bet.getBetGroup5ValuesX());
-		ps.setString(24, bet.getBetGroup5Values2());
+		ps.setInt(9, bet.getBetGroup1Errors1());
+		ps.setInt(10, bet.getBetGroup1ErrorsX());
+		ps.setInt(11, bet.getBetGroup1Errors2());
+		ps.setString(12, bet.getBetGroup2());
+		ps.setString(13, bet.getBetGroup2Values1());
+		ps.setString(14, bet.getBetGroup2ValuesX());
+		ps.setString(15, bet.getBetGroup2Values2());
+		ps.setInt(16, bet.getBetGroup2Errors1());
+		ps.setInt(17, bet.getBetGroup2ErrorsX());
+		ps.setInt(18, bet.getBetGroup2Errors2());
+		ps.setString(19, bet.getBetGroup3());
+		ps.setString(20, bet.getBetGroup3Values1());
+		ps.setString(21, bet.getBetGroup3ValuesX());
+		ps.setString(22, bet.getBetGroup3Values2());
+		ps.setInt(23, bet.getBetGroup3Errors1());
+		ps.setInt(24, bet.getBetGroup3ErrorsX());
+		ps.setInt(25, bet.getBetGroup3Errors2());
+		ps.setString(26, bet.getBetGroup4());
+		ps.setString(27, bet.getBetGroup4Values1());
+		ps.setString(28, bet.getBetGroup4ValuesX());
+		ps.setString(29, bet.getBetGroup4Values2());
+		ps.setInt(30, bet.getBetGroup4Errors1());
+		ps.setInt(31, bet.getBetGroup4ErrorsX());
+		ps.setInt(32, bet.getBetGroup4Errors2());
+		ps.setString(33, bet.getBetGroup5());
+		ps.setString(34, bet.getBetGroup5Values1());
+		ps.setString(35, bet.getBetGroup5ValuesX());
+		ps.setString(36, bet.getBetGroup5Values2());
+		ps.setInt(37, bet.getBetGroup5Errors1());
+		ps.setInt(38, bet.getBetGroup5ErrorsX());
+		ps.setInt(39, bet.getBetGroup5Errors2());
 		log.debug("save: " + ps.toString());
 		ps.executeUpdate();
 		try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -123,10 +145,15 @@ public class BetDAO implements InjectableDAO {
 	    String sql;
 	    sql = "UPDATE bets SET bet_season = ?, bet_order_number = ?, bet_description = ?, bet_base = ?, "
 		    + "bet_group_1 = ?,bet_group1_values_1 = ?,bet_group1_values_X = ?,bet_group1_values_2 = ?,"
+		    + "bet_group1_errors_1 = ?,bet_group1_errors_X = ?,bet_group1_errors_2 = ?,"
 		    + "bet_group_2 = ?,bet_group2_values_1 = ?,bet_group2_values_X = ?,bet_group2_values_2 = ?,"
+		    + "bet_group2_errors_1 = ?,bet_group2_errors_X = ?,bet_group2_errors_2 = ?,"
 		    + "bet_group_3 = ?,bet_group3_values_1 = ?,bet_group3_values_X = ?,bet_group3_values_2 = ?,"
+		    + "bet_group3_errors_1 = ?,bet_group3_errors_X = ?,bet_group3_errors_2 = ?,"
 		    + "bet_group_4 = ?,bet_group4_values_1 = ?,bet_group4_values_X = ?,bet_group4_values_2 = ?,"
-		    + "bet_group_5 = ?,bet_group5_values_1 = ?,bet_group5_values_X = ?,bet_group5_values_2 = ?"
+		    + "bet_group4_errors_1 = ?,bet_group4_errors_X = ?,bet_group4_errors_2 = ?,"
+		    + "bet_group_5 = ?,bet_group5_values_1 = ?,bet_group5_values_X = ?,bet_group5_values_2 = ?,"
+		    + "bet_group5_errors_1 = ?,bet_group5_errors_X = ?,bet_group5_errors_2 = ?"
 		    + " WHERE bet_id = ? ";
 	    try (PreparedStatement ps = conn.prepareStatement(sql)) {
 		ps.setInt(1, bet.getBetSeason());
@@ -137,23 +164,38 @@ public class BetDAO implements InjectableDAO {
 		ps.setString(6, bet.getBetGroup1Values1());
 		ps.setString(7, bet.getBetGroup1ValuesX());
 		ps.setString(8, bet.getBetGroup1Values2());
-		ps.setString(9, bet.getBetGroup2());
-		ps.setString(10, bet.getBetGroup2Values1());
-		ps.setString(11, bet.getBetGroup2ValuesX());
-		ps.setString(12, bet.getBetGroup2Values2());
-		ps.setString(13, bet.getBetGroup3());
-		ps.setString(14, bet.getBetGroup3Values1());
-		ps.setString(15, bet.getBetGroup3ValuesX());
-		ps.setString(16, bet.getBetGroup3Values2());
-		ps.setString(17, bet.getBetGroup4());
-		ps.setString(18, bet.getBetGroup4Values1());
-		ps.setString(19, bet.getBetGroup4ValuesX());
-		ps.setString(20, bet.getBetGroup4Values2());
-		ps.setString(21, bet.getBetGroup5());
-		ps.setString(22, bet.getBetGroup5Values1());
-		ps.setString(23, bet.getBetGroup5ValuesX());
-		ps.setString(24, bet.getBetGroup5Values2());
-		ps.setInt(25, bet.getBetId());
+		ps.setInt(9, bet.getBetGroup1Errors1());
+		ps.setInt(10, bet.getBetGroup1ErrorsX());
+		ps.setInt(11, bet.getBetGroup1Errors2());
+		ps.setString(12, bet.getBetGroup2());
+		ps.setString(13, bet.getBetGroup2Values1());
+		ps.setString(14, bet.getBetGroup2ValuesX());
+		ps.setString(15, bet.getBetGroup2Values2());
+		ps.setInt(16, bet.getBetGroup2Errors1());
+		ps.setInt(17, bet.getBetGroup2ErrorsX());
+		ps.setInt(18, bet.getBetGroup2Errors2());
+		ps.setString(19, bet.getBetGroup3());
+		ps.setString(20, bet.getBetGroup3Values1());
+		ps.setString(21, bet.getBetGroup3ValuesX());
+		ps.setString(22, bet.getBetGroup3Values2());
+		ps.setInt(23, bet.getBetGroup3Errors1());
+		ps.setInt(24, bet.getBetGroup3ErrorsX());
+		ps.setInt(25, bet.getBetGroup3Errors2());
+		ps.setString(26, bet.getBetGroup4());
+		ps.setString(27, bet.getBetGroup4Values1());
+		ps.setString(28, bet.getBetGroup4ValuesX());
+		ps.setString(29, bet.getBetGroup4Values2());
+		ps.setInt(30, bet.getBetGroup4Errors1());
+		ps.setInt(31, bet.getBetGroup4ErrorsX());
+		ps.setInt(32, bet.getBetGroup4Errors2());
+		ps.setString(33, bet.getBetGroup5());
+		ps.setString(34, bet.getBetGroup5Values1());
+		ps.setString(35, bet.getBetGroup5ValuesX());
+		ps.setString(36, bet.getBetGroup5Values2());
+		ps.setInt(37, bet.getBetGroup5Errors1());
+		ps.setInt(38, bet.getBetGroup5ErrorsX());
+		ps.setInt(39, bet.getBetGroup5Errors2());
+		ps.setInt(40, bet.getBetId());
 		log.debug("update: " + ps.toString());
 		ps.executeUpdate();
 	    }
@@ -181,6 +223,30 @@ public class BetDAO implements InjectableDAO {
 	} catch (SQLException ex) {
 	    throw new RuntimeException(ex);
 	}
+    }
+    /**
+     * Elimina de la base de datos todos los registros de objetos Bet que
+     * pertenezcan a una ronda de un campeonato
+     *
+     * @param season	Temporada
+     * @param round	Id de la ronda a eliminar
+     * @return	Numero de filas eliminadas
+     */
+    public int deleteAuthomaticRoundBet(int chaId, int round) {
+	try {
+	    //** crear la frase DELETE SQL de tabla1
+	    String sql = "DELETE FROM bets WHERE bet_season = ? AND bet_order_number = ?"
+		    + " AND bet_description = ?";
+	    PreparedStatement ps = conn.prepareStatement(sql);
+	    ps.setInt(1, chaId);
+	    ps.setInt(2, round);
+	    ps.setString(3, "Generated Authomatically");
+	    log.debug("deleteAuthomaticRoundBet: " + ps.toString());
+	    return ps.executeUpdate();
+	} catch (SQLException ex) {
+	    log.error(ex);
+	}
+	return 0;
     }
 
     public Bet loadBetOnSeasonOrderNumberAndDescription(int season, int orderNumber, String description) {
@@ -220,22 +286,37 @@ public class BetDAO implements InjectableDAO {
 	    bet.setBetGroup1Values1(rs.getString("bet_group1_values_1"));
 	    bet.setBetGroup1ValuesX(rs.getString("bet_group1_values_X"));
 	    bet.setBetGroup1Values2(rs.getString("bet_group1_values_2"));
+	    bet.setBetGroup1Errors1(rs.getInt("bet_group1_errors_1"));
+	    bet.setBetGroup1ErrorsX(rs.getInt("bet_group1_errors_X"));
+	    bet.setBetGroup1Errors2(rs.getInt("bet_group1_errors_2"));
 	    bet.setBetGroup2(rs.getString("bet_group_2"));
 	    bet.setBetGroup2Values1(rs.getString("bet_group2_values_1"));
 	    bet.setBetGroup2ValuesX(rs.getString("bet_group2_values_X"));
 	    bet.setBetGroup2Values2(rs.getString("bet_group2_values_2"));
+	    bet.setBetGroup2Errors1(rs.getInt("bet_group2_errors_1"));
+	    bet.setBetGroup2ErrorsX(rs.getInt("bet_group2_errors_X"));
+	    bet.setBetGroup2Errors2(rs.getInt("bet_group2_errors_2"));
 	    bet.setBetGroup3(rs.getString("bet_group_3"));
 	    bet.setBetGroup3Values1(rs.getString("bet_group3_values_1"));
 	    bet.setBetGroup3ValuesX(rs.getString("bet_group3_values_X"));
 	    bet.setBetGroup3Values2(rs.getString("bet_group3_values_2"));
+	    bet.setBetGroup3Errors1(rs.getInt("bet_group3_errors_1"));
+	    bet.setBetGroup3ErrorsX(rs.getInt("bet_group3_errors_X"));
+	    bet.setBetGroup3Errors2(rs.getInt("bet_group3_errors_2"));
 	    bet.setBetGroup4(rs.getString("bet_group_4"));
 	    bet.setBetGroup4Values1(rs.getString("bet_group4_values_1"));
 	    bet.setBetGroup4ValuesX(rs.getString("bet_group4_values_X"));
 	    bet.setBetGroup4Values2(rs.getString("bet_group4_values_2"));
+	    bet.setBetGroup4Errors1(rs.getInt("bet_group4_errors_1"));
+	    bet.setBetGroup4ErrorsX(rs.getInt("bet_group4_errors_X"));
+	    bet.setBetGroup4Errors2(rs.getInt("bet_group4_errors_2"));
 	    bet.setBetGroup5(rs.getString("bet_group_5"));
 	    bet.setBetGroup5Values1(rs.getString("bet_group5_values_1"));
 	    bet.setBetGroup5ValuesX(rs.getString("bet_group5_values_X"));
 	    bet.setBetGroup5Values2(rs.getString("bet_group5_values_2"));
+	    bet.setBetGroup5Errors1(rs.getInt("bet_group5_errors_1"));
+	    bet.setBetGroup5ErrorsX(rs.getInt("bet_group5_errors_X"));
+	    bet.setBetGroup5Errors2(rs.getInt("bet_group5_errors_2"));
 	} catch (SQLException ex) {
 	    log.error(ex);
 	}
@@ -295,4 +376,5 @@ public class BetDAO implements InjectableDAO {
 	}
 	return bet;
     }
+
 }

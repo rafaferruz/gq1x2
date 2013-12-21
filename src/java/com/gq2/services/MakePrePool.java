@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.gq2.services;
 
 import com.gq2.DAO.DAOFactory;
@@ -9,6 +5,7 @@ import com.gq2.beans.ScoreBean;
 import com.gq2.domain.Championship;
 import com.gq2.domain.PrePool;
 import com.gq2.domain.Prognostic;
+import com.gq2.tools.Const;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -19,8 +16,6 @@ import java.util.List;
  */
 public class MakePrePool {
 
-    private final int HITTED_PROGNOSTIC = 0;
-    private final int FAILED_PROGNOSTIC = 1;
     private List<ScoreBean> scoreOneList = new ArrayList();
     private List<ScoreBean> scoreTwoList = new ArrayList();
     private List<PrePool> prePoolList = new ArrayList<>();
@@ -30,6 +25,7 @@ public class MakePrePool {
     private int round;
     private Championship championship;
     private int season;
+    private int orderNumber;
 
     public MakePrePool() {
     }
@@ -64,6 +60,14 @@ public class MakePrePool {
 
     public void setSeason(int season) {
 	this.season = season;
+    }
+
+    public int getOrderNumber() {
+	return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+	this.orderNumber = orderNumber;
     }
 
     public List<ScoreBean> getScoreOneList() {
@@ -113,8 +117,8 @@ public class MakePrePool {
     }
 
     private void processRound() {
-	deletePrePoolsCurrentRound(chaId, round);
-	deletePrePoolsCurrentRound(chaId + 1, round);
+	initSeasonAndOrderNumber(chaId, round);
+	deletePrePoolsCurrentRound(season, orderNumber);
 // Se cargan las variables de colecciones con los datos de Prognostics del campeonato en generacion y el siguiente            
 	initCollections(chaId, round);
 	generatePrePoolsCurrentRound();
@@ -125,11 +129,16 @@ public class MakePrePool {
 
     }
 
-    private void initCollections(int chaId, int round) {
+    private void initSeasonAndOrderNumber(int chaId, int round) {
 	setChampionship(new DAOFactory().getChampionshipDAO().load(chaId));
 	Calendar cal = Calendar.getInstance();
 	cal.setTime(getChampionship().getChaStartDate());
 	setSeason(cal.get(Calendar.YEAR));
+
+	setOrderNumber(round);
+    }
+
+    private void initCollections(int chaId, int round) {
 	// Leer resultados del campeonato de 1ª divison round actual        
 	setScoreOneList(loadRoundScores(chaId, round));
 	// Leer resultados del campeonato de 2ª divison round actual        
@@ -140,9 +149,9 @@ public class MakePrePool {
 	setPrognosticTwoList(loadRoundPrognostic(chaId + 1, round));
     }
 
-    private void deletePrePoolsCurrentRound(int chaId, int round) {
+    private void deletePrePoolsCurrentRound(int season, int orderNumber) {
 // Se eliminan los registros que existan de objetos PrePool de la round actual
-	new DAOFactory().getPrePoolDAO().deleteRoundPrePool(chaId, round);
+	new DAOFactory().getPrePoolDAO().deleteRoundPrePool(season, orderNumber);
     }
 
     private void generatePrePoolsCurrentRound() {
@@ -195,7 +204,7 @@ public class MakePrePool {
 
     private void fillPrePoolFromPrognostic(PrePool prePool, Prognostic prognostic, ScoreBean score) {
 	prePool.setPreSeason(getSeason());
-	prePool.setPreOrderNumber(prognostic.getPro_round());
+	prePool.setPreOrderNumber(getOrderNumber());
 	prePool.setPreDate(prognostic.getPro_date());
 	prePool.setPreChaId(prognostic.getPro_cha_id());
 	prePool.setPreRound(prognostic.getPro_round());
@@ -217,6 +226,6 @@ public class MakePrePool {
 	/* Calcula el Prognostic en un metodo estatico de PrePoolService */
 	prePool.setPrePrognostic(PrePoolService.getPrePoolPrognosticFromPercents(prePool));
 	prePool.setPreRat4ScoreSign(prognostic.getPro_rat4_score_sign());
-	prePool.setPreFailedPrognostic(prePool.getPrePrognostic().contains(prePool.getPreRat4ScoreSign()) ? HITTED_PROGNOSTIC : FAILED_PROGNOSTIC);
+	prePool.setPreFailedPrognostic(prePool.getPrePrognostic().contains(prePool.getPreRat4ScoreSign()) ? Const.HITTED_PROGNOSTIC : Const.FAILED_PROGNOSTIC);
     }
 }

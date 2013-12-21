@@ -139,7 +139,16 @@ public class Rating4Service implements Serializable {
 	rating4CurrentRoundList.clear();    // Se limpia la lista de Rating4 actual para ir llenandola
 	if (!scoreList.isEmpty()) {
 	    // Obtenemos un List con la clasificacion de la ronda anterior
-	    setRat4PreviousList(getRating4Round(scoreList.get(0).getScoChaId(), scoreList.get(0).getScoRound() - 1));
+	    List<Rating4> rating4List=getRating4PreviousList();
+	    rating4List.clear();
+	    DAOFactory df=new DAOFactory();
+	    int previousRoundsNumber=1;
+	    for (Score score:scoreList){
+		rating4List.addAll(df.getRating4DAO().readLatestBeforeDateRating4Team(score.getScoTeam1Id(), score.getScoDate(), previousRoundsNumber));
+		rating4List.addAll(df.getRating4DAO().readLatestBeforeDateRating4Team(score.getScoTeam2Id(), score.getScoDate(), previousRoundsNumber));
+	    }
+	    //setRat4PreviousList(getRating4Round(scoreList.get(0).getScoChaId(), scoreList.get(0).getScoRound() - 1));
+	    setRat4PreviousList(rating4List);
 	    for (Score score : scoreList) {
 // Fase de actualizaci�n del Equipos en Score
 		updateTeamsRating4FromScore(getRating4PreviousList(), score);
@@ -261,28 +270,14 @@ public class Rating4Service implements Serializable {
     }
 
     public void generateRating4CurrentRound(List<ScoreBean> scoreList) {
-	int indexOfr1, indexOfr2;
 	for (Score score : scoreList) {
 
 // Bucle de actualizaci�n de rating
 	    for (Rating4 r1 : rating4CurrentRoundList) {
 		if (r1.getRat4Team1Id() == score.getScoTeam1Id()) {
-		    indexOfr1 = rating4CurrentRoundList.indexOf(r1);
 		    for (Rating4 r2 : rating4CurrentRoundList) {
 			if (r2.getRat4Team1Id() == score.getScoTeam2Id()) {
 			    rating4UpdateRating(score, r1, r2, PREVIOUS_ROUNDS_TO_CALCULATE_RATING);
-			    /*
-			     indexOfr2 = rating4CurrentRoundList.indexOf(r2);
-			     // Se actualizan los datos de rating
-			     rating4CurrentRoundList.set(indexOfr1, rating4Actualizar1Rating(score, r1, r2, PREVIOUS_ROUNDS_TO_CALCULATE_RATING));
-			     Rating4 rating1 = rating4CurrentRoundList.get(indexOfr1);
-			     rating4CurrentRoundList.set(indexOfr2, rating4Actualizar2Rating(score, r1, r2, PREVIOUS_ROUNDS_TO_CALCULATE_RATING));
-			     Rating4 rating2 = rating4CurrentRoundList.get(indexOfr2);
-			     rating1.setRat4Team2Post(rating2.getRat4Team1Post());
-			     rating2.setRat4Team2Post(rating1.getRat4Team1Post());
-			     //			    rating4CurrentRoundList.set(indexOfr1, rating1);
-			     //			    rating4CurrentRoundList.set(indexOfr2, rating2);
-			     * */
 			    break;
 			}
 		    }

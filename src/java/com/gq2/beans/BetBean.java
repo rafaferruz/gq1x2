@@ -4,20 +4,16 @@ import com.gq2.domain.Bet;
 import com.gq2.services.BetService;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-import javax.naming.NamingException;
 
 /**
  *
@@ -130,22 +126,37 @@ public class BetBean extends Bet {
 	this.setBetGroup1Values1(betForEdition.getBetGroup1Values1());
 	this.setBetGroup1ValuesX(betForEdition.getBetGroup1ValuesX());
 	this.setBetGroup1Values2(betForEdition.getBetGroup1Values2());
+	this.setBetGroup1Errors1(betForEdition.getBetGroup1Errors1());
+	this.setBetGroup1ErrorsX(betForEdition.getBetGroup1ErrorsX());
+	this.setBetGroup1Errors2(betForEdition.getBetGroup1Errors2());
 	this.setBetGroup2(betForEdition.getBetGroup2());
 	this.setBetGroup2Values1(betForEdition.getBetGroup2Values1());
 	this.setBetGroup2ValuesX(betForEdition.getBetGroup2ValuesX());
 	this.setBetGroup2Values2(betForEdition.getBetGroup2Values2());
+	this.setBetGroup2Errors1(betForEdition.getBetGroup2Errors1());
+	this.setBetGroup2ErrorsX(betForEdition.getBetGroup2ErrorsX());
+	this.setBetGroup2Errors2(betForEdition.getBetGroup2Errors2());
 	this.setBetGroup3(betForEdition.getBetGroup3());
 	this.setBetGroup3Values1(betForEdition.getBetGroup3Values1());
 	this.setBetGroup3ValuesX(betForEdition.getBetGroup3ValuesX());
 	this.setBetGroup3Values2(betForEdition.getBetGroup3Values2());
+	this.setBetGroup3Errors1(betForEdition.getBetGroup3Errors1());
+	this.setBetGroup3ErrorsX(betForEdition.getBetGroup3ErrorsX());
+	this.setBetGroup3Errors2(betForEdition.getBetGroup3Errors2());
 	this.setBetGroup4(betForEdition.getBetGroup4());
 	this.setBetGroup4Values1(betForEdition.getBetGroup4Values1());
 	this.setBetGroup4ValuesX(betForEdition.getBetGroup4ValuesX());
 	this.setBetGroup4Values2(betForEdition.getBetGroup4Values2());
+	this.setBetGroup4Errors1(betForEdition.getBetGroup4Errors1());
+	this.setBetGroup4ErrorsX(betForEdition.getBetGroup4ErrorsX());
+	this.setBetGroup4Errors2(betForEdition.getBetGroup4Errors2());
 	this.setBetGroup5(betForEdition.getBetGroup5());
 	this.setBetGroup5Values1(betForEdition.getBetGroup5Values1());
 	this.setBetGroup5ValuesX(betForEdition.getBetGroup5ValuesX());
 	this.setBetGroup5Values2(betForEdition.getBetGroup5Values2());
+	this.setBetGroup5Errors1(betForEdition.getBetGroup5Errors1());
+	this.setBetGroup5ErrorsX(betForEdition.getBetGroup5ErrorsX());
+	this.setBetGroup5Errors2(betForEdition.getBetGroup5Errors2());
     }
 
     public void readBets(Integer season, Integer orderNumber, String description) {
@@ -158,7 +169,7 @@ public class BetBean extends Bet {
 	readBets(betSeason, betOrderNumber, betDescription);
     }
 
-    public void insertBet() throws NamingException, SQLException {
+    public void insertBet() {
 	if (betSeason == null || betSeason == 0
 		|| betOrderNumber == null || betOrderNumber == 0
 		|| betDescription == null || betDescription.equals("")) {
@@ -166,9 +177,7 @@ public class BetBean extends Bet {
 	    return;
 	}
 	Bet bet = betService.loadConditionalBet(getBetSeason(), getBetOrderNumber(), getBetDescription());
-	if (betService.loadConditionalBet(getBetSeason(), getBetOrderNumber(), getBetDescription()) == null) {
-//	if (bet == null) {
-	    //bet = new Bet();
+	if (bet == null) {
 	    fillBet(this);   // LLena un objeto Bet ya existente con los datos entrados o modificados
 	    // Persiste la apuesta
 	    setBetId(betService.save(this));
@@ -211,18 +220,33 @@ public class BetBean extends Bet {
 	bet.setBetGroup1Values1(dataBetGroups.get(0).getBgrGroup1Values());
 	bet.setBetGroup1ValuesX(dataBetGroups.get(1).getBgrGroup1Values());
 	bet.setBetGroup1Values2(dataBetGroups.get(2).getBgrGroup1Values());
+	bet.setBetGroup1Errors1(dataBetGroups.get(0).getBgrGroup1Errors());
+	bet.setBetGroup1ErrorsX(dataBetGroups.get(1).getBgrGroup1Errors());
+	bet.setBetGroup1Errors2(dataBetGroups.get(2).getBgrGroup1Errors());
 	bet.setBetGroup2Values1(dataBetGroups.get(0).getBgrGroup2Values());
 	bet.setBetGroup2ValuesX(dataBetGroups.get(1).getBgrGroup2Values());
 	bet.setBetGroup2Values2(dataBetGroups.get(2).getBgrGroup2Values());
+	bet.setBetGroup2Errors1(dataBetGroups.get(0).getBgrGroup2Errors());
+	bet.setBetGroup2ErrorsX(dataBetGroups.get(1).getBgrGroup2Errors());
+	bet.setBetGroup2Errors2(dataBetGroups.get(2).getBgrGroup2Errors());
 	bet.setBetGroup3Values1(dataBetGroups.get(0).getBgrGroup3Values());
 	bet.setBetGroup3ValuesX(dataBetGroups.get(1).getBgrGroup3Values());
 	bet.setBetGroup3Values2(dataBetGroups.get(2).getBgrGroup3Values());
+	bet.setBetGroup3Errors1(dataBetGroups.get(0).getBgrGroup3Errors());
+	bet.setBetGroup3ErrorsX(dataBetGroups.get(1).getBgrGroup3Errors());
+	bet.setBetGroup3Errors2(dataBetGroups.get(2).getBgrGroup3Errors());
 	bet.setBetGroup4Values1(dataBetGroups.get(0).getBgrGroup4Values());
 	bet.setBetGroup4ValuesX(dataBetGroups.get(1).getBgrGroup4Values());
 	bet.setBetGroup4Values2(dataBetGroups.get(2).getBgrGroup4Values());
+	bet.setBetGroup4Errors1(dataBetGroups.get(0).getBgrGroup4Errors());
+	bet.setBetGroup4ErrorsX(dataBetGroups.get(1).getBgrGroup4Errors());
+	bet.setBetGroup4Errors2(dataBetGroups.get(2).getBgrGroup4Errors());
 	bet.setBetGroup5Values1(dataBetGroups.get(0).getBgrGroup5Values());
 	bet.setBetGroup5ValuesX(dataBetGroups.get(1).getBgrGroup5Values());
 	bet.setBetGroup5Values2(dataBetGroups.get(2).getBgrGroup5Values());
+	bet.setBetGroup5Errors1(dataBetGroups.get(0).getBgrGroup5Errors());
+	bet.setBetGroup5ErrorsX(dataBetGroups.get(1).getBgrGroup5Errors());
+	bet.setBetGroup5Errors2(dataBetGroups.get(2).getBgrGroup5Errors());
     }
     /* Por cada linea de apuesta, se va contruyendo un string de signos '1' y '0' para cada uno de los 
      * cinco grupos en los que se agrupan los partidos en funcion de similares probabilidades de resultados.
@@ -241,96 +265,17 @@ public class BetBean extends Bet {
     }
 
     public void editBet() {
-
-	// Obtiene las lineas de la apuesta desde la tabla de PrePools 
-	generateBetLinesFromPrePoolLines();
-//	String[] arrayBase = getBetBase().split(",");
-	List<String> betBaseList = (getBetBase().equals("")
-		? new ArrayList<String>()
-		: Arrays.asList(getBetBase().split(",")));
-	int idx;
-	for (BetLineBean betLine : dataBetLines) {
-	    idx = dataBetLines.indexOf(betLine);
-	    /* Si el numero de apuestas base de lineas es menor al numero de lineas
-	     que forman la apuesta total, se asigna el signo "1" para las siguientes apuestas */
-	    if (idx > betBaseList.size() - 1) {
-		betLine.setBliColumnBase("1");
-	    } else {
-		betLine.setBliColumnBase(betBaseList.get(idx));
-	    }
-	    /* betGroup1 deberia ser un string de 14 acaracteres 0 y 1 para indicar que partidos 
-	     * estan asignados a este grupo.
-	     * 
-	     * bliColumnGroup1 = true indicara si la linea esta incluida en el grupo 1.
-	     */
-	    if (getBetGroup1() != null && getBetGroup1().length() > idx) {
-		betLine.setBliColumnGroup1((getBetGroup1().substring(idx, idx + 1).equals("1") ? true : false));
-	    } else {
-		betLine.setBliColumnGroup1(false);
-	    }
-	    if (getBetGroup2() != null && getBetGroup2().length() > idx) {
-		betLine.setBliColumnGroup2((getBetGroup2().substring(idx, idx + 1).equals("1") ? true : false));
-	    } else {
-		betLine.setBliColumnGroup2(false);
-	    }
-	    if (getBetGroup3() != null && getBetGroup3().length() > idx) {
-		betLine.setBliColumnGroup3((getBetGroup3().substring(idx, idx + 1).equals("1") ? true : false));
-	    } else {
-		betLine.setBliColumnGroup3(false);
-	    }
-	    if (getBetGroup4() != null && getBetGroup4().length() > idx) {
-		betLine.setBliColumnGroup4((getBetGroup4().substring(idx, idx + 1).equals("1") ? true : false));
-	    } else {
-		betLine.setBliColumnGroup4(false);
-	    }
-	    if (getBetGroup5() != null && getBetGroup5().length() > idx) {
-		betLine.setBliColumnGroup5((getBetGroup5().substring(idx, idx + 1).equals("1") ? true : false));
-	    } else {
-		betLine.setBliColumnGroup5(false);
-	    }
-	}
-
-	dataBetGroups.clear();
-	for (int i = 0; i < 3; i++) {
-	    dataBetGroup = new BetGroupBean();
-	    switch (i) {
-		case 0:
-		    dataBetGroup.setBgrSign("1");
-		    dataBetGroup.setBgrGroup1Values(getBetGroup1Values1());
-		    dataBetGroup.setBgrGroup2Values(getBetGroup2Values1());
-		    dataBetGroup.setBgrGroup3Values(getBetGroup3Values1());
-		    dataBetGroup.setBgrGroup4Values(getBetGroup4Values1());
-		    dataBetGroup.setBgrGroup5Values(getBetGroup5Values1());
-		    dataBetGroups.add(dataBetGroup);
-		    break;
-		case 1:
-		    dataBetGroup.setBgrSign("X");
-		    dataBetGroup.setBgrGroup1Values(getBetGroup1ValuesX());
-		    dataBetGroup.setBgrGroup2Values(getBetGroup2ValuesX());
-		    dataBetGroup.setBgrGroup3Values(getBetGroup3ValuesX());
-		    dataBetGroup.setBgrGroup4Values(getBetGroup4ValuesX());
-		    dataBetGroup.setBgrGroup5Values(getBetGroup5ValuesX());
-		    dataBetGroups.add(dataBetGroup);
-		    break;
-		case 2:
-		    dataBetGroup.setBgrSign("2");
-		    dataBetGroup.setBgrGroup1Values(getBetGroup1Values2());
-		    dataBetGroup.setBgrGroup2Values(getBetGroup2Values2());
-		    dataBetGroup.setBgrGroup3Values(getBetGroup3Values2());
-		    dataBetGroup.setBgrGroup4Values(getBetGroup4Values2());
-		    dataBetGroup.setBgrGroup5Values(getBetGroup5Values2());
-		    dataBetGroups.add(dataBetGroup);
-		    break;
-	    }
-	}
-
+	
+	betService.completeBetWithBetLines(this);
     }
 
     public void saveBet() {
-	sortDataBetLines("order");
+	setSortby("order");
+	sortDataBetLines(getSortby());
 	fillBet(this);
 	Integer idxOf = findIdInBetList(this.getBetId(), betList);
 	if (idxOf == null) {
+	    betService.save(this);
 	    // No esta la lista de bets. Deberia guardarse como apuesta nueva
 	    // TODO Enviar mensaje de que no existe y debe guardarse como nueva
 	} else {
@@ -357,251 +302,16 @@ public class BetBean extends Bet {
 	}
     }
 
-    private void generateBetLinesFromPrePoolLines() {
-	setDataBetLines(betService.generateBetLinesFromPrePoolLines(getBetSeason(), getBetOrderNumber()));
-    }
-
     /**
      * Genera automaticamente la columna base de apuestas en base a la
      * diferencia de rating y segun los criterios definidos de forma standard a
      * partir del estudio estadistico de los resultados reales producidos
      */
     public void generateBets() {
-	/*
-	 * Limpieza de datos de apuestas y grupos de partidos a rellenar
-	 */
-	setBetDescription("Generated Authomatically");
-	for (BetLineBean betLine : dataBetLines) {
-	    betLine.setBliColumnGroup1(false);
-	    betLine.setBliColumnGroup2(false);
-	    betLine.setBliColumnGroup3(false);
-	    betLine.setBliColumnGroup4(false);
-	    betLine.setBliColumnGroup5(false);
-	    betLine.setBliColumnBase("");
-	}
-	dataBetGroups.get(0).setBgrGroup1Values("");
-	dataBetGroups.get(1).setBgrGroup1Values("");
-	dataBetGroups.get(2).setBgrGroup1Values("");
-	dataBetGroups.get(0).setBgrGroup2Values("");
-	dataBetGroups.get(1).setBgrGroup2Values("");
-	dataBetGroups.get(2).setBgrGroup2Values("");
-	dataBetGroups.get(0).setBgrGroup3Values("");
-	dataBetGroups.get(1).setBgrGroup3Values("");
-	dataBetGroups.get(2).setBgrGroup3Values("");
-	dataBetGroups.get(0).setBgrGroup4Values("");
-	dataBetGroups.get(1).setBgrGroup4Values("");
-	dataBetGroups.get(2).setBgrGroup4Values("");
-	dataBetGroups.get(0).setBgrGroup5Values("");
-	dataBetGroups.get(1).setBgrGroup5Values("");
-	dataBetGroups.get(2).setBgrGroup5Values("");
-	/*
-	 * Calculo del grupo al que asignar el partido
-	 */
-	Map<Integer, CalculationBetData> ratingDiferenceGroups = new HashMap<>();
-	for (BetLineBean betLine : dataBetLines) {
-	    if (betLine.getBliRating4PreviousDiference() / 10 > 30) {
-		betLine.setBliColumnGroup1(true);
-		betLine.setBliColumnBase("1X2");
-		ratingDiferenceGroups.put(0, (ratingDiferenceGroups.get(0) == null
-			? new CalculationBetData(betLine)
-			: ratingDiferenceGroups.get(0).calculateSums(betLine)));
-	    } else if (betLine.getBliRating4PreviousDiference() / 10 > 5 && betLine.getBliRating4PreviousDiference() / 10 <= 30) {
-		betLine.setBliColumnGroup2(true);
-		betLine.setBliColumnBase("1X2");
-		ratingDiferenceGroups.put(1, (ratingDiferenceGroups.get(1) == null
-			? new CalculationBetData(betLine)
-			: ratingDiferenceGroups.get(1).calculateSums(betLine)));
-
-	    } else if (betLine.getBliRating4PreviousDiference() / 10 > -12 && betLine.getBliRating4PreviousDiference() / 10 <= 5) {
-		betLine.setBliColumnGroup3(true);
-		betLine.setBliColumnBase("1X2");
-		ratingDiferenceGroups.put(2, (ratingDiferenceGroups.get(2) == null
-			? new CalculationBetData(betLine)
-			: ratingDiferenceGroups.get(2).calculateSums(betLine)));
-
-	    } else if (betLine.getBliRating4PreviousDiference() / 10 <= -12) {
-		betLine.setBliColumnGroup4(true);
-		betLine.setBliColumnBase("1X2");
-		ratingDiferenceGroups.put(3, (ratingDiferenceGroups.get(3) == null
-			? new CalculationBetData(betLine)
-			: ratingDiferenceGroups.get(3).calculateSums(betLine)));
-
-	    }
-	}
-
-	/*
-	 * Calculo del rango de signos que deben aparecer en cada grupo
-	 */
-	int errors1;
-	int errorsX;
-	int errors2;
-
-	for (Integer i : ratingDiferenceGroups.keySet()) {
-	    Integer min1 = ratingDiferenceGroups.get(i).sumMatches * ratingDiferenceGroups.get(i).sumPercents1
-		    / (ratingDiferenceGroups.get(i).sumMatches * 100);
-	    String range1 = min1 + "," + (min1 + 1);
-	    if (ratingDiferenceGroups.get(i).sumScore1 < min1) {
-		errors1 = ratingDiferenceGroups.get(i).sumScore1 - min1;
-	    } else if (ratingDiferenceGroups.get(i).sumScore1 > (min1 + 1)) {
-		errors1 = ratingDiferenceGroups.get(i).sumScore1 - (min1 + 1);
-	    } else {
-		errors1 = 0;
-	    }
-	    Integer minX = ratingDiferenceGroups.get(i).sumMatches * ratingDiferenceGroups.get(i).sumPercentsX
-		    / (ratingDiferenceGroups.get(i).sumMatches * 100);
-	    String rangeX = minX + "," + (minX + 1);
-	    if (ratingDiferenceGroups.get(i).sumScoreX < minX) {
-		errorsX = ratingDiferenceGroups.get(i).sumScoreX - minX;
-	    } else if (ratingDiferenceGroups.get(i).sumScoreX > (minX + 1)) {
-		errorsX = ratingDiferenceGroups.get(i).sumScoreX - (minX + 1);
-	    } else {
-		errorsX = 0;
-	    }
-	    Integer min2 = ratingDiferenceGroups.get(i).sumMatches * ratingDiferenceGroups.get(i).sumPercents2
-		    / (ratingDiferenceGroups.get(i).sumMatches * 100);
-	    String range2 = min2 + "," + (min2 + 1);
-	    if (ratingDiferenceGroups.get(i).sumScore2 < min2) {
-		errors2 = ratingDiferenceGroups.get(i).sumScore2 - min2;
-	    } else if (ratingDiferenceGroups.get(i).sumScore2 > (min2 + 1)) {
-		errors2 = ratingDiferenceGroups.get(i).sumScore2 - (min2 + 1);
-	    } else {
-		errors2 = 0;
-	    }
-
-	    switch (i) {
-		case 0:
-		    dataBetGroups.get(0).setBgrGroup1Values(range1);
-		    dataBetGroups.get(1).setBgrGroup1Values(rangeX);
-		    dataBetGroups.get(2).setBgrGroup1Values(range2);
-		    dataBetGroups.get(0).setBgrGroup1Errors(errors1);
-		    dataBetGroups.get(1).setBgrGroup1Errors(errorsX);
-		    dataBetGroups.get(2).setBgrGroup1Errors(errors2);
-		    break;
-		case 1:
-		    dataBetGroups.get(0).setBgrGroup2Values(range1);
-		    dataBetGroups.get(1).setBgrGroup2Values(rangeX);
-		    dataBetGroups.get(2).setBgrGroup2Values(range2);
-		    dataBetGroups.get(0).setBgrGroup2Errors(errors1);
-		    dataBetGroups.get(1).setBgrGroup2Errors(errorsX);
-		    dataBetGroups.get(2).setBgrGroup2Errors(errors2);
-		    break;
-		case 2:
-		    dataBetGroups.get(0).setBgrGroup3Values(range1);
-		    dataBetGroups.get(1).setBgrGroup3Values(rangeX);
-		    dataBetGroups.get(2).setBgrGroup3Values(range2);
-		    dataBetGroups.get(0).setBgrGroup3Errors(errors1);
-		    dataBetGroups.get(1).setBgrGroup3Errors(errorsX);
-		    dataBetGroups.get(2).setBgrGroup3Errors(errors2);
-		    break;
-		case 3:
-		    dataBetGroups.get(0).setBgrGroup4Values(range1);
-		    dataBetGroups.get(1).setBgrGroup4Values(rangeX);
-		    dataBetGroups.get(2).setBgrGroup4Values(range2);
-		    dataBetGroups.get(0).setBgrGroup4Errors(errors1);
-		    dataBetGroups.get(1).setBgrGroup4Errors(errorsX);
-		    dataBetGroups.get(2).setBgrGroup4Errors(errors2);
-		    break;
-	    }
-	}
+	
+	betService.generateBets(this);
 
 	saveBet();
-    }
-
-    /**
-     * calculationBetData es una clase privada para ayuda en los calculos de
-     * generacion de apuestas de forma automatica. contiene las sumas de los
-     * partidos de un determinado grupo y las sumas de los porcentajes de signos
-     * de los partidos que forman cada grupo
-     */
-    private class CalculationBetData {
-
-	private int sumMatches;
-	private int sumPercents1;
-	private int sumPercentsX;
-	private int sumPercents2;
-	private int sumScore1;
-	private int sumScoreX;
-	private int sumScore2;
-
-	private CalculationBetData(BetLineBean betLine) {
-	    calculateSums(betLine);
-	}
-
-	public int getSumMatches() {
-	    return sumMatches;
-	}
-
-	public void setSumMatches(int sumMatches) {
-	    this.sumMatches = sumMatches;
-	}
-
-	public int getSumPercents1() {
-	    return sumPercents1;
-	}
-
-	public void setSumPercents1(int sumPercents1) {
-	    this.sumPercents1 = sumPercents1;
-	}
-
-	public int getSumPercentsX() {
-	    return sumPercentsX;
-	}
-
-	public void setSumPercentsX(int sumPercentsX) {
-	    this.sumPercentsX = sumPercentsX;
-	}
-
-	public int getSumPercents2() {
-	    return sumPercents2;
-	}
-
-	public void setSumPercents2(int sumPercents2) {
-	    this.sumPercents2 = sumPercents2;
-	}
-
-	public int getSumScore1() {
-	    return sumScore1;
-	}
-
-	public void setSumScore1(int sumScore1) {
-	    this.sumScore1 = sumScore1;
-	}
-
-	public int getSumScoreX() {
-	    return sumScoreX;
-	}
-
-	public void setSumScoreX(int sumScoreX) {
-	    this.sumScoreX = sumScoreX;
-	}
-
-	public int getSumScore2() {
-	    return sumScore2;
-	}
-
-	public void setSumScore2(int sumScore2) {
-	    this.sumScore2 = sumScore2;
-	}
-
-	private CalculationBetData calculateSums(BetLineBean betLine) {
-	    sumMatches++;
-	    sumPercents1 += betLine.getBliPercentWin();
-	    sumPercentsX += betLine.getBliPercentDraw();
-	    sumPercents2 += betLine.getBliPercentLose();
-	    switch (betLine.getBliSign()) {
-		case "1":
-		    sumScore1++;
-		    break;
-		case "X":
-		    sumScoreX++;
-		    break;
-		case "2":
-		    sumScore2++;
-		    break;
-	    }
-
-	    return this;
-	}
     }
 
     public void generateCols() {
