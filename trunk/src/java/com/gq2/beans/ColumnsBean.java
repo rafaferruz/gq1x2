@@ -38,6 +38,7 @@ public class ColumnsBean extends BetBean {
     private Integer colgoto = 1;
     private Integer selReduction = 0;
     private Integer reduceFromCol = 1;
+    private Integer maximumColumnsNumber;
     private Boolean reduceRandom = false;
     private String saveReduction = "";
     private List<SelectItem> columnItemList = new ArrayList();
@@ -176,6 +177,14 @@ public class ColumnsBean extends BetBean {
 	this.reduceRandom = reduceRandom;
     }
 
+    public Integer getMaximumColumnsNumber() {
+	return maximumColumnsNumber;
+    }
+
+    public void setMaximumColumnsNumber(Integer maximumColumnsNumber) {
+	this.maximumColumnsNumber = maximumColumnsNumber;
+    }
+
     public String getSaveReduction() {
 	return saveReduction;
     }
@@ -295,7 +304,7 @@ public class ColumnsBean extends BetBean {
     }
 
     public void moveprev() {
-	firstCol = Math.max(firstCol -Const. MAXIMUN_COLUMNS_BY_FORM, 1);
+	firstCol = Math.max(firstCol - Const.MAXIMUN_COLUMNS_BY_FORM, 1);
 	lastCol = firstCol + (Const.MAXIMUN_COLUMNS_BY_FORM - 1);
 	setShowColumns(firstCol, lastCol);
     }
@@ -331,6 +340,7 @@ public class ColumnsBean extends BetBean {
 
     public void saveReduction() {
 	try {
+	    fc = FacesContext.getCurrentInstance();
 	    columnService.saveReduction(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
 		    + getBetOrderNumber() + "_" + getBetId() + saveReduction + ".col"),
 		    selReduction, reduceFromCol, dataCols);

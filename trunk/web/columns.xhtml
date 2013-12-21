@@ -164,6 +164,13 @@
 						    <h:selectBooleanCheckbox id="reducerandom" value="#{columns.reduceRandom}" />
 						    <h:outputText id="outputText213" value="#{txt_bet.randomF}"/>
 						</h:outputLabel>
+						<br></br>
+						<h:outputLabel for="outputText214" id="outputText214label">
+						    <h:outputText id="outputText214" value="#{txt_bet.maximumColumnsNumber}"/>
+						</h:outputLabel>
+						<br></br>
+						<h:inputText id="maximumColumnsNumber" maxlength="5" size="5" value="#{columns.maximumColumnsNumber}"/>
+						
 						<h:commandButton action="#{columns.generateReduction}" id="button211" value="#{txt_bet.generateReduction}"/>
 						<br></br>
 						<br></br>
