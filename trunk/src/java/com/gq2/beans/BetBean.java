@@ -613,7 +613,7 @@ public class BetBean extends Bet {
 
 	try {
 //                file = new FileInputStream(getServletContext().getRealPath("/WEB-INF/ficheroResultados"));
-	    fw = new PrintWriter(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
+	    fw = new PrintWriter(fc.getExternalContext().getRealPath("/WEB-INF/columns/" + getBetSeason() + "_"
 		    + getBetOrderNumber() + "_" + getBetId() + ".col"));
 
 	    for (String colBase : colsBase) {

@@ -134,6 +134,9 @@ public class DAOFactory {
     public BetDAO getBetDAO() {
 	return (BetDAO) this.getDAO(BetDAO.class);
     }
+    public HitDAO getHitDAO() {
+	return (HitDAO) this.getDAO(HitDAO.class);
+    }
     public SetupDAO getSetupDAO() {
 	return (SetupDAO) this.getDAO(SetupDAO.class);
     }
