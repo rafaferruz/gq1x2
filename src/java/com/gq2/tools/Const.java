@@ -38,8 +38,12 @@ public class Const {
     /* Usadas en Creacion de Apuestas */
     public static final int MAXIMUN_COLUMNS_BY_FORM = 8;
     public static final int MAXIMUN_LINES_BY_FORM = 14;
+    public static final String GENERATED_AUTHOMATICALLY_TEXT = "Generated Authomatically";
 
     /* Usadas en la Gestion de Columnas */
     public static final int AUTHOMATIC_REDUCTION_TO = 9;
+    public static final String AUTHOMATIC_REDUCTION_SUFFIX_TEXT = "Authomatic_reduction_to_";
     public static final int AUTHOMATIC_REDUCE_FROM_COLUMN = 1;
+    public static final int AUTHOMATIC_MAXIMUN_COLUMNS_IN_REDUCTION = 32;
+    public static final String MAXIMUN_COLUMNS_SUFFIX_TEXT = "Maximum_columns_in_reduction_";
 }

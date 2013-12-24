@@ -1,6 +1,8 @@
 package com.gq2.services;
 
+import com.gq2.DAO.DAOFactory;
 import com.gq2.beans.ColumnsBean;
+import com.gq2.domain.Hit;
 import com.gq2.tools.Const;
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,59 +31,67 @@ public class ColumnService {
 
     public List<String> generateReduction(ColumnsBean columnsBean) {
 	List<String> dataColsWork = new ArrayList();
-	if (columnsBean.getSelReduction() != 0) {
-	    if (columnsBean.getReduceFromCol() > 1) {
-		dataColsWork.addAll(columnsBean.getDataCols().subList(columnsBean.getReduceFromCol() - 1, columnsBean.getNumCols()));
-		dataColsWork.addAll(columnsBean.getDataCols().subList(0, columnsBean.getReduceFromCol() - 1));
-	    } else {
-		dataColsWork.addAll(columnsBean.getDataCols());
-	    }
-	    int i = 1;
-	    int k;
-	    int m;
-	    while (i < dataColsWork.size()) {
-		for (int j = 0; j < i; j++) {
-		    char[] s1 = dataColsWork.get(j).toCharArray();
-		    char[] s2 = dataColsWork.get(i).toCharArray();
-		    m = 0;
-		    for (k = 0; k < Const.MAXIMUN_LINES_BY_FORM; k++) {
-			if (s1[k] != s2[k]) {
-			    m++;
+	switch (columnsBean.getSelReduction()) {
+	    case Const.MAXIMUN_LINES_BY_FORM:
+		dataColsWork = columnsBean.getDataCols();
+		break;
+	    case 0:
+		dataColsWork = columnsBean.getDataCols();
+		break;
+	    default:
+		if (columnsBean.getReduceFromCol() > 1) {
+		    dataColsWork.addAll(columnsBean.getDataCols().subList(columnsBean.getReduceFromCol() - 1, columnsBean.getNumCols()));
+		    dataColsWork.addAll(columnsBean.getDataCols().subList(0, columnsBean.getReduceFromCol() - 1));
+		} else {
+		    dataColsWork.addAll(columnsBean.getDataCols());
+		}
+		int i = 0;
+		int k;
+		int diferentBets;
+		int minimumDiferences = 1 + Const.MAXIMUN_LINES_BY_FORM - columnsBean.getSelReduction();
+		while (i < dataColsWork.size()) {
+		    List<String> dataColsToRemove = new ArrayList();
+
+		    for (int j = 1; j < dataColsWork.size(); j++) {
+			char[] s1 = dataColsWork.get(j).toCharArray();
+			char[] s2 = dataColsWork.get(i).toCharArray();
+			diferentBets = 0;
+			for (k = 0; k < Const.MAXIMUN_LINES_BY_FORM; k++) {
+			    if (s1[k] != s2[k]) {
+				diferentBets++;
+			    }
+			}
+			if (diferentBets < minimumDiferences) {
+			    dataColsToRemove.add(dataColsWork.get(j));
 			}
 		    }
-		    if (m <= columnsBean.getSelReduction()) {
-			dataColsWork.remove(i);
-			i--;
-			break;
+		    dataColsWork.removeAll(dataColsToRemove);
+		    i++;
+		}
+		/* Reduciendo columnas hasta un maximo de columnas solicitado */
+		if (columnsBean.getMaximumColumnsNumber() != null
+			&& columnsBean.getMaximumColumnsNumber() > 0) {
+		    while (dataColsWork.size() > columnsBean.getMaximumColumnsNumber()) {
+			dataColsWork.remove(new Double(dataColsWork.size() * Math.random()).intValue());
 		    }
-
 		}
-		i++;
-		if (i >= dataColsWork.size()) {
-		    break;
-		}
-	    }
-	    /* Reduciendo columnas hasta un maximo de columnas solicitado */
-	    if (columnsBean.getMaximumColumnsNumber() != null
-		    && columnsBean.getMaximumColumnsNumber() > 0) {
-		while (dataColsWork.size() > columnsBean.getMaximumColumnsNumber()) {
-		    dataColsWork.remove(new Double(dataColsWork.size() * Math.random()).intValue());
-		}
-	    }
+		break;
 	}
 	return dataColsWork;
-
     }
 
-    public void saveReduction(String pathNameFileReduction, Integer selReduction, Integer reduceFromCol, List<String> dataCols) throws IOException {
+    public void saveReduction(ColumnsBean columns) throws IOException {
+	String pathNameFileReduction = columns.getFc().getExternalContext().getRealPath("/WEB-INF/columns/"
+		+ columns.getBetSeason() + "_"
+		+ columns.getBetOrderNumber() + "_" + columns.getBetId() + columns.getSaveReduction() + ".col");
 	PrintWriter fw = null;
 
 	try {
 	    fw = new PrintWriter(new FileWriter(pathNameFileReduction));
 
-	    fw.println("//selReduction:" + selReduction.toString());
-	    fw.println("//reduceFromCol:" + reduceFromCol.toString());
-	    for (String record : dataCols) {
+	    fw.println("//selReduction:" + columns.getSelReduction().toString());
+	    fw.println("//reduceFromCol:" + columns.getReduceFromCol().toString());
+	    for (String record : columns.getDataCols()) {
 		fw.println(record);
 	    }
 	} catch (FileNotFoundException e) {
@@ -91,6 +101,30 @@ public class ColumnService {
 		fw.close();
 	    }
 	}
+    }
+
+    public void saveHits(ColumnsBean columns) {
+	DAOFactory df = new DAOFactory();
+	/* Inicio de la transaccion */
+//	df.startTransaction();
+	/* Eliminacion de datos de la reduccion de la tabla hits */
+	df.getHitDAO().deleteReductionHits(columns.getBetSeason(), columns.getBetOrderNumber(), columns.getBetDescription(), columns.getSaveReduction());
+	/* Grabacion de nuevos datos de la reduccion en la tabla hits */
+	for (Integer hitsKey : columns.getDataShowHits().keySet()) {
+	    Hit hit = new Hit();
+	    hit.setHitBetId(columns.getBetId());
+	    hit.setHitBetSeason(columns.getBetSeason());
+	    hit.setHitBetOrderNumber(columns.getBetOrderNumber());
+	    hit.setHitBetDescription(columns.getBetDescription());
+	    hit.setHitReductionName(columns.getSaveReduction());
+	    hit.setHitTotalColumns(columns.getDataCols().size());
+	    hit.setHitHitsNumber(hitsKey);
+	    hit.setHitColumnsNumber(columns.getDataShowHits().get(hitsKey).getHitItemList().size());
+	    df.getHitDAO().save(hit);
+	}
+	/* Fin de la transaccion */
+//	df.commit();
+
     }
 
     public List<SelectItem> loadReductionFileNames(String dirPathName, String suffixFileName) {
@@ -126,14 +160,20 @@ public class ColumnService {
 	    }
 	} catch (FileNotFoundException e) {
 	    fc.getExternalContext().log("URL mal formada");
+
+
 	} catch (IOException ex) {
-	    Logger.getLogger(ColumnsBean.class.getName()).log(Level.SEVERE, null, ex);
+	    Logger.getLogger(ColumnsBean.class
+		    .getName()).log(Level.SEVERE, null, ex);
 	} finally {
 	    if (fr != null) {
 		try {
 		    fr.close();
+
+
 		} catch (IOException ex) {
-		    Logger.getLogger(ColumnsBean.class.getName()).log(Level.SEVERE, null, ex);
+		    Logger.getLogger(ColumnsBean.class
+			    .getName()).log(Level.SEVERE, null, ex);
 		}
 	    }
 	}

@@ -3,6 +3,7 @@ package com.gq2.services;
 import com.gq2.DAO.DAOFactory;
 import com.gq2.beans.BetBean;
 import com.gq2.domain.Championship;
+import com.gq2.tools.Const;
 import java.util.Calendar;
 
 /**
@@ -15,7 +16,6 @@ public class MakeAuthomaticBet {
     private int round;
     private Championship championship;
     private int season;
-    private BetService betService = new BetService();
 
     public MakeAuthomaticBet() {
     }
@@ -67,7 +67,7 @@ public class MakeAuthomaticBet {
 	BetBean authomaticBet = new BetBean();
 	authomaticBet.setBetSeason(season);
 	authomaticBet.setBetOrderNumber(round);
-	authomaticBet.setBetDescription("Generated Authomatically");
+	authomaticBet.setBetDescription(Const.GENERATED_AUTHOMATICALLY_TEXT);
 	/* Se completa la nueva apuesta con las lineas que le correspondan desde PrePool */
 	authomaticBet.editBet(); // Desde editBet se llama al servicio para completar las lineas
 	/* Se generan las apuestas automaticas y se persisten en la base de datos */

@@ -235,6 +235,14 @@ public class ColumnsBean extends BetBean {
 	this.columnService = columnService;
     }
 
+    public FacesContext getFc() {
+	return fc;
+    }
+
+    public void setFc(FacesContext fc) {
+	this.fc = fc;
+    }
+
     public List<String> getDataColumns(String combinatedName) {
 	readFileColumns(combinatedName);
 	return getDataCols();
@@ -244,8 +252,7 @@ public class ColumnsBean extends BetBean {
 	dataCols.clear();
 	fc = FacesContext.getCurrentInstance();
 	fc.getExternalContext().getSessionMap().remove("coldataCols");
-	List<String> dataColsWork = new ArrayList<>();
-	dataColsWork = columnService.readFileColumns(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
+	List<String> dataColsWork = columnService.readFileColumns(fc.getExternalContext().getRealPath("/WEB-INF/columns/" + getBetSeason() + "_"
 		+ getBetOrderNumber() + "_" + getBetId() + combinatedName + ".col"));
 	for (String record : dataColsWork) {
 	    if (record.startsWith("//selReduction:")) {
@@ -354,10 +361,12 @@ public class ColumnsBean extends BetBean {
 
     public void saveReduction() {
 	try {
+	    /* Calcula los aciertos por columnas */
+	    dataShowHits();
+	    /* Guarda el fichero de columnas reducidas y los datos de aciertos en columnas */
 	    fc = FacesContext.getCurrentInstance();
-	    columnService.saveReduction(fc.getExternalContext().getRealPath("/WEB-INF/" + getBetSeason() + "_"
-		    + getBetOrderNumber() + "_" + getBetId() + saveReduction + ".col"),
-		    selReduction, reduceFromCol, dataCols);
+	    columnService.saveReduction(this);
+	    columnService.saveHits(this);
 	} catch (IOException ex) {
 	    Logger.getLogger(ColumnsBean.class.getName()).log(Level.SEVERE, null, ex);
 	}
@@ -365,7 +374,7 @@ public class ColumnsBean extends BetBean {
 
     private void loadReductions() {
 	fc = FacesContext.getCurrentInstance();
-	String dirPathName = fc.getExternalContext().getRealPath("/WEB-INF/");
+	String dirPathName = fc.getExternalContext().getRealPath("/WEB-INF/columns/");
 	String suffixFileName = getBetSeason() + "_" + getBetOrderNumber() + "_" + getBetId();
 	setColumnItemList(columnService.loadReductionFileNames(dirPathName, suffixFileName));
     }
@@ -384,7 +393,6 @@ public class ColumnsBean extends BetBean {
 
     public void dataShowHits() {
 	dataShowHits.clear();
-	List<SelectItem> hitBetList = new ArrayList<>();
 	for (String column : dataCols) {
 	    Integer targets = 0;
 	    for (int c = 0; c < Const.MAXIMUN_LINES_BY_FORM; c++) {
@@ -394,12 +402,13 @@ public class ColumnsBean extends BetBean {
 		    targets++;
 		}
 	    }
-	    if (dataShowHits.get(targets) == null) {
-		dataShowHits.put(targets, new HitBet(1, dataCols.indexOf(column) + 1));
-	    } else {
-		dataShowHits.put(targets, dataShowHits.get(targets).addHit(dataCols.indexOf(column) + 1));
+	    if (targets >= 10) {
+		if (dataShowHits.get(targets) == null) {
+		    dataShowHits.put(targets, new HitBet(1, dataCols.indexOf(column) + 1));
+		} else {
+		    dataShowHits.put(targets, dataShowHits.get(targets).addHit(dataCols.indexOf(column) + 1));
+		}
 	    }
 	}
     }
-
 }
