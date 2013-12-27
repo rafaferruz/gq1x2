@@ -34,18 +34,12 @@
 			<tbody>
 			    <tr>
 				<td>
-				    <h:outputLabel for="textseason" id="textseasonlabel">
-					<h:outputText id="textseason" value="#{txt_pre.prePoolSeason}"/>
-				    </h:outputLabel>
-				    <h:inputText id="season" maxlength="4" size="4" value="#{prePool.season}" valueChangeListener="#{prePool.changeValueSeason}">
-				    </h:inputText>
-				</td>
-				<td>
-				    <h:outputLabel for="textround" id="textroundlabel">
-					<h:outputText id="textround" value="#{txt_pre.prePoolRound}"/>
-				    </h:outputLabel>
-				    <h:inputText id="round" maxlength="2" onchange="submit();" size="2" value="#{prePool.orderNumber}" valueChangeListener="#{prePool.changeValueOrderNumber}">
-				    </h:inputText>
+				    <ui:include  src="/WEB-INF/includes/tools/seasonAndDayInput.xhtml">
+					<ui:param name="bean" value="#{prePool}"/>
+					<ui:param name="requiredSeason" value="true"/>
+					<ui:param name="requiredDayOrder" value="false"/>
+					<ui:param name="mode" value="onlyADay"/>
+				    </ui:include>
 				</td>
 				<td>
 				    <h:outputLabel for="textradio" id="textradiolabel">
@@ -64,85 +58,9 @@
 				    <br/>
 				    <br/>
 				    <c:if test="#{prePool.prePoolList.size() != 0}">
-					<h:dataTable cellpadding="0px" cellspacing="0px"
-						     columnClasses=",,col-center,col-center,col-center,col-center,col-center,col-center,col-center,col-center"
-						     headerClass="list-header" id="dataTable1" rowClasses="list-row-even,list-row-odd" 
-						     value="#{prePool.prePoolList}" var="currentRow" width="950pt">
-					    <h:column id="column2">
-						<h:outputText id="outputText3" value="#{currentRow['preTeaName1']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText4" value="#{txt_sco.homeTeam}"/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column3">
-						<h:outputText id="outputText5" value="#{currentRow['preTeaName2']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText6" value="#{txt_sco.outTeam}"/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column2score">
-						<h:outputText id="outputText3score" value="#{currentRow['preScoScore1']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText4score" value="#{txt_sco.GC}  "/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column3score">
-						<h:outputText id="outputText5score" value="#{currentRow['preScoScore2']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText6score" value="#{txt_sco.GF}  "/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column4">
-						<h:outputText id="outputText7" value="#{currentRow['preRat4PreviousDiference']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText8" value="#{txt_pre.difRating}"/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column5">
-						<h:outputText id="outputText9" value="#{currentRow['prePercentWin']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText10" value="#{txt_pre.prePoolProbabilityWin}"/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column6">
-						<h:outputText id="outputText11" value="#{currentRow['prePercentDraw']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText12" value="#{txt_pre.prePoolProbabilityDraw}"/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column7">
-						<h:outputText id="outputText13" value="#{currentRow['prePercentLose']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText14" value="#{txt_pre.prePoolProbabilityLose}"/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column8">
-						<h:outputText id="outputText15" value="#{currentRow['prePrognostic']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText16" value="#{txt_pre.prognostic}"/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column9">
-						<h:outputText id="outputText17" value="#{currentRow['preRat4ScoreSign']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText18" value="#{txt_pre.scoreSign}"/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column10">
-						<h:outputText id="outputText19" value="#{currentRow['preFailedPrognostic']}"/>
-						<f:facet name="header">
-						    <h:outputText id="outputText20" value="#{txt_pre.fault}"/>
-						</f:facet>
-					    </h:column>
-					    <h:column id="column11">
-						<f:facet name="header">
-						    <h:outputText id="outputText21" value="#{txt_com.Action}"/>
-						</f:facet>
-						<h:commandButton action="#{prePool.deleteMatch}" id="button20" styleClass="button-short" value="#{txt_com.Delete}">
-						    <f:setPropertyActionListener target="#{prePool.dataPrePoolMatch}" value="#{currentRow}"/>
-						</h:commandButton>
-					    </h:column>
-					</h:dataTable>
+					<ui:include src="/WEB-INF/includes/dataTables/prePoolTable.xhtml">
+					    <ui:param name="bean" value="#{prePool}"/>
+					</ui:include>
 				    </c:if>
 				</td>
 			    </tr>
@@ -151,9 +69,9 @@
 				    <br/>
 				    <br/>
 				    <h3>
-				    <h:outputLabel for="textlabel1" id="label1">
-					<h:outputText id="textlabel1" value="#{txt_pre.prePoolInsertMatches}"/>
-				    </h:outputLabel>
+					<h:outputLabel for="textlabel1" id="label1">
+					    <h:outputText id="textlabel1" value="#{txt_pre.prePoolInsertMatches}"/>
+					</h:outputLabel>
 				    </h3>
 				    <br/>
 				    <br/>

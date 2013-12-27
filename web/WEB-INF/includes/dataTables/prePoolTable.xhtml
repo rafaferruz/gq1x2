@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+Fragmento para incluir en ficheros xhtml de facelets para mostrar una tabla de objetos prePool.
+
+Sintaxis:
+	    <ui:include src="/WEB-INF/includes/dataTables/prePoolTable.xhtml">
+		<ui:param name="bean" value="#{prePool}"/>
+	    </ui:include>
+
+Parametros requeridos:
+    name    Debera ser "bean".
+    value   Contendra en lenguaje de expresion una referencia a un objeto PrePoolBean que 
+	    contiene la lista de objetos prePool a listar
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:dataTable cellpadding="0px" cellspacing="0px"
+		 columnClasses=",,col-center,col-center,col-center,col-center,col-center,col-center,col-center,col-center,col-center,col-center"
+		 headerClass="list-header" id="prePoolTable" rowClasses="list-row-even,list-row-odd" 
+		 value="#{bean.prePoolList}" var="currentRow" width="950pt">
+	<h:column id="prePoolColumn01">
+	    <h:outputText id="prePoolTextCol01" value="#{currentRow['preTeaName1']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText01" value="#{txt_sco.homeTeam}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn02">
+	    <h:outputText id="prePoolTextCol02" value="#{currentRow['preTeaName2']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText02" value="#{txt_sco.outTeam}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn03">
+	    <h:outputText id="prePoolTextCol03" value="#{currentRow['preScoScore1']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText03" value="#{txt_sco.GC}  "/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn04">
+	    <h:outputText id="prePoolTextCol04" value="#{currentRow['preScoScore2']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText04" value="#{txt_sco.GF}  "/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn05">
+	    <h:outputText id="prePoolTextCol05" value="#{currentRow['preRat4PreviousDiference']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText05" value="#{txt_pre.difRating}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn06">
+	    <h:outputText id="prePoolTextCol06" value="#{currentRow['prePercentWin']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText06" value="#{txt_pre.prePoolProbabilityWin}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn07">
+	    <h:outputText id="prePoolTextCol07" value="#{currentRow['prePercentDraw']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText07" value="#{txt_pre.prePoolProbabilityDraw}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn08">
+	    <h:outputText id="prePoolTextCol08" value="#{currentRow['prePercentLose']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText08" value="#{txt_pre.prePoolProbabilityLose}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn09">
+	    <h:outputText id="prePoolTextCol09" value="#{currentRow['prePrognostic']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText09" value="#{txt_pre.prognostic}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn10">
+	    <h:outputText id="prePoolTextCol10" value="#{currentRow['preRat4ScoreSign']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText10" value="#{txt_pre.scoreSign}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn11">
+	    <h:outputText id="prePoolTextCol11" value="#{currentRow['preFailedPrognostic']}"/>
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText11" value="#{txt_pre.fault}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="prePoolColumn12">
+	    <f:facet name="header">
+		<h:outputText id="prePoolHeaderText12" value="#{txt_com.Action}"/>
+	    </f:facet>
+	    <h:commandButton action="#{bean.deleteMatch}" id="prePoolDeleteButton" styleClass="button-short" value="#{txt_com.Delete}">
+		<f:setPropertyActionListener target="#{bean.dataPrePoolMatch}" value="#{currentRow}"/>
+	    </h:commandButton>
+	</h:column>
+    </h:dataTable>
+</html>

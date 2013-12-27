@@ -66,7 +66,7 @@ public class MakeAuthomaticColumns {
 	 * ColumnsBean es un objeto extended de BetBean por lo que hereda sus variables y metodos publicos
 	 */
 	ColumnsBean authomaticBet = new ColumnsBean();
-	System.out.println("Inicio    "+new Date());
+	System.out.println("Inicio    " + new Date());
 	/* Borrado de Apuestas generadas automaticamente */
 	authomaticBet.readBets(season, round, Const.GENERATED_AUTHOMATICALLY_TEXT);
 	if (authomaticBet.getBetList().size() > 0) {
@@ -89,30 +89,33 @@ public class MakeAuthomaticColumns {
 		    factor_reduction >= Const.AUTHOMATIC_REDUCTION_TO;
 		    factor_reduction--) {
 		/* Se leen las columnas desde el fichero de texto generado (todas las columnas iniciales posibles) */
-		if (factor_reduction == Const.MAXIMUN_LINES_BY_FORM) {
-		    authomaticBet.getDataColumns("");
-		} else {
-		    authomaticBet.getDataColumns(Const.AUTHOMATIC_REDUCTION_SUFFIX_TEXT + (factor_reduction + 1));
-		}
-	System.out.println("Leidas columnas    "+new Date());
+//		if (factor_reduction == Const.MAXIMUN_LINES_BY_FORM) {
+		authomaticBet.getDataColumns("");
+//		} else {
+//		    authomaticBet.getDataColumns(Const.AUTHOMATIC_REDUCTION_SUFFIX_TEXT + (factor_reduction + 1));
+//		}
+		System.out.println("Leidas columnas    " + new Date());
 		authomaticBet.setSelReduction(factor_reduction);
-		authomaticBet.setReduceFromCol(Const.AUTHOMATIC_REDUCE_FROM_COLUMN);
+//		authomaticBet.setReduceFromCol(Const.AUTHOMATIC_REDUCE_FROM_COLUMN);
+		authomaticBet.setReduceFromCol(authomaticBet.getDataCols().size() / 2); // Desde la columna central de la lista de columnas
 		authomaticBet.setMaximumColumnsNumber(0);
 		/* Se ejecuta el proceso de reduccion de columnas */
 		authomaticBet.setDataCols(authomaticBet.getColumnService().generateReduction(authomaticBet));
-	System.out.println("Fin de generacion    "+new Date());
+		System.out.println("Fin de generacion    " + new Date());
 		authomaticBet.setSaveReduction(Const.AUTHOMATIC_REDUCTION_SUFFIX_TEXT + factor_reduction);
 		authomaticBet.saveReduction();
-	System.out.println("Fin de guardado     "+new Date());
+		System.out.println("Fin de guardado     " + new Date());
 	    }
 	    /* Reduccion especial para un maximo de columnas */
 	    authomaticBet.setMaximumColumnsNumber(Const.AUTHOMATIC_MAXIMUN_COLUMNS_IN_REDUCTION);
 	    /* Se ejecuta el proceso de reduccion de columnas */
+	    authomaticBet.setReduceFromCol(Math.min(Const.AUTHOMATIC_REDUCE_FROM_COLUMN, 
+		    Const.AUTHOMATIC_MAXIMUN_COLUMNS_IN_REDUCTION));
 	    authomaticBet.setDataCols(authomaticBet.getColumnService().generateReduction(authomaticBet));
 	    authomaticBet.setSaveReduction(Const.MAXIMUN_COLUMNS_SUFFIX_TEXT
 		    + Const.AUTHOMATIC_MAXIMUN_COLUMNS_IN_REDUCTION);
 	    authomaticBet.saveReduction();
-	System.out.println("Final total    "+new Date());
+	    System.out.println("Final total    " + new Date());
 
 	}
 

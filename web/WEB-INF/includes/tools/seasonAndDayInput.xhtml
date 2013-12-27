@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+Fragmento para incluir en ficheros xhtml de facelets para solicitar dos campos numericos
+
+Sintaxis:
+    <ui:include  src="/WEB-INF/includes/tools/seasonAndDayInput.xhtml">
+	<ui:param name="bean" value="#{prePool}"/>
+	<ui:param name="requiredSeason" value="true"/>
+	<ui:param name="requiredDayOrder" value="false"/>
+
+Parametros requeridos:
+
+    Se deben pasar tres parametros, segun la tabla siguiente
+    name	    value    
+
+    bean	    Expresion EL referenciando al ManagedBean que recibe los datos entrados en este fragmento.
+
+    requiredSeason  'true' o 'false' para indicar si el dato season es obligatorio u opcional
+
+    requiredDayOrder	'true' o 'false' para indicar si el dato dayOrder (numero de jornada) 
+			    es obligatorio u opcional
+
+El managedBean pasado como referencia debe tener dos propiedades, season y orderNumber declaradas como Integer
+y dos metodos que actuan como ValueChangeListener llamados changeValueSeason(ValueChangeEvent ev) y
+changeValueOrderNumber(ValueChangeEvent ev).
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:panelGrid columns="2">
+	<h:outputLabel for="season" value="#{txt_pre.prePoolSeason}"/>
+	<h:inputText id="season" maxlength="4" size="4" required="#{requiredSeason}"
+		     value="#{bean.season}" 
+		     valueChangeListener="#{bean.changeValueSeason}">
+	    <f:validateLongRange minimum="1"/>
+	</h:inputText>
+	<c:if test="#{mode=='onlyADay'}">
+	    <h:outputLabel for="dayOrder" value="#{txt_pre.prePoolRound}"/>
+	    <h:inputText id="dayOrder" maxlength="2" size="2" required="#{requiredDayOrder}"
+			 onchange="submit();" 
+			 value="#{bean.orderNumber}" 
+			 valueChangeListener="#{bean.changeValueOrderNumber}"/>
+	</c:if>
+	<c:if test="#{mode=='firstLastDay'}">
+	    <h:outputLabel for="textfirstRound" id="textfirstRoundlabel">
+		<h:outputText id="textfirstRound" value="#{txt_pre.roundStart}"/>
+	    </h:outputLabel>
+	    <h:inputText id="firstRound" maxlength="2" size="2" value="#{bean.firstRound}" valueChangeListener="#{bean.changeValueRound}">
+	    </h:inputText>
+	    <h:outputLabel for="textlastRound" id="textlastRoundlabel">
+		<h:outputText id="textlastRound" value="#{txt_pre.roundEnd}"/>
+	    </h:outputLabel>
+	    <h:inputText id="lastRound" maxlength="2" size="2" value="#{bean.lastRound}"  onchange="submit();" valueChangeListener="#{bean.changeValueRound}">
+	    </h:inputText>
+	</c:if>
+    </h:panelGrid>
+</html>

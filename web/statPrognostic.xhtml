@@ -22,21 +22,11 @@
                 <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
 
                 <h:form id="form1">
-                    <h:outputLabel for="textseason" id="textseasonlabel">
-                        <h:outputText id="textseason" value="#{txt_pre.prePoolSeason}"/>
-                    </h:outputLabel>
-                    <h:inputText id="season" maxlength="4" size="4" value="#{statPrognostic.season}" valueChangeListener="#{statPrognostic.changeValueSeason}">
-                    </h:inputText>
-                    <h:outputLabel for="textfirstRound" id="textfirstRoundlabel">
-                        <h:outputText id="textfirstRound" value="#{txt_pre.roundStart}"/>
-                    </h:outputLabel>
-                    <h:inputText id="firstRound" maxlength="2" size="2" value="#{statPrognostic.firstRound}" valueChangeListener="#{statPrognostic.changeValueRound}">
-                    </h:inputText>
-                    <h:outputLabel for="textlastRound" id="textlastRoundlabel">
-                        <h:outputText id="textlastRound" value="#{txt_pre.roundEnd}"/>
-                    </h:outputLabel>
-                    <h:inputText id="lastRound" maxlength="2" size="2" value="#{statPrognostic.lastRound}"  onchange="submit();" valueChangeListener="#{statPrognostic.changeValueRound}">
-                    </h:inputText>
+		    <ui:include  src="/WEB-INF/includes/tools/seasonAndDayInput.xhtml">
+			<ui:param name="bean" value="#{statPrognostic}"/>
+			<ui:param name="requiredSeason" value="false"/>
+			<ui:param name="mode" value="firstLastDay"/>
+		    </ui:include>
 		    <table cellpadding="0 px" cellspacing="0 px">
 			<tr>
 			    <td class="col-center" style="width:7.5em">
@@ -69,7 +59,7 @@
 			</tr>
 			<tr>
 			    <td>
-				
+
 			    </td>
 			</tr>
 		    </table>

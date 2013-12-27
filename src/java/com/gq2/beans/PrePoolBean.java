@@ -37,8 +37,8 @@ public class PrePoolBean {
     private int mode = 1;
     private int chaId;
     private int round = 0;
-    private int season;
-    private int orderNumber;
+    private Integer season;
+    private Integer orderNumber;
     private int team1;
     private int team2;
     private int matches;
@@ -94,7 +94,7 @@ public class PrePoolBean {
     }
 
     public List<PrePool> getDataMatches() {
-	if (season != 0 && orderNumber != 0) {
+	if (season != null && orderNumber != null && season != 0 && orderNumber != 0  ) {
 	    showMatches();
 	    readTeamItemList();
 	} else {
@@ -147,19 +147,19 @@ public class PrePoolBean {
 	return round;
     }
 
-    public int getSeason() {
+    public Integer getSeason() {
 	return season;
     }
 
-    public void setSeason(int season) {
+    public void setSeason(Integer season) {
 	this.season = season;
     }
 
-    public int getOrderNumber() {
+    public Integer getOrderNumber() {
 	return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
+    public void setOrderNumber(Integer orderNumber) {
 	this.orderNumber = orderNumber;
     }
 
