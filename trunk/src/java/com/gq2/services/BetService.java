@@ -143,6 +143,7 @@ public class BetService {
 	for (BetLineBean betLine : aThis.getDataBetLines()) {
 	    if (betLine.getBliRating4PreviousDiference() / 10 > 30) {
 		betLine.setBliColumnGroup1(true);
+		/* Se fuerza al grupo 1 a jugar el signo 1 exclusivamente en generacion automatica */
 		betLine.setBliColumnBase("1");
 		ratingDiferenceGroups.put(1, (ratingDiferenceGroups.get(1) == null
 			? new CalculationBetData(betLine)
@@ -182,13 +183,14 @@ public class BetService {
 	    CalculationBetData calculation = ratingDiferenceGroups.get(i);
 	    Integer min1 = (calculation.getSumMatches() * calculation.getSumPercents1() * Const.CORRECTION_FACTOR_CALCULATION_RANGE_GROUP)
 		    / (calculation.getSumMatches() * 100 * 100);
+	    String range1 = min1 + "," + (min1 + 1);
 	    /* Las siguientes lineas se ponen para forzar al grupo 1 a jugar todos los signos como 1 */
 	    if (i == 1) {
 		min1 = calculation.getSumMatches();
+		range1 = min1 + "," + min1;
 	    }
 	    /* fin de opcion */
-	    
-	    String range1 = min1 + "," + (min1 + 1);
+
 	    if (calculation.getSumScore1() < min1) {
 		errors1 = calculation.getSumScore1() - min1;
 	    } else if (calculation.getSumScore1() > (min1 + 1)) {
@@ -198,13 +200,14 @@ public class BetService {
 	    }
 	    Integer minX = (calculation.getSumMatches() * calculation.getSumPercentsX() * Const.CORRECTION_FACTOR_CALCULATION_RANGE_GROUP)
 		    / (calculation.getSumMatches() * 100 * 100);
+	    String rangeX = minX + "," + (minX + 1);
 	    /* Las siguientes lineas se ponen para forzar al grupo 1 a jugar todos los signos como 1 */
 	    if (i == 1) {
 		minX = 0;
+		rangeX = minX + "," + minX;
 	    }
 	    /* fin de opcion */
-	    
-	    String rangeX = minX + "," + (minX + 1);
+
 	    if (calculation.getSumScoreX() < minX) {
 		errorsX = calculation.getSumScoreX() - minX;
 	    } else if (calculation.getSumScoreX() > (minX + 1)) {
@@ -214,13 +217,14 @@ public class BetService {
 	    }
 	    Integer min2 = (calculation.getSumMatches() * calculation.getSumPercents2() * Const.CORRECTION_FACTOR_CALCULATION_RANGE_GROUP)
 		    / (calculation.getSumMatches() * 100 * 100);
+	    String range2 = min2 + "," + (min2 + 1);
 	    /* Las siguientes lineas se ponen para forzar al grupo 1 a jugar todos los signos como 1 */
 	    if (i == 1) {
 		min2 = 0;
+		range2 = min2 + "," + min2;
 	    }
 	    /* fin de opcion */
-	    
-	    String range2 = min2 + "," + (min2 + 1);
+
 	    if (calculation.getSumScore2() < min2) {
 		errors2 = calculation.getSumScore2() - min2;
 	    } else if (calculation.getSumScore2() > (min2 + 1)) {
