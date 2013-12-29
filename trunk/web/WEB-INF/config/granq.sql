@@ -444,20 +444,19 @@ ALTER TABLE bets ADD INDEX bet (bet_season, bet_order_number);
 ALTER TABLE bets DROP INDEX bet_description;
 ALTER TABLE bets ADD INDEX bet_description (bet_description);
 
-CREATE TABLE hits (
-    hit_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    hit_bet_id INTEGER DEFAULT 0,
-    hit_bet_season INTEGER DEFAULT 0,
-    hit_bet_order_number INTEGER DEFAULT 0,
-    hit_bet_description VARCHAR(40) DEFAULT "",
-    hit_reduction_name VARCHAR(60) DEFAULT "",
-    hit_total_columns INTEGER DEFAULT 0,
-    hit_hits_number INTEGER DEFAULT 0,
-    hit_columns_number INTEGER DEFAULT 0
+
+CREATE TABLE awards (
+    awa_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    awa_season INTEGER DEFAULT 0,
+    awa_order_number INTEGER DEFAULT 0,
+    awa_description VARCHAR(40) DEFAULT "",
+    awa_bet_price DECIMAL(12, 2) DEFAULT 0,
+    awa_14_hits_amount INTEGER DEFAULT 0,
+    awa_13_hits_amount INTEGER DEFAULT 0,
+    awa_12_hits_amount INTEGER DEFAULT 0,
+    awa_11_hits_amount INTEGER DEFAULT 0,
+    awa_10_hits_amount INTEGER DEFAULT 0
 );
 
-ALTER TABLE hits DROP INDEX hit;
-ALTER TABLE hits ADD INDEX hit (hit_bet_season, hit_bet_order_number, hit_bet_description,
-hit_reduction_name);
-ALTER TABLE hits ADD FOREIGN KEY (hit_bet_id) 
-    REFERENCES bets (bet_id);
+ALTER TABLE awards DROP INDEX awa;
+ALTER TABLE awards ADD INDEX awa (awa_season, awa_order_number);

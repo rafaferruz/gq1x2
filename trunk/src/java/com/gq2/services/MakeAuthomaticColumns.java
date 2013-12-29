@@ -109,7 +109,7 @@ public class MakeAuthomaticColumns {
 	    /* Reduccion especial para un maximo de columnas */
 	    authomaticBet.setMaximumColumnsNumber(Const.AUTHOMATIC_MAXIMUN_COLUMNS_IN_REDUCTION);
 	    /* Se ejecuta el proceso de reduccion de columnas */
-	    authomaticBet.setReduceFromCol(Math.min(Const.AUTHOMATIC_REDUCE_FROM_COLUMN, 
+	    authomaticBet.setReduceFromCol(Math.min(Const.AUTHOMATIC_REDUCE_FROM_COLUMN,
 		    Const.AUTHOMATIC_MAXIMUN_COLUMNS_IN_REDUCTION));
 	    authomaticBet.setDataCols(authomaticBet.getColumnService().generateReduction(authomaticBet));
 	    authomaticBet.setSaveReduction(Const.MAXIMUN_COLUMNS_SUFFIX_TEXT
