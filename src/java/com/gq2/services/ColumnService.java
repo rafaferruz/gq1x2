@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,25 +50,30 @@ public class ColumnService {
 		int k;
 		int diferentBets;
 		int minimumDiferences = 1 + Const.MAXIMUN_LINES_BY_FORM - columnsBean.getSelReduction();
+		List<String> dataColsFinal = new ArrayList();
+
+		System.out.println("Inicio ciclo while. SelReduction = " + columnsBean.getSelReduction() + "   dataColsWork.size() = " + dataColsWork.size() + "   Hora: " + (new Date()));
 		while (i < dataColsWork.size()) {
-		    List<String> dataColsToRemove = new ArrayList();
+		    List<String> dataColsToRemain = new ArrayList();
+		    dataColsFinal.add(dataColsWork.get(0));
 
 		    for (int j = 1; j < dataColsWork.size(); j++) {
-			char[] s1 = dataColsWork.get(j).toCharArray();
-			char[] s2 = dataColsWork.get(i).toCharArray();
 			diferentBets = 0;
 			for (k = 0; k < Const.MAXIMUN_LINES_BY_FORM; k++) {
-			    if (s1[k] != s2[k]) {
+			    if (!dataColsWork.get(i).substring(k, k + 1).equals(dataColsWork.get(j).substring(k, k + 1))) {
 				diferentBets++;
+				if (diferentBets >= minimumDiferences) {
+				    dataColsToRemain.add(dataColsWork.get(j));
+				    break;
+				}
 			    }
 			}
-			if (diferentBets < minimumDiferences) {
-			    dataColsToRemove.add(dataColsWork.get(j));
-			}
 		    }
-		    dataColsWork.removeAll(dataColsToRemove);
-		    i++;
+		    dataColsWork = dataColsToRemain;
 		}
+		dataColsFinal.addAll(dataColsWork);
+		dataColsWork = dataColsFinal;
+		System.out.println("Final  ciclo while. SelReduction = " + columnsBean.getSelReduction() + "  dataColsFinal.size() = " + dataColsFinal.size() + "   Hora: " + (new Date()));
 		/* Reduciendo columnas hasta un maximo de columnas solicitado */
 		if (columnsBean.getMaximumColumnsNumber() != null
 			&& columnsBean.getMaximumColumnsNumber() > 0) {
