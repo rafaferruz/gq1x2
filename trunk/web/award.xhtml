@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+
+                <f:loadBundle basename="com.gq2.multilang.award" var="txt_awa"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
+
+                <h3>
+                    <h:outputFormat value="#{txt_awa.editAward}"/>
+                </h3>
+		<h:messages />
+                <h:form id="award_form" >
+                    <table>
+                        <tr>
+                            <td>
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="#{txt_com.ID}:" for="keyId" ></h:outputLabel>
+                                    <h:inputText id="keyId" size="5" maxlength="5" disabled="true" value="#{awards.awaId}" />
+
+
+				    <ui:include  src="/WEB-INF/includes/tools/seasonDayDescriptionInput.xhtml">
+					<ui:param name="valueSeason" value="#{awards.awaSeason}"/>
+					<ui:param name="textSeason" value="#{txt_com.season}"/>
+					<ui:param name="valueOrder" value="#{awards.awaOrderNumber}"/>
+					<ui:param name="textOrder" value="#{txt_com.round}"/>
+					<ui:param name="valueDescription" value="#{awards.awaDescription}"/>
+					<ui:param name="textDescription" value="#{txt_com.description}"/>
+					<ui:param name="newText" value="#{txt_com.New}"/>
+					<ui:param name="newAction" value="#{awards}"/>
+					<ui:param name="searchText" value="#{txt_awa.awardShow}"/>
+					<ui:param name="searchAction" value="#{awards}"/>
+				    </ui:include>
+                                </h:panelGrid>
+
+                                <h:panelGrid columns="2">
+
+                                    <h:outputLabel for="awa_inputText01" id="awa_labelBetPrice">
+					<h:outputText id="awa_textBetPrice" value="#{txt_awa.awaBetPrice}:"/>
+				    </h:outputLabel>
+				    <h:inputText id="awa_inputText01" size="10" maxlength="10" value="#{awards.awaBetPrice}" >
+					    <f:validateDoubleRange minimum="0" maximum="100"/>
+					</h:inputText>
+
+                                    <h:outputLabel for="awa_inputText02" id="awa_label14HitsAmount">
+					<h:outputText id="awa_text14HitsAmount" value="#{txt_awa.awa14HitsAmount}:"/>
+				    </h:outputLabel>
+                                    <h:inputText id="awa_inputText02" size="10" maxlength="10" value="#{awards.awa14HitsAmount}" >
+					<f:validateLongRange  minimum="0" maximum="9999999"/>
+				    </h:inputText>
+
+                                    <h:outputLabel for="awa_inputText03" id="awa_label13HitsAmount">
+					<h:outputText id="awa_tex13HitsAmount" value="#{txt_awa.awa13HitsAmount}:"/>
+				    </h:outputLabel>
+                                    <h:inputText id="awa_inputText03" size="10" maxlength="10" value="#{awards.awa13HitsAmount}" >
+					<f:validateLongRange  minimum="0" maximum="9999999"/>
+				    </h:inputText>
+
+                                    <h:outputLabel for="awa_inputText04" id="awa_label12HitsAmount">
+					<h:outputText id="awa_tex12HitsAmount" value="#{txt_awa.awa12HitsAmount}:"/>
+				    </h:outputLabel>
+                                    <h:inputText id="awa_inputText04" size="10" maxlength="10" value="#{awards.awa12HitsAmount}" >
+					<f:validateLongRange  minimum="0" maximum="9999999"/>
+				    </h:inputText>
+
+                                    <h:outputLabel for="awa_inputText05" id="awa_label11HitsAmount">
+					<h:outputText id="awa_tex11HitsAmount" value="#{txt_awa.awa11HitsAmount}:"/>
+				    </h:outputLabel>
+                                    <h:inputText id="awa_inputText05" size="10" maxlength="10" value="#{awards.awa11HitsAmount}" >
+					<f:validateLongRange  minimum="0" maximum="9999999"/>
+				    </h:inputText>
+
+                                    <h:outputLabel for="awa_inputText06" id="awa_label10HitsAmount">
+					<h:outputText id="awa_tex10HitsAmount" value="#{txt_awa.awa10HitsAmount}:"/>
+				    </h:outputLabel>
+                                    <h:inputText id="awa_inputText06" size="10" maxlength="10" value="#{awards.awa10HitsAmount}" >
+					<f:validateLongRange  minimum="0" maximum="9999999"/>
+				    </h:inputText>
+
+                                    <h:panelGroup>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <h:commandButton id="cancel" action="#{awards.cancel}" value="#{txt_com.Cancel}" />
+                                                    <h:commandButton id="save" action="#{awards.save}" value="#{txt_com.Save}" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>
+

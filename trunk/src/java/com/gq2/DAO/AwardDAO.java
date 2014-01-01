@@ -67,7 +67,7 @@ public class AwardDAO implements InjectableDAO {
 	    String sql;
 	    sql = "INSERT INTO awards (awa_season,awa_order_number,awa_description, "
 		    + "awa_bet_price , awa_14_hits_amount, awa_13_hits_amount, awa_12_hits_amount,"
-		    + " awa_11_hits_amount, awa_10_hits_amount,) "
+		    + " awa_11_hits_amount, awa_10_hits_amount) "
 		    + "VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	    int identifierGenerated;
 	    try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -116,6 +116,7 @@ public class AwardDAO implements InjectableDAO {
 		ps.setDouble(7, award.getAwa12HitsAmount());
 		ps.setDouble(8, award.getAwa11HitsAmount());
 		ps.setDouble(9, award.getAwa10HitsAmount());
+		ps.setInt(10, award.getAwaId());
 		log.debug("update: " + ps.toString());
 		ps.executeUpdate();
 	    }
@@ -175,9 +176,9 @@ public class AwardDAO implements InjectableDAO {
 	Award award = new Award();
 	try {
 	    award.setAwaId(rs.getInt("awa_id"));
-	    award.setAwaSeason(rs.getInt("awa_bet_season"));
-	    award.setAwaOrderNumber(rs.getInt("awa_bet_order_number"));
-	    award.setAwaDescription(rs.getString("awa_bet_description"));
+	    award.setAwaSeason(rs.getInt("awa_season"));
+	    award.setAwaOrderNumber(rs.getInt("awa_order_number"));
+	    award.setAwaDescription(rs.getString("awa_description"));
 	    award.setAwaBetPrice(rs.getDouble("awa_bet_price"));
 	    award.setAwa14HitsAmount(rs.getDouble("awa_14_hits_amount"));
 	    award.setAwa13HitsAmount(rs.getDouble("awa_13_hits_amount"));
