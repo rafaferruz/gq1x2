@@ -6,8 +6,8 @@ package com.gq2.domain;
  */
 public class Award {
     private int awaId;
-    private int awaSeason;
-    private int awaOrderNumber;
+    private Integer awaSeason;
+    private Integer awaOrderNumber;
     private String awaDescription;
     private Double awaBetPrice;
     private Double awa14HitsAmount;
@@ -28,19 +28,19 @@ public class Award {
 	this.awaId = awaId;
     }
 
-    public int getAwaSeason() {
+    public Integer getAwaSeason() {
 	return awaSeason;
     }
 
-    public void setAwaSeason(int awaSeason) {
+    public void setAwaSeason(Integer awaSeason) {
 	this.awaSeason = awaSeason;
     }
 
-    public int getAwaOrderNumber() {
+    public Integer getAwaOrderNumber() {
 	return awaOrderNumber;
     }
 
-    public void setAwaOrderNumber(int awaOrderNumber) {
+    public void setAwaOrderNumber(Integer awaOrderNumber) {
 	this.awaOrderNumber = awaOrderNumber;
     }
 

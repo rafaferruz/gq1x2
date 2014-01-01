@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.gq2.multilang.award" var="txt_awa"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
+
+		<h:form id="form1">
+		    <h3>
+			<h:outputLabel for="pagetitle" id="pagetitlelabel" styleClass="page-title">
+			    <h:outputText id="pagetitle" value="#{txt_award.awardPageTitle}"/>
+			</h:outputLabel>
+		    </h3>
+		    <table>
+			<tbody>
+			    <tr>
+				<td>
+				    <ui:include  src="/WEB-INF/includes/tools/seasonDayDescriptionInput.xhtml">
+					<ui:param name="valueSeason" value="#{awards.awaSeason}"/>
+					<ui:param name="textSeason" value="#{txt_com.season}"/>
+					<ui:param name="valueOrder" value="#{awards.awaOrderNumber}"/>
+					<ui:param name="textOrder" value="#{txt_com.round}"/>
+					<ui:param name="valueDescription" value="#{awards.awaDescription}"/>
+					<ui:param name="textDescription" value="#{txt_com.description}"/>
+					<ui:param name="newText" value="#{txt_com.New}"/>
+					<ui:param name="newAction" value="#{awards}"/>
+					<ui:param name="searchText" value="#{txt_awa.awardShow}"/>
+					<ui:param name="searchAction" value="#{awards}"/>
+					<ui:param name="modeListing" value="true"/>
+				    </ui:include>
+				</td>
+			    </tr>
+			    <tr>
+				<td valign="top">
+				    <h:commandButton action="#{awards.saveBet}" id="button3" value="#{txt_awa.awardSave}"/>
+				    <h:commandButton action="#{awards.insertBet}" id="button4" value="#{txt_awa.awardInsert}"/>
+				    <br></br>
+				    <br></br>
+				</td>
+			    </tr>
+			    <tr>
+				<td>
+				    <h:dataTable columnClasses="col-center,col-center,col-center,col-left"
+						 headerClass="list-header" id="dataTable1"
+						 rowClasses="list-row-even,list-row-odd"
+						 value="#{awards.awardList}" var="currentRow">
+					<h:column id="column01">
+					    <f:facet name="header"  >
+						<h:outputText id="outputText01" value="#{txt_com.ID}"/>
+					    </f:facet>
+					    <h:commandLink value="#{currentRow.awaId}" action="#{awards.editAward}" >
+						<f:setPropertyActionListener target="#{awards.awardToEdit}" value="#{currentRow}" />
+					    </h:commandLink>
+					</h:column>
+					<h:column id="column02">
+					    <h:outputText id="outputText02" value="#{currentRow['awaSeason']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText021" value="#{txt_com.season}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column03">
+					    <h:outputText  id="outputText03" value="#{currentRow['awaOrderNumber']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText031" value="#{txt_com.round}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column04">
+					    <h:outputText id="outputText04" value="#{currentRow['awaDescription']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText041" value="#{txt_com.description}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column05">
+					    <h:outputText id="outputText05" value="#{currentRow['awaBetPrice']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText051" value="#{txt_awa.awaBetPrice}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column06">
+					    <h:outputText id="outputText06" value="#{currentRow['awa14HitsAmount']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText061" value="#{txt_awa.awa14HitsAmount}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column07">
+					    <h:outputText id="outputText07" value="#{currentRow['awa13HitsAmount']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText071" value="#{txt_awa.awa13HitsAmount}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column08">
+					    <h:outputText id="outputText08" value="#{currentRow['awa12HitsAmount']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText081" value="#{txt_awa.awa12HitsAmount}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column09">
+					    <h:outputText id="outputText09" value="#{currentRow['awa11HitsAmount']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText091" value="#{txt_awa.awa11HitsAmount}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column10">
+					    <h:outputText id="outputText10" value="#{currentRow['awa10HitsAmount']}"/>
+					    <f:facet name="header">
+						<h:outputText id="outputText101" value="#{txt_awa.awa10HitsAmount}"/>
+					    </f:facet>
+					</h:column>
+					<h:column id="column11">
+					    <f:facet name="header">
+						<h:outputText id="outputText11" value="#{txt_com.Action}"/>
+					    </f:facet>
+					    <h:commandButton action="#{awards.editAward}" id="button11" styleClass="button-short" value="#{txt_com.Edit}">
+						<f:setPropertyActionListener target="#{awards.awardToEdit}" value="#{currentRow}"/>
+					    </h:commandButton>
+					    <h:commandButton action="#{awards.deleteAward}" id="button12" styleClass="button-short" value="#{txt_com.Delete}">
+						<f:setPropertyActionListener target="#{awards.awardToDelete}" value="#{currentRow}"/>
+					    </h:commandButton>
+					</h:column>
+				    </h:dataTable>
+				</td>
+			    </tr>
+			</tbody>
+		    </table>
+		</h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>

@@ -44,6 +44,10 @@
 	    <to-view-id>/showClassification.xhtml</to-view-id>
 	</navigation-case>
 	<navigation-case>
+	    <from-outcome>awardList</from-outcome>
+	    <to-view-id>/awardList.xhtml</to-view-id>
+	</navigation-case>
+	<navigation-case>
 	    <from-outcome>generateClassification</from-outcome>
 	    <to-view-id>/generateClassification.xhtml</to-view-id>
 	</navigation-case>
@@ -157,6 +161,22 @@
 	<navigation-case>
 	    <from-outcome>cancelTeam</from-outcome>
 	    <to-view-id>/teamList.xhtml</to-view-id>
+	</navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+	<from-view-id>/awardList.xhtml</from-view-id>
+	<navigation-case>
+	    <from-outcome>add</from-outcome>
+	    <to-view-id>/award.xhtml</to-view-id>
+	</navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+	<from-view-id>/award.xhtml</from-view-id>
+	<navigation-case>
+	    <from-outcome>list</from-outcome>
+	    <to-view-id>/awardList.xhtml</to-view-id>
 	</navigation-case>
     </navigation-rule>
     

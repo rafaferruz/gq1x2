@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+Fragmento para incluir en ficheros xhtml de facelets para solicitar dos campos numericos
+
+Sintaxis:
+    <ui:include  src="/WEB-INF/includes/tools/seasonDayDescriptionInput.xhtml">
+	<ui:param name="valueSeason" value="EL con el nombre de la propiedad que recibe el valor"/>
+	<ui:param name="textSeason" value="#{txt_com.season}"/>
+	<ui:param name="valueOrder" value="EL con el nombre de la propiedad que recibe el valor"/>
+	<ui:param name="textOrder" value="#{txt_pre.orderNumber}"/>
+	<ui:param name="valueDescription" value="EL con el nombre de la propiedad que recibe el valor"/>
+	<ui:param name="textDescription" value="#{txt_pre.description}"/>
+	<ui:param name="cancelText" value="#{txt_com.cancel}"/>
+	<ui:param name="searchText" value="#{txt_com.search}"/>
+	<ui:param name="cancelAction" value="cancel"/>
+	<ui:param name="searchAction" value="#{txt_award.awardShow}"/>
+    </ui:include>
+
+Parametros requeridos:
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:outputLabel for="sddi_season" id="sddi_labelSeason">
+	<h:outputText id="sddi_textSeason" value="#{textSeason}"/>
+    </h:outputLabel>
+    <h:inputText id="sddi_season" maxlength="4" size="4" value="#{valueSeason}" >
+    </h:inputText>
+    <h:outputLabel for="sddi_order" id="sddi_labelOrder">
+	<h:outputText id="sddi_textOrder" value="#{textOrder}"/>
+    </h:outputLabel>
+    <h:inputText id="sddi_order" maxlength="2" size="2" value="#{valueOrder}">
+    </h:inputText>
+    <h:outputLabel for="sddi_description"  id="sddi_labelDescription">
+	<h:outputText id="sddi_textDescription" value="#{textDescription}"/>
+    </h:outputLabel>
+    <h:inputText id="sddi_description" maxlength="40" size="40" value="#{valueDescription}">
+    </h:inputText>
+    <c:if test="#{modeListing}">
+	<h:commandButton action="#{searchAction.search}" id="sddi_button1" value="#{searchText}"/>
+	<h:commandButton action="#{newAction.add}" id="sddi_button2" value="#{newText}"/>
+    </c:if>
+</html>
