@@ -2,6 +2,7 @@ package com.gq2.services;
 
 import com.gq2.DAO.DAOFactory;
 import com.gq2.beans.ColumnsBean;
+import com.gq2.domain.Award;
 import com.gq2.domain.Hit;
 import com.gq2.tools.Const;
 import java.io.BufferedReader;
@@ -53,23 +54,30 @@ public class ColumnService {
 		List<String> dataColsFinal = new ArrayList();
 
 		System.out.println("Inicio ciclo while. SelReduction = " + columnsBean.getSelReduction() + "   dataColsWork.size() = " + dataColsWork.size() + "   Hora: " + (new Date()));
-		while (i < dataColsWork.size()) {
-		    List<String> dataColsToRemain = new ArrayList();
-		    dataColsFinal.add(dataColsWork.get(0));
+		/* Ejecucion ciclo while condicionada. No se realizaran reducciones a 13 para combinaciones
+		 de mas de 64.000 columnas */
+		if (dataColsWork.size() < 64000
+			| (dataColsWork.size() < 128000 && minimumDiferences > 2)
+			| (dataColsWork.size() < 256000 && minimumDiferences > 3)
+			| (dataColsWork.size() < 512000 && minimumDiferences > 4)) {
+		    while (i < dataColsWork.size()) {
+			List<String> dataColsToRemain = new ArrayList();
+			dataColsFinal.add(dataColsWork.get(0));
 
-		    for (int j = 1; j < dataColsWork.size(); j++) {
-			diferentBets = 0;
-			for (k = 0; k < Const.MAXIMUN_LINES_BY_FORM; k++) {
-			    if (!dataColsWork.get(i).substring(k, k + 1).equals(dataColsWork.get(j).substring(k, k + 1))) {
-				diferentBets++;
-				if (diferentBets >= minimumDiferences) {
-				    dataColsToRemain.add(dataColsWork.get(j));
-				    break;
+			for (int j = 1; j < dataColsWork.size(); j++) {
+			    diferentBets = 0;
+			    for (k = 0; k < Const.MAXIMUN_LINES_BY_FORM; k++) {
+				if (!dataColsWork.get(i).substring(k, k + 1).equals(dataColsWork.get(j).substring(k, k + 1))) {
+				    diferentBets++;
+				    if (diferentBets >= minimumDiferences) {
+					dataColsToRemain.add(dataColsWork.get(j));
+					break;
+				    }
 				}
 			    }
 			}
+			dataColsWork = dataColsToRemain;
 		    }
-		    dataColsWork = dataColsToRemain;
 		}
 		dataColsFinal.addAll(dataColsWork);
 		dataColsWork = dataColsFinal;
@@ -184,5 +192,9 @@ public class ColumnService {
 	    }
 	}
 	return dataCols;
+    }
+
+    public Award getAwardsDay(Integer betSeason, Integer betOrderNumber) {
+	return new DAOFactory().getAwardDAO().loadAwardOnSeasonOrderNumberAndDescription(betSeason, betOrderNumber, "");
     }
 }

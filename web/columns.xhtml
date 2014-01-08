@@ -257,32 +257,11 @@
 						<br></br>
 						<br></br>
 						<h:commandButton action="#{columns.dataShowHits}" value="#{txt_bet.showHitsInColumns}" />
-						<h:dataTable id="dataTableHits"
-							     columnClasses="col-center,col-center"
-							     headerClass="list-header" rowClasses="list-row-even,list-row-odd"
-							     value="#{columns.dataShowHits.keySet()}" var="currentHit">
-						    <h:column  id="column401">
-							<h:outputText id="outputText401" value="#{currentHit}"/>
-							<f:facet name="header">
-							    <h:outputText id="outputText411" value="#{txt_bet.hitsNumber}"/>
-							</f:facet>
-						    </h:column>
-						    <h:column  id="column402">
-							<h:outputText id="outputText402" value="#{columns.dataShowHits[currentHit].hits}"/>
-							<f:facet name="header">
-							    <h:outputText id="outputText412" value="#{txt_bet.columnsAmount}"/>
-							</f:facet>
-						    </h:column>
-						    <h:column  id="column403">
-							<h:selectOneMenu id="select421">
-							    <f:selectItems id="selitems421"  value="#{columns.dataShowHits[currentHit].hitItemList}" />
-							</h:selectOneMenu>
-							<f:facet name="header">
-							    <h:outputText id="outputText422" value="#{txt_bet.columnsAmount}"/>
-							</f:facet>
-						    </h:column>
-						</h:dataTable>
-
+						<ui:include src="/WEB-INF/includes/dataTables/hitsAndAwardsTable.xhtml">
+						    <ui:param name="hitMap" value="#{columns.dataShowHits}"/>
+						    <ui:param name="txtResource" value="#{txt_bet}"/>
+						    <ui:param name="bean" value="#{columns}"/>
+						</ui:include>
 					    </td>
 					</tr>
 				    </table>

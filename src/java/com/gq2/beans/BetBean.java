@@ -35,6 +35,7 @@ public class BetBean extends Bet {
     private Bet betToDelete;
     private Bet betForEdition;
     private Integer numColumns;
+    private Integer generationMode = 0;
 
     public BetBean() {
     }
@@ -110,6 +111,14 @@ public class BetBean extends Bet {
 
     public void setNumColumns(Integer numColumns) {
 	this.numColumns = numColumns;
+    }
+
+    public Integer getGenerationMode() {
+	return generationMode;
+    }
+
+    public void setGenerationMode(Integer generationMode) {
+	this.generationMode = generationMode;
     }
 
     public Bet getBetForEdition() {
@@ -265,8 +274,11 @@ public class BetBean extends Bet {
     }
 
     public void editBet() {
-	
+
 	betService.completeBetWithBetLines(this);
+	setSortby("rating");
+	sortDataBetLines(getSortby());
+	setNumColumns(null);
     }
 
     public void saveBet() {
@@ -282,6 +294,7 @@ public class BetBean extends Bet {
 	    betService.update(this);
 	    betList.set(idxOf, betService.loadConditionalBet(getBetSeason(), getBetOrderNumber(), getBetDescription()));
 	}
+	setNumColumns(null);
     }
 
     private Integer findIdInBetList(int id, List<Bet> bets) {
@@ -298,6 +311,8 @@ public class BetBean extends Bet {
     public void deleteBet() {
 	if (betToDelete != null) {
 	    betService.delete(betToDelete);
+	    setBetOrderNumber(0);
+	    setBetDescription("");
 	    showBets();
 	}
     }
@@ -308,7 +323,7 @@ public class BetBean extends Bet {
      * partir del estudio estadistico de los resultados reales producidos
      */
     public void generateBets() {
-	
+
 	betService.generateBets(this);
 
 	saveBet();
@@ -336,103 +351,116 @@ public class BetBean extends Bet {
 	for (int groupNumber = 1; groupNumber <= 6; groupNumber++) {
 	    /* Se obtiene la secuencia de partidos activos y no activos en cada grupo */
 	    String sequenceMatchesInGroup = obtainSequenceMatchesInGroup(groupNumber);
+	    if (sequenceMatchesInGroup.contains("1")) {
+		/* Se ejecutaran trabajos combinatorios siguientes si existen partidos asignados
+		 * al grupo en tratamiento o si el grupo es el numero 6 (global)
+		 */
 
-	    /* El siguiente bucle 'for' extrae cada una de las posibles columnas base de apuestas.
-	     * En nuestra actual versi�n de la aplicaci�n, solamente existe una columna base.
-	     */
+		/* El siguiente bucle 'for' extrae cada una de las posibles columnas base de apuestas.
+		 * En nuestra actual versi�n de la aplicaci�n, solamente existe una columna base.
+		 */
 // Se hace desarrollo de combinaciones por cada columna base que se van formando
-	    for (String colBase : colsBase) {
-		// Ejemplo de colbase: "1,1,1X,1X2,X2,1,1,X2,X,1X,1X2,1X,1X,1"
-		List<String> betBaseList = Arrays.asList(colBase.split(","));
-		List<String> betGroupList = new ArrayList<>();
+		for (String colBase : colsBase) {
+		    // Ejemplo de colbase: "1,1,1X,1X2,X2,1,1,X2,X,1X,1X2,1X,1X,1"
+		    List<String> betBaseList = Arrays.asList(colBase.split(","));
+		    List<String> betGroupList = new ArrayList<>();
 
-		/* Se extraen de la columna base de apuestas aquellas que correspondan a los
-		 * partidos que conforman al grupo que se este tratando y que lo indica el
-		 * puntero del bucle del nivel anterior (variable g). Dichas apuestas se agregan
-		 * a una lista de trabajo ( betGroupList ).
-		 */
-		for (int i = 0; i < sequenceMatchesInGroup.length(); i++) {
-		    if (sequenceMatchesInGroup.substring(i, i + 1).equals("1")) {
-			/* betGroupList va llenandose con las apuestas de los partidos que conforman 
-			 * un grupo
-			 */
-			betGroupList.add(betBaseList.get(i));
-		    }
-		}
-		/* Si el grupo tiene apuestas se ejecuta el siguiente bloque if ...
-		 * 
-		 */
-		if (betGroupList.size() > 0) {
-		    /* El metodo getGroupBetsCombinationsSet devuelve un objeto LinkedHashSet
-		     * con las posibles combinaciones diferentes de las apuestas de los
-		     * partidos de un grupo de modo que la apuesta a un partido acabe
-		     * intercambiandose con las del resto de partidos.
+		    /* Se extraen de la columna base de apuestas aquellas que correspondan a los
+		     * partidos que conforman al grupo que se este tratando y que lo indica el
+		     * puntero del bucle del nivel anterior (variable g). Dichas apuestas se agregan
+		     * a una lista de trabajo ( betGroupList ).
 		     */
-		    Set<String> groupBetsCombinationsSet = new LinkedHashSet<>();
-		    /* Si el grupo es menor que 6 se procede a la combinacion total
-		     * de apuestas en el grupo, pero si es el grupo 6 no se realiza
-		     * ninguna combinacion de apuestas y se pasa directamente al desarrollo
-		     * de las apuestas de algun partido que no haya intervenido en grupos. */
-		    if (groupNumber < 6) {
-			groupBetsCombinationsSet = getGroupBetsCombinationsSet(betGroupList);
-		    } else {
-			/* Se guarda en el LinkedHashSet groupBetsCombinationsSet la nueva combinacion */
-			String firstBet = "";
-			for (String str : betGroupList) {
-			    firstBet = firstBet.concat(str).concat(",");
+		    for (int i = 0; i < sequenceMatchesInGroup.length(); i++) {
+			if (sequenceMatchesInGroup.substring(i, i + 1).equals("1")) {
+			    /* betGroupList va llenandose con las apuestas de los partidos que conforman 
+			     * un grupo
+			     */
+			    betGroupList.add(betBaseList.get(i));
 			}
-			if (firstBet.endsWith(",")) {
-			    firstBet = firstBet.substring(0, firstBet.length() - 1);
-			}
-			groupBetsCombinationsSet.add(firstBet);
 		    }
-
-		    /* Bloque de desarrollo de todas las combinaciones del grupo 
+		    /* Si el grupo tiene apuestas se ejecuta el siguiente bloque if ...
 		     * 
 		     */
-		    Set<String> developedCombinationsGroup = new LinkedHashSet<>();
-		    for (String betGroupStr : groupBetsCombinationsSet) {
-			betGroupList = Arrays.asList(betGroupStr.split(","));
-
-			/* La siguiente sentencia llama al metodo appenMyCombinations para
-			 * ir obteniendo todas las* combinaciones posibles de signos de
-			 * un partido con todas las combinaciones posibles de cada uno
-			 * del resto de partidos del grupo.
+		    if (betGroupList.size() > 0) {
+			/* El metodo getGroupBetsCombinationsSet devuelve un objeto LinkedHashSet
+			 * con las posibles combinaciones diferentes de las apuestas de los
+			 * partidos de un grupo de modo que la apuesta a un partido acabe
+			 * intercambiandose con las del resto de partidos.
 			 */
-			developedCombinationsGroup.addAll(appendMyCombinations(betGroupList));
-
-			/**
-			 * FASE DE COMPROBACION DE NUMERO DE SIGNOS 1, X y 2
-			 * PERMITIDOS PARA EL GRUPO
-			 */
+			Set<String> groupBetsCombinationsSet = new LinkedHashSet<>();
+			/* Si el grupo es menor que 6 se procede a la combinacion total
+			 * de apuestas en el grupo, pero si es el grupo 6 no se realiza
+			 * ninguna combinacion de apuestas y se pasa directamente al desarrollo
+			 * de las apuestas de algun partido que no haya intervenido en grupos. */
 			if (groupNumber < 6) {
-			    /* Cuando es la combinaci�n final, no comprueba limitaciones de signos
-			     * 
-			     */
-			    Set<String> combinationsTemp = new LinkedHashSet<>();
-			    for (String combination : developedCombinationsGroup) {
-				if (!"".equals(checkCond(groupNumber, combination))) {
-				    combinationsTemp.add(combination);
-				}
+			    groupBetsCombinationsSet = getGroupBetsCombinationsSet(betGroupList);
+			} else {
+			    /* Se guarda en el LinkedHashSet groupBetsCombinationsSet la nueva combinacion */
+			    String firstBet = "";
+			    for (String str : betGroupList) {
+				firstBet = firstBet.concat(str).concat(",");
 			    }
-			    developedCombinationsGroup = combinationsTemp;
+			    if (firstBet.endsWith(",")) {
+				firstBet = firstBet.substring(0, firstBet.length() - 1);
+			    }
+			    groupBetsCombinationsSet.add(firstBet);
 			}
 
+			/* Bloque de desarrollo de todas las combinaciones del grupo 
+			 * 
+			 */
+			Set<String> developedCombinationsGroup = new LinkedHashSet<>();
+			for (String betGroupStr : groupBetsCombinationsSet) {
+			    betGroupList = Arrays.asList(betGroupStr.split(","));
+
+			    /* La siguiente sentencia llama al metodo appenMyCombinations para
+			     * ir obteniendo todas las* combinaciones posibles de signos de
+			     * un partido con todas las combinaciones posibles de cada uno
+			     * del resto de partidos del grupo.
+			     */
+			    developedCombinationsGroup.addAll(appendMyCombinations(betGroupList));
+
+			    /**
+			     * FASE DE COMPROBACION DE NUMERO DE SIGNOS 1, X y 2
+			     * PERMITIDOS PARA EL GRUPO
+			     */
+			    if (groupNumber < 6) {
+				/* Cuando es la combinaci�n final, no comprueba limitaciones de signos
+				 * 
+				 */
+				Set<String> combinationsTemp = new LinkedHashSet<>();
+				for (String combination : developedCombinationsGroup) {
+				    if (!"".equals(checkCond(groupNumber, combination))) {
+					combinationsTemp.add(combination);
+				    }
+				}
+				developedCombinationsGroup = combinationsTemp;
+			    }
+
+			}
+			/* Se crean las nuevas columnas base sustituyendo las combinaciones resultantes
+			 * v�lidas del grupo que se acaba de tratar
+			 * */
+			colsBaseTemp.addAll(replaceCombinationsGroup(developedCombinationsGroup, sequenceMatchesInGroup, betBaseList));
 		    }
-		    /* Se crean las nuevas columnas base sustituyendo las combinaciones resultantes
-		     * v�lidas del grupo que se acaba de tratar
-		     * */
-		    colsBaseTemp.addAll(replaceCombinationsGroup(developedCombinationsGroup, sequenceMatchesInGroup, betBaseList));
-		} else {
-		    /* No hay partidos definidos en el grupo */
-		    colsBaseTemp.add(colBase);
-		}
-	    }
+		} // Final de bucle for de colsBase
+
+	    } else {
+		/* No hay partidos definidos en el grupo */
+		colsBaseTemp.addAll(colsBase);
+	    }	    /* Final del if que indica que no hay partidos en el grupo y no se ejecuta ningun desarrollo
+	     combinatorio.
+	     */
+
 	    colsBase.clear();
 	    colsBase.addAll(colsBaseTemp);
 	    colsBaseTemp.clear();
-	}
+	} // Final del bucle for por numberGroup
+	/* Se aplican filtros especiales de generacion */
+	colsBase = filterOnGenerationMode(colsBase);
+	/* Se obtiene el numero de columnas definitivo */
 	setNumColumns(colsBase.size());
+	/* Se guardan en fichero de texto plano todas las columnas resultantes */
 	printFileCols(colsBase);
     }
 
@@ -510,7 +538,7 @@ public class BetBean extends Bet {
      * comprobar
      * @param chain	Cadena de signos 1, X y 2 de la combinacion que se desea
      * comprobar
-     * @return	Si la cadena cumple las reglas se duelve la cadena recibida. Si
+     * @return	Si la cadena cumple las reglas se devuelve la cadena recibida. Si
      * no cumple las normas, se devuelve una cadena vacia "".
      */
     private String checkCond(Integer groupNumber, String chain) {
@@ -738,6 +766,43 @@ public class BetBean extends Bet {
 		}
 		colsBaseLocal.add(chain);
 	    }
+	}
+	return colsBaseLocal;
+    }
+
+    private List<String> filterOnGenerationMode(List<String> colsBase) {
+	List<String> colsBaseLocal = new ArrayList<>();
+	switch (getGenerationMode()) {
+	    case 0:
+		/* generationModeBasic */
+		colsBaseLocal = colsBase;
+		break;
+	    case 1:
+		/* generationModeLimited_456_Sign1 */
+		setBetDescription("Limited_456_signs_1");
+		insertBet();
+		for (String colBase : colsBase) {
+		    Integer n1 = 0, nX = 0, n2 = 0;
+		    for (int i = 0; i < colBase.length(); i++) {
+			if (colBase.substring(i, i + 1).equals("1")) {
+			    n1++;
+			} else if (colBase.substring(i, i + 1).toUpperCase().equals("X")) {
+			    nX++;
+			} else if (colBase.substring(i, i + 1).equals("2")) {
+			    n2++;
+			}
+		    }
+		    if (verifyGroupValues("4,5,6", n1,
+			    "", nX,
+			    "", n2)) {
+			colsBaseLocal.add(colBase);
+		    }
+		}
+		break;
+	    default:
+		colsBaseLocal = colsBase;
+		break;
+
 	}
 	return colsBaseLocal;
     }

@@ -170,12 +170,16 @@
 	    <from-outcome>add</from-outcome>
 	    <to-view-id>/award.xhtml</to-view-id>
 	</navigation-case>
+	<navigation-case>
+	    <from-outcome>award</from-outcome>
+	    <to-view-id>/award.xhtml</to-view-id>
+	</navigation-case>
     </navigation-rule>
     
     <navigation-rule>
 	<from-view-id>/award.xhtml</from-view-id>
 	<navigation-case>
-	    <from-outcome>list</from-outcome>
+	    <from-outcome>awardList</from-outcome>
 	    <to-view-id>/awardList.xhtml</to-view-id>
 	</navigation-case>
     </navigation-rule>
