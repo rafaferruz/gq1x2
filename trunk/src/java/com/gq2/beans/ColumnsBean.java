@@ -1,5 +1,6 @@
 package com.gq2.beans;
 
+import com.gq2.domain.Award;
 import com.gq2.domain.HitBet;
 import com.gq2.services.ColumnService;
 import com.gq2.tools.Const;
@@ -47,6 +48,9 @@ public class ColumnsBean extends BetBean {
     private String siCol = "";
     private FacesContext fc = null;
     private ColumnService columnService = new ColumnService();
+    private Double columnsAmount = 0.0;
+    private Double columnsCost = 0.0;
+    private Double awardsAmount = 0.0;
 
     public ColumnsBean() {
     }
@@ -235,6 +239,30 @@ public class ColumnsBean extends BetBean {
 	this.columnService = columnService;
     }
 
+    public Double getColumnsAmount() {
+	return columnsAmount;
+    }
+
+    public void setColumnsAmount(Double columnsAmount) {
+	this.columnsAmount = columnsAmount;
+    }
+
+    public Double getColumnsCost() {
+	return columnsCost;
+    }
+
+    public void setColumnsCost(Double columnsCost) {
+	this.columnsCost = columnsCost;
+    }
+
+    public Double getAwardsAmount() {
+	return awardsAmount;
+    }
+
+    public void setAwardsAmount(Double awardsAmount) {
+	this.awardsAmount = awardsAmount;
+    }
+
     public FacesContext getFc() {
 	return fc;
     }
@@ -408,6 +436,33 @@ public class ColumnsBean extends BetBean {
 		} else {
 		    dataShowHits.put(targets, dataShowHits.get(targets).addHit(dataCols.indexOf(column) + 1));
 		}
+	    }
+	}
+	valorateAwardedHits();
+    }
+
+    private void valorateAwardedHits() {
+	Award award = columnService.getAwardsDay(getBetSeason(), getBetOrderNumber());
+	setColumnsAmount(Double.valueOf(getNumCols()));
+	setColumnsCost(getColumnsAmount() * award.getAwaBetPrice());
+	setAwardsAmount(0.0);
+	for (Integer hit : getDataShowHits().keySet()) {
+	    switch (hit) {
+		case 10:
+		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa10HitsAmount());
+		    break;
+		case 11:
+		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa11HitsAmount());
+		    break;
+		case 12:
+		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa12HitsAmount());
+		    break;
+		case 13:
+		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa13HitsAmount());
+		    break;
+		case 14:
+		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa14HitsAmount());
+		    break;
 	    }
 	}
     }

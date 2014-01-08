@@ -214,6 +214,11 @@
 						    <f:selectItem itemLabel="#{txt_bet.byOrder}" itemValue="order"/>
 						</h:selectOneRadio>
 						<br></br>
+						<h:selectOneMenu id="select201" value="#{bets.generationMode}">
+						    <f:selectItem id="selmode0" itemLabel="#{txt_bet.generationModeBasic}" itemValue="0" />
+						    <f:selectItem id="selmode1" itemLabel="#{txt_bet.generationModeLimited_456_Sign1}" itemValue="1" />
+						</h:selectOneMenu>
+						<br></br>
 						<h:dataTable columnClasses="col-right,col-center,
 							     col-center,col-center,col-center,col-center,col-center"
 							     headerClass="list-header" id="dataTableBetGroups"

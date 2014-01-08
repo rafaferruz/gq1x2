@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+Fragmento para incluir en ficheros xhtml de facelets para mostrar una tabla de objetos Hit premiados.
+
+Sintaxis:
+	    <ui:include src="/WEB-INF/includes/dataTables/hitsAndAwardsTable.xhtml">
+		<ui:param name="hitMap" value="#{columns.dataShowHits}"/>
+	    </ui:include>
+
+Parametros requeridos:
+    name	value
+
+    hitMap	Contendra un objeto Map con los hits producidos en la apuesta
+    txtResource	Referencia del fichero de recursos para textos localizados. Normalmente 'txt_bet'.
+    bean	Referencia al objeto columnsBean que genera la vista
+    
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    
+    <h:dataTable id="dataTableHits"
+		 columnClasses="col-center,col-center,col-center"
+		 headerClass="list-header" rowClasses="list-row-even,list-row-odd"
+		 value="#{hitMap.keySet()}" var="currentHit">
+	<h:column  id="haat_column01">
+	    <h:outputText id="haat_outputText010" value="#{currentHit}"/>
+	    <f:facet name="header">
+		<h:outputText id="haat_outputText011" value="#{txtResource.hitsNumber}"/>
+	    </f:facet>
+	</h:column>
+	<h:column  id="haat_column02">
+	    <h:outputText id="haat_outputText020" value="#{hitMap[currentHit].hits}"/>
+	    <f:facet name="header">
+		<h:outputText id="haat_outputText021" value="#{txtResource.columnsAmount}"/>
+	    </f:facet>
+	</h:column>
+	<h:column  id="haat_column03">
+	    <h:selectOneMenu id="haat_select030">
+		<f:selectItems id="haat_selitems030"  value="#{hitMap[currentHit].hitItemList}" />
+	    </h:selectOneMenu>
+	    <f:facet name="header">
+		<h:outputText id="haat_outputText030" value="#{txtResource.columnsNumbers}"/>
+	    </f:facet>
+	</h:column>
+    </h:dataTable>
+
+    <h:panelGrid columns="2">
+	<h:outputText id="haat_outputText110" value="#{txtResource.columnsAmount}"/>
+	<h:outputText id="haat_outputText111" value="#{bean.numCols}"/>
+	<h:outputText id="haat_outputText120" value="#{txtResource.columnsCost}"/>
+	<h:outputText id="haat_outputText121" value="#{bean.columnsCost}"/>
+	<h:outputText id="haat_outputText130" value="#{txtResource.awardsAmount}"/>
+	<h:outputText id="haat_outputText131" value="#{bean.awardsAmount}"/>
+    </h:panelGrid>
+</html>
