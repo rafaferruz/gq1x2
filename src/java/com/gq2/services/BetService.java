@@ -112,66 +112,187 @@ public class BetService {
 	/*
 	 * Limpieza de datos de apuestas y grupos de partidos a rellenar
 	 */
-	aThis.setBetDescription("Generated Authomatically");
+	aThis = initializeDataBet(aThis);
+	/* Asigna Description al objeto BetBean segun el modo de generacion
+	 */
+	aThis.setBetDescription(getBetDescriptionOnGenerationBetType(aThis));
+
+	Map<Integer, CalculationBetData> ratingDiferenceGroups = new HashMap<>();
+	// Se presentan las lineas ordenadas por rating
+	aThis.setSortby("rating");
+	aThis.setDataBetLines(sortDataBetLines(aThis.getDataBetLines(), aThis.getSortby()));
 	for (BetLineBean betLine : aThis.getDataBetLines()) {
-	    betLine.setBliColumnGroup1(false);
-	    betLine.setBliColumnGroup2(false);
-	    betLine.setBliColumnGroup3(false);
-	    betLine.setBliColumnGroup4(false);
-	    betLine.setBliColumnGroup5(false);
-	    betLine.setBliColumnBase("");
+	    /* Se calcula el numero de grupo de bet segun diferencia de rating de los equipos
+	     * 
+	     */
+	    int groupNumber = calculateBetGroupOnRatingDiference(betLine);
+	    // Se filtra el numero de grupo segun GenerationBetType
+	    groupNumber = applyGenerationBetTypeToGroupNumber(groupNumber, betLine, aThis);
+	    
+	    /* Activa check en la casilla de un grupo para indicar que el partido pertenece a ese grupo
+	     * 
+	     */
+	    betLine = setBliColumnGroupAndBaseOnGroup( groupNumber,betLine,aThis);
+
+	    /* Actualiza un mapa con los partidos totales que lleva cada grupo y otros totales
+	     * 
+	     */
+	    ratingDiferenceGroups = buildCalculationBetDataMap(groupNumber, ratingDiferenceGroups, betLine);
 	}
-	aThis.getDataBetGroups().get(0).setBgrGroup1Values("");
-	aThis.getDataBetGroups().get(1).setBgrGroup1Values("");
-	aThis.getDataBetGroups().get(2).setBgrGroup1Values("");
-	aThis.getDataBetGroups().get(0).setBgrGroup2Values("");
-	aThis.getDataBetGroups().get(1).setBgrGroup2Values("");
-	aThis.getDataBetGroups().get(2).setBgrGroup2Values("");
-	aThis.getDataBetGroups().get(0).setBgrGroup3Values("");
-	aThis.getDataBetGroups().get(1).setBgrGroup3Values("");
-	aThis.getDataBetGroups().get(2).setBgrGroup3Values("");
-	aThis.getDataBetGroups().get(0).setBgrGroup4Values("");
-	aThis.getDataBetGroups().get(1).setBgrGroup4Values("");
-	aThis.getDataBetGroups().get(2).setBgrGroup4Values("");
-	aThis.getDataBetGroups().get(0).setBgrGroup5Values("");
-	aThis.getDataBetGroups().get(1).setBgrGroup5Values("");
-	aThis.getDataBetGroups().get(2).setBgrGroup5Values("");
+
+	/*
+	 * Calculo del rango de signos que deben aparecer en cada grupo
+	 */
+	aThis = calculateRangeGroups(aThis, ratingDiferenceGroups);
+    }
+
+    private int applyGenerationBetTypeToGroupNumber(int groupNumber, BetLineBean betLine, BetBean aThis) {
 	/*
 	 * Calculo del grupo al que asignar el partido
 	 */
-	Map<Integer, CalculationBetData> ratingDiferenceGroups = new HashMap<>();
-	for (BetLineBean betLine : aThis.getDataBetLines()) {
-	    if (betLine.getBliRating4PreviousDiference() / 10 > 30) {
-		betLine.setBliColumnGroup1(true);
-		/* Se fuerza al grupo 1 a jugar el signo 1 exclusivamente en generacion automatica */
-		betLine.setBliColumnBase("1");
-		ratingDiferenceGroups.put(1, (ratingDiferenceGroups.get(1) == null
-			? new CalculationBetData(betLine)
-			: ratingDiferenceGroups.get(1).calculateSums(betLine)));
-	    } else if (betLine.getBliRating4PreviousDiference() / 10 > 5 && betLine.getBliRating4PreviousDiference() / 10 <= 30) {
-		betLine.setBliColumnGroup2(true);
-		betLine.setBliColumnBase("1X2");
-		ratingDiferenceGroups.put(2, (ratingDiferenceGroups.get(2) == null
-			? new CalculationBetData(betLine)
-			: ratingDiferenceGroups.get(2).calculateSums(betLine)));
+	switch (aThis.getGenerationBetType()) {
+	    case 0:
+		/* Generacion modo standard. */
+		break;
+	    case 1:
+		/* Generacion modo Limitacion de 4,5 o 6 signos 1. */
+		break;
+	    case 2:
+		/* Los cinco partidos de mayor diferencia de 
+		 * rating positivo se jugaran a 111X2. El resto
+		 de partidos seguiran el procedimiento standard. */
+		if (aThis.getDataBetLines().indexOf(betLine) < 5) {
+		    groupNumber = 1;
+		} else if (groupNumber == 1 && aThis.getDataBetLines().indexOf(betLine) >= 5) {
+		    groupNumber = 2;
+		}
+		break;
+	    default:
+		/* Generacion modo standard. */
+		break;
 
-	    } else if (betLine.getBliRating4PreviousDiference() / 10 > -12 && betLine.getBliRating4PreviousDiference() / 10 <= 5) {
-		betLine.setBliColumnGroup3(true);
-		betLine.setBliColumnBase("1X2");
-		ratingDiferenceGroups.put(3, (ratingDiferenceGroups.get(3) == null
-			? new CalculationBetData(betLine)
-			: ratingDiferenceGroups.get(3).calculateSums(betLine)));
-
-	    } else if (betLine.getBliRating4PreviousDiference() / 10 <= -12) {
-		betLine.setBliColumnGroup4(true);
-		betLine.setBliColumnBase("1X2");
-		ratingDiferenceGroups.put(4, (ratingDiferenceGroups.get(4) == null
-			? new CalculationBetData(betLine)
-			: ratingDiferenceGroups.get(4).calculateSums(betLine)));
-
-	    }
 	}
 
+	return groupNumber;
+    }
+
+    private String applyGenerationBetTypeToBliColumnBaseGroup1( BetBean aThis) {
+	/*
+	 * Apuesta base de los partidos en grupo 1 segun GnerationMode
+	 */
+	String base="";
+	switch (aThis.getGenerationBetType()) {
+	    case 0:
+		/* Generacion modo standard. */
+		base="1";
+		break;
+	    case 1:
+		/* Generacion modo Limitacion de 4,5 o 6 signos 1. */
+		base="1";
+		break;
+	    case 2:
+		/* Los cinco partidos de mayor diferencia de 
+		 * rating positivo se jugaran a 111X2. El resto
+		 de partidos seguiran el procedimiento standard. */
+		base="1X2";
+		break;
+	    default:
+		/* Generacion modo standard. */
+		base="1";
+		break;
+
+	}
+
+	return base;
+    }
+
+    private String applyGenerationBetTypeToRangesGroup1(String range, String sign,  BetBean aThis) {
+	/*
+	 * Modifica los rangos de signos en grupo 1 segun GnerationMode
+	 */
+	String base="";
+	switch (aThis.getGenerationBetType()) {
+	    case 0:
+		/* Generacion modo standard. */
+		break;
+	    case 1:
+		/* Generacion modo Limitacion de 4,5 o 6 signos 1. */
+		break;
+	    case 2:
+		/* Los cinco partidos de mayor diferencia de 
+		 * rating positivo se jugaran a 111X2. El resto
+		 de partidos seguiran el procedimiento standard. */
+		switch (sign){
+		    case "1":
+			range="3,3";
+			break;
+		    case "X":
+			range="1,1";
+			break;
+		    case "2":
+			range="1,1";
+			break;
+		}
+		break;
+	    default:
+		/* Generacion modo standard. */
+		break;
+
+	}
+
+	return range;
+    }
+
+    private int calculateBetGroupOnRatingDiference(BetLineBean betLine) {
+	int groupNumber = 0;
+	if (betLine.getBliRating4PreviousDiference() / 10 > Const.BASE_DIFERENCE_RATING_FOR_GROUP_1) {
+	    groupNumber = 1;
+	} else if (betLine.getBliRating4PreviousDiference() / 10 > Const.BASE_DIFERENCE_RATING_FOR_GROUP_2 && betLine.getBliRating4PreviousDiference() / 10 <= Const.BASE_DIFERENCE_RATING_FOR_GROUP_1) {
+	    groupNumber = 2;
+	} else if (betLine.getBliRating4PreviousDiference() / 10 > Const.BASE_DIFERENCE_RATING_FOR_GROUP_3 && betLine.getBliRating4PreviousDiference() / 10 <= Const.BASE_DIFERENCE_RATING_FOR_GROUP_2) {
+	    groupNumber = 3;
+	} else if (betLine.getBliRating4PreviousDiference() / 10 <= Const.BASE_DIFERENCE_RATING_FOR_GROUP_3) {
+	    groupNumber = 4;
+	}
+	return groupNumber;
+    }
+
+    private BetLineBean setBliColumnGroupAndBaseOnGroup(int groupNumber,BetLineBean betLine,BetBean aThis ) {
+
+	switch (groupNumber) {
+	    case 1:
+		betLine.setBliColumnGroup1(true);
+		/* Se fuerza al grupo 1 a jugar el signo 1 exclusivamente en generacion automatica.
+		 * Se aplica el GenerationBetType para modificar la base si procede
+		 */
+		betLine.setBliColumnBase(applyGenerationBetTypeToBliColumnBaseGroup1(aThis));
+		break;
+	    case 2:
+		betLine.setBliColumnGroup2(true);
+		betLine.setBliColumnBase("1X2");
+		break;
+	    case 3:
+		betLine.setBliColumnGroup3(true);
+		betLine.setBliColumnBase("1X2");
+		break;
+	    case 4:
+		betLine.setBliColumnGroup4(true);
+		betLine.setBliColumnBase("1X2");
+		break;
+	}
+	return betLine;
+    }
+
+    private Map<Integer, CalculationBetData> buildCalculationBetDataMap(Integer betGroup, Map<Integer, CalculationBetData> ratingDiferenceGroups, BetLineBean betLine) {
+
+	ratingDiferenceGroups.put(betGroup, (ratingDiferenceGroups.get(betGroup) == null
+		? new CalculationBetData(betLine)
+		: ratingDiferenceGroups.get(betGroup).calculateSums(betLine)));
+
+	return ratingDiferenceGroups;
+    }
+
+    private BetBean calculateRangeGroups(BetBean aThis, Map<Integer, CalculationBetData> ratingDiferenceGroups) {
 	/*
 	 * Calculo del rango de signos que deben aparecer en cada grupo
 	 */
@@ -181,57 +302,30 @@ public class BetService {
 
 	for (Integer i : ratingDiferenceGroups.keySet()) {
 	    CalculationBetData calculation = ratingDiferenceGroups.get(i);
-	    Integer min1 = (calculation.getSumMatches() * calculation.getSumPercents1() * Const.CORRECTION_FACTOR_CALCULATION_RANGE_GROUP)
-		    / (calculation.getSumMatches() * 100 * 100);
-	    String range1 = min1 + "," + (min1 + 1);
+
+	    String range1 = getRangeGroup(calculation, "1");
 	    /* Las siguientes lineas se ponen para forzar al grupo 1 a jugar todos los signos como 1 */
 	    if (i == 1) {
-		min1 = calculation.getSumMatches();
-		range1 = min1 + "," + min1;
+		range1 = applyGenerationBetTypeToRangesGroup1(calculation.getSumMatches() + "," + calculation.getSumMatches(),"1",aThis);
 	    }
 	    /* fin de opcion */
+	    errors1 = getErrorsRange(calculation, "1", range1);
 
-	    if (calculation.getSumScore1() < min1) {
-		errors1 = calculation.getSumScore1() - min1;
-	    } else if (calculation.getSumScore1() > (min1 + 1)) {
-		errors1 = calculation.getSumScore1() - (min1 + 1);
-	    } else {
-		errors1 = 0;
-	    }
-	    Integer minX = (calculation.getSumMatches() * calculation.getSumPercentsX() * Const.CORRECTION_FACTOR_CALCULATION_RANGE_GROUP)
-		    / (calculation.getSumMatches() * 100 * 100);
-	    String rangeX = minX + "," + (minX + 1);
+	    String rangeX = getRangeGroup(calculation, "X");
 	    /* Las siguientes lineas se ponen para forzar al grupo 1 a jugar todos los signos como 1 */
 	    if (i == 1) {
-		minX = 0;
-		rangeX = minX + "," + minX;
+		rangeX = applyGenerationBetTypeToRangesGroup1("0,0","X",aThis);
 	    }
 	    /* fin de opcion */
+	    errorsX = getErrorsRange(calculation, "X", rangeX);
 
-	    if (calculation.getSumScoreX() < minX) {
-		errorsX = calculation.getSumScoreX() - minX;
-	    } else if (calculation.getSumScoreX() > (minX + 1)) {
-		errorsX = calculation.getSumScoreX() - (minX + 1);
-	    } else {
-		errorsX = 0;
-	    }
-	    Integer min2 = (calculation.getSumMatches() * calculation.getSumPercents2() * Const.CORRECTION_FACTOR_CALCULATION_RANGE_GROUP)
-		    / (calculation.getSumMatches() * 100 * 100);
-	    String range2 = min2 + "," + (min2 + 1);
+	    String range2 = getRangeGroup(calculation, "2");
 	    /* Las siguientes lineas se ponen para forzar al grupo 1 a jugar todos los signos como 1 */
 	    if (i == 1) {
-		min2 = 0;
-		range2 = min2 + "," + min2;
+		range2  = applyGenerationBetTypeToRangesGroup1("0,0","2",aThis);
 	    }
 	    /* fin de opcion */
-
-	    if (calculation.getSumScore2() < min2) {
-		errors2 = calculation.getSumScore2() - min2;
-	    } else if (calculation.getSumScore2() > (min2 + 1)) {
-		errors2 = calculation.getSumScore2() - (min2 + 1);
-	    } else {
-		errors2 = 0;
-	    }
+	    errors2 = getErrorsRange(calculation, "2", range2);
 
 	    switch (i) {
 		case 1:
@@ -268,6 +362,81 @@ public class BetService {
 		    break;
 	    }
 	}
+	return aThis;
+    }
+
+    private String getRangeGroup(CalculationBetData calculation, String sign) {
+	int sumPercents = 0;
+	switch (sign) {
+	    case "1":
+		sumPercents = calculation.getSumPercents1();
+		break;
+	    case "X":
+		sumPercents = calculation.getSumPercentsX();
+		break;
+	    case "2":
+		sumPercents = calculation.getSumPercents2();
+		break;
+	}
+	Integer min1 = (calculation.getSumMatches() * sumPercents * Const.CORRECTION_FACTOR_CALCULATION_RANGE_GROUP)
+		/ (calculation.getSumMatches() * 100 * 100);
+	return min1 + "," + (min1 + Const.WIDTH_RANGE_GROUP);
+    }
+
+    private Integer getErrorsRange(CalculationBetData calculation, String sign, String range) {
+	Integer errors;
+	int sumScore = 0;
+	switch (sign) {
+	    case "1":
+		sumScore = calculation.getSumScore1();
+		break;
+	    case "X":
+		sumScore = calculation.getSumScoreX();
+		break;
+	    case "2":
+		sumScore = calculation.getSumScore2();
+		break;
+	}
+	if (sumScore < Integer.parseInt(range.split(",")[0])) {
+	    errors = sumScore - Integer.parseInt(range.split(",")[0]);
+	} else if (sumScore > (Integer.parseInt(range.split(",")[1]))) {
+	    errors = sumScore - (Integer.parseInt(range.split(",")[1]));
+	} else {
+	    errors = 0;
+	}
+	return errors;
+    }
+
+    public BetBean initializeDataBet(BetBean aThis) {
+
+	/*
+	 * Limpieza de datos de apuestas y grupos de partidos a rellenar
+	 */
+	for (BetLineBean betLine : aThis.getDataBetLines()) {
+	    betLine.setBliColumnGroup1(false);
+	    betLine.setBliColumnGroup2(false);
+	    betLine.setBliColumnGroup3(false);
+	    betLine.setBliColumnGroup4(false);
+	    betLine.setBliColumnGroup5(false);
+	    betLine.setBliColumnBase("");
+	}
+	aThis.getDataBetGroups().get(0).setBgrGroup1Values("");
+	aThis.getDataBetGroups().get(1).setBgrGroup1Values("");
+	aThis.getDataBetGroups().get(2).setBgrGroup1Values("");
+	aThis.getDataBetGroups().get(0).setBgrGroup2Values("");
+	aThis.getDataBetGroups().get(1).setBgrGroup2Values("");
+	aThis.getDataBetGroups().get(2).setBgrGroup2Values("");
+	aThis.getDataBetGroups().get(0).setBgrGroup3Values("");
+	aThis.getDataBetGroups().get(1).setBgrGroup3Values("");
+	aThis.getDataBetGroups().get(2).setBgrGroup3Values("");
+	aThis.getDataBetGroups().get(0).setBgrGroup4Values("");
+	aThis.getDataBetGroups().get(1).setBgrGroup4Values("");
+	aThis.getDataBetGroups().get(2).setBgrGroup4Values("");
+	aThis.getDataBetGroups().get(0).setBgrGroup5Values("");
+	aThis.getDataBetGroups().get(1).setBgrGroup5Values("");
+	aThis.getDataBetGroups().get(2).setBgrGroup5Values("");
+
+	return aThis;
     }
 
     public void completeBetWithBetLines(BetBean aThis) {
@@ -373,6 +542,24 @@ public class BetService {
 
     private void generateBetLinesFromPrePoolLines(BetBean aThis) {
 	aThis.setDataBetLines(generateBetLinesFromPrePoolLines(aThis.getBetSeason(), aThis.getBetOrderNumber()));
+    }
+
+    private String getBetDescriptionOnGenerationBetType(BetBean aThis) {
+	switch (aThis.getGenerationBetType()) {
+	    case 0:
+		aThis.setBetDescription("Generated Authomatically");
+		break;
+	    case 1:
+		aThis.setBetDescription("Limited_456_signs_1");
+	    case 2:
+		aThis.setBetDescription("Forced_First_5_To_111X2_Signs");
+		break;
+	    default:
+		aThis.setBetDescription("Generated Authomatically");
+		break;
+
+	}
+	return aThis.getBetDescription();
     }
 
     /**

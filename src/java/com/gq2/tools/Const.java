@@ -34,6 +34,11 @@ public class Const {
     public static final int FAILED_PROGNOSTIC = 1;	// Valor para las apuestas que han sido falladas
     /* Usada en BetService */
     public static final int CORRECTION_FACTOR_CALCULATION_RANGE_GROUP = 100; // Valor para modificar el porcentaje en calculos de la horquilla de signos
+    public static final int WIDTH_RANGE_GROUP  = 1; // Ancho de la horquilla de signos
+    public static final int BASE_DIFERENCE_RATING_FOR_GROUP_1 = 30; // Valor base de diferencia (dividida por 10) de rating para asignar un partido al grupo 1
+    public static final int BASE_DIFERENCE_RATING_FOR_GROUP_2 = 5; // Valor base de diferencia de (dividida por 10) rating para asignar un partido al grupo 1
+    public static final int BASE_DIFERENCE_RATING_FOR_GROUP_3 = -12; // Valor base de diferencia de (dividida por 10) rating para asignar un partido al grupo 1
+    public static final int BASE_DIFERENCE_RATING_FOR_GROUP_4 = -999; // Valor base de diferencia de (dividida por 10) rating para asignar un partido al grupo 1
 
     /* Usadas en Creacion de Apuestas */
     public static final int MAXIMUN_COLUMNS_BY_FORM = 8;
