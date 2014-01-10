@@ -332,9 +332,9 @@ public class BetDAO implements InjectableDAO {
 		    + ((season != null && season != 0) || (order_number != null && order_number != 0)
 		    || (description != null && !description.equals("")) ? " WHERE " : "")
 		    + (season != null && season != 0 ? " bet_season = " + season : "")
-		    + ((order_number != null && order_number != 0) || (description != null && !description.equals("")) ? " AND " : "")
+		    + ((season != null && season != 0) && (order_number != null && order_number != 0) ? " AND " : "")
 		    + (order_number != null && order_number != 0 ? " bet_order_number = " + order_number : "")
-		    + ((description != null && !description.equals("")) ? " AND " : "")
+		    + (((season != null && season != 0)||(order_number != null && order_number != 0)) && (description != null && !description.equals("")) ? " AND " : "")
 		    + (description != null && !description.equals("") ? " bet_description LIKE '%" + description + "%' " : "")
 		    + " ORDER BY bet_season DESC, bet_order_number, bet_description";
 

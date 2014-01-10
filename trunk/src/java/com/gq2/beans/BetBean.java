@@ -35,7 +35,7 @@ public class BetBean extends Bet {
     private Bet betToDelete;
     private Bet betForEdition;
     private Integer numColumns;
-    private Integer generationMode = 0;
+    private Integer generationBetType = 0;
 
     public BetBean() {
     }
@@ -113,12 +113,12 @@ public class BetBean extends Bet {
 	this.numColumns = numColumns;
     }
 
-    public Integer getGenerationMode() {
-	return generationMode;
+    public Integer getGenerationBetType() {
+	return generationBetType;
     }
 
-    public void setGenerationMode(Integer generationMode) {
-	this.generationMode = generationMode;
+    public void setGenerationBetType(Integer generationBetType) {
+	this.generationBetType = generationBetType;
     }
 
     public Bet getBetForEdition() {
@@ -185,26 +185,37 @@ public class BetBean extends Bet {
 	    // enviar mensaje
 	    return;
 	}
+	setSortby("order");
+	sortDataBetLines(getSortby());
+	fillBet(this);   // LLena un objeto Bet ya existente con los datos entrados o modificados
+
 	Bet bet = betService.loadConditionalBet(getBetSeason(), getBetOrderNumber(), getBetDescription());
 	if (bet == null) {
-	    fillBet(this);   // LLena un objeto Bet ya existente con los datos entrados o modificados
-	    // Persiste la apuesta
 	    setBetId(betService.save(this));
 	    if (this.getBetId() == 0) {
 		// fallo al insertar el registro
 		// TODO Enviar mensaje de fallo en la persistencia del objeto
 	    } else {
-		betList.add(bet);
-		dataBetLines.clear();
-		dataBetGroups.clear();
+		List<Bet> newBetList = new ArrayList<>();
+		newBetList.add((Bet) this);
+		newBetList.addAll(betList);
+		setBetList(newBetList);
+//		dataBetLines.clear();
+//		dataBetGroups.clear();
 	    }
 	} else {
 	    // ya existe el registro
 	    // TODO Enviar mensaje notificacion de que el objeto ya existe
+	    betService.update(this);
 	}
+		setSortby("rating");
+	sortDataBetLines(getSortby());
+
+	setNumColumns(null);
+
     }
 
-    private void fillBet(Bet bet) {
+private void fillBet(Bet bet) {
 	bet.setBetId(betId);
 	bet.setBetSeason(betSeason);
 	bet.setBetOrderNumber(betOrderNumber);
@@ -282,6 +293,8 @@ public class BetBean extends Bet {
     }
 
     public void saveBet() {
+	insertBet();
+	/* Se mantiene este metodo por compatibilidad con versiones anteriores
 	setSortby("order");
 	sortDataBetLines(getSortby());
 	fillBet(this);
@@ -295,6 +308,7 @@ public class BetBean extends Bet {
 	    betList.set(idxOf, betService.loadConditionalBet(getBetSeason(), getBetOrderNumber(), getBetDescription()));
 	}
 	setNumColumns(null);
+	* */
     }
 
     private Integer findIdInBetList(int id, List<Bet> bets) {
@@ -457,7 +471,7 @@ public class BetBean extends Bet {
 	    colsBaseTemp.clear();
 	} // Final del bucle for por numberGroup
 	/* Se aplican filtros especiales de generacion */
-	colsBase = filterOnGenerationMode(colsBase);
+	colsBase = filterOnGenerationBetType(colsBase);
 	/* Se obtiene el numero de columnas definitivo */
 	setNumColumns(colsBase.size());
 	/* Se guardan en fichero de texto plano todas las columnas resultantes */
@@ -770,16 +784,15 @@ public class BetBean extends Bet {
 	return colsBaseLocal;
     }
 
-    private List<String> filterOnGenerationMode(List<String> colsBase) {
+    private List<String> filterOnGenerationBetType(List<String> colsBase) {
 	List<String> colsBaseLocal = new ArrayList<>();
-	switch (getGenerationMode()) {
+	switch (getGenerationBetType()) {
 	    case 0:
-		/* generationModeBasic */
+		/* generationBetTypeBasic */
 		colsBaseLocal = colsBase;
 		break;
 	    case 1:
-		/* generationModeLimited_456_Sign1 */
-		setBetDescription("Limited_456_signs_1");
+		/* generationBetTypeLimited_456_Sign1 */
 		insertBet();
 		for (String colBase : colsBase) {
 		    Integer n1 = 0, nX = 0, n2 = 0;
