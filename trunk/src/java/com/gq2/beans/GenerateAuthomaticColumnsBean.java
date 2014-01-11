@@ -25,6 +25,10 @@ public class GenerateAuthomaticColumnsBean {
     private int round;
     private Boolean disabledRounds = false;
     private ChampionshipService championshipService = new ChampionshipService();
+        private Integer generationBetType = 0;
+        private List<String> reductionTypes = new ArrayList<>();
+    private List<SelectItem> reductionTypeList = new ArrayList();
+
 
     /**
      * Creates a new instance of fgenerarAuthomaticColumnsBean
@@ -77,6 +81,37 @@ public class GenerateAuthomaticColumnsBean {
 	return this.roundItemList;
     }
 
+    public Integer getGenerationBetType() {
+	return generationBetType;
+    }
+
+    public void setGenerationBetType(Integer generationBetType) {
+	this.generationBetType = generationBetType;
+    }
+
+    public List<String> getReductionTypes() {
+	return reductionTypes;
+    }
+
+    public void setReductionTypes(List<String> reductionTypes) {
+	this.reductionTypes = reductionTypes;
+    }
+
+    public List<SelectItem> getReductionTypeList() {
+	reductionTypeList.clear();
+	reductionTypeList.add(new SelectItem(0,"Sin reduccion"));
+	reductionTypeList.add(new SelectItem(13,"Reduccion a 13"));
+	reductionTypeList.add(new SelectItem(12,"Reduccion a 12"));
+	reductionTypeList.add(new SelectItem(11,"Reduccion a 11"));
+	reductionTypeList.add(new SelectItem(10,"Reduccion a 10"));
+	reductionTypeList.add(new SelectItem(9,"Reduccion a 9"));
+	return reductionTypeList;
+    }
+
+    public void setReductionTypeList(List<SelectItem> reductionTypeList) {
+	this.reductionTypeList = reductionTypeList;
+    }
+
     public List<SelectItem> getChampionshipItemList() {
 	if (championshipItemList.isEmpty()) {
 	    setChampionshipItemList(championshipService.getChampionshipItemList());
@@ -118,20 +153,20 @@ public class GenerateAuthomaticColumnsBean {
 
 	switch (generateMode) {
 	    case 0: // Se procesa solamente la ronda seleccionada de un campeonato
-		makeAuthomaticColumns.processRound(chaId, round);
+		makeAuthomaticColumns.processRound(chaId, round, getGenerationBetType(), getReductionTypes());
 		break;
 	    case 1: // Se procesan las rondas de un campeonato desde una ronda determinada
 		// Se excluye del siguiente bucle el item 0 porque es el titulo de cabecera de la lista de rounds
 		for (SelectItem item : roundItemList.subList(1, roundItemList.size())) {
 		    if ((Integer) item.getValue() >= round) {
-			makeAuthomaticColumns.processRound(chaId, (Integer) item.getValue());
+			makeAuthomaticColumns.processRound(chaId, (Integer) item.getValue(), getGenerationBetType(), getReductionTypes());
 		    }
 		}
 		break;
 	    case 2: // Se procesan todas las rondas de un campeonato (un campeonato completo)
 		// Se excluye del siguiente bucle el item 0 porque es el titulo de cabecera de la lista de rounds
 		for (SelectItem item : roundItemList.subList(1, roundItemList.size())) {
-		    makeAuthomaticColumns.processRound(chaId, (Integer) item.getValue());
+		    makeAuthomaticColumns.processRound(chaId, (Integer) item.getValue(), getGenerationBetType(), getReductionTypes());
 		}
 		System.out.println("Generaci�n AuthomaticColumns finalizada. Campeonato "
 			+ new DAOFactory().getChampionshipDAO().load(chaId).getChaDescription());
@@ -149,7 +184,7 @@ public class GenerateAuthomaticColumnsBean {
 			    // Se excluye del siguiente bucle el item 0 porque es el titulo de cabecera de la lista de rounds
 			    for (SelectItem item : roundItemList.subList(1, roundItemList.size())) {
 				if (item.getValue() != 0) {
-				    makeAuthomaticColumns.processRound(chaId, (Integer) item.getValue());
+				    makeAuthomaticColumns.processRound(chaId, (Integer) item.getValue(), getGenerationBetType(), getReductionTypes());
 				}
 			    }
 			    System.out.println("Generaci�n AuthomaticColumns finalizada. Campeonato "

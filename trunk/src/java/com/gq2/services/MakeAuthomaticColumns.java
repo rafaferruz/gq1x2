@@ -3,9 +3,12 @@ package com.gq2.services;
 import com.gq2.DAO.DAOFactory;
 import com.gq2.beans.ColumnsBean;
 import com.gq2.domain.Championship;
+import com.gq2.enums.GenerationBetType;
 import com.gq2.tools.Const;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -17,6 +20,8 @@ public class MakeAuthomaticColumns {
     private int round;
     private Championship championship;
     private int season;
+    private int generationBetType;
+    private List<String> reductionTypeList = new ArrayList<>();
 
     public MakeAuthomaticColumns() {
     }
@@ -53,9 +58,27 @@ public class MakeAuthomaticColumns {
 	this.season = season;
     }
 
-    public void processRound(int chaId, int round) {
+    public int getGenerationBetType() {
+	return generationBetType;
+    }
+
+    public void setGenerationBetType(int generationBetType) {
+	this.generationBetType = generationBetType;
+    }
+
+    public List<String> getReductionTypeList() {
+	return reductionTypeList;
+    }
+
+    public void setReductionTypeList(List<String> reductionTypeList) {
+	this.reductionTypeList = reductionTypeList;
+    }
+
+    public void processRound(int chaId, int round, Integer generationBetType, List<String> reductionTypeList) {
 	setChaId(chaId);
 	setRound(round);
+	setGenerationBetType(generationBetType);
+	setReductionTypeList(reductionTypeList);
 	processRound();
     }
 
@@ -68,12 +91,13 @@ public class MakeAuthomaticColumns {
 	ColumnsBean authomaticBet = new ColumnsBean();
 	System.out.println("Inicio    " + new Date());
 	/* Borrado de Apuestas generadas automaticamente */
-	authomaticBet.readBets(season, round, Const.GENERATED_AUTHOMATICALLY_TEXT);
+	authomaticBet.readBets(season, round, GenerationBetType.parse(generationBetType).getText());
 	if (authomaticBet.getBetList().size() > 0) {
 	    authomaticBet.setBetId(authomaticBet.getBetList().get(0).getBetId());
 	    authomaticBet.setBetSeason(authomaticBet.getBetList().get(0).getBetSeason());
 	    authomaticBet.setBetOrderNumber(authomaticBet.getBetList().get(0).getBetOrderNumber());
 	    authomaticBet.setBetDescription(authomaticBet.getBetList().get(0).getBetDescription());
+	    authomaticBet.setGenerationBetType(generationBetType);
 	    /* Se completan datos del objeto Bet */
 	    authomaticBet.setBetForEdition(authomaticBet.getBetList().get(0));
 	    /* Se completa la nueva apuesta con las lineas que le correspondan desde PrePool */
@@ -88,23 +112,29 @@ public class MakeAuthomaticColumns {
 	    for (int factor_reduction = Const.MAXIMUN_LINES_BY_FORM;
 		    factor_reduction >= Const.AUTHOMATIC_REDUCTION_TO;
 		    factor_reduction--) {
-		/* Se leen las columnas desde el fichero de texto generado (todas las columnas iniciales posibles) */
+		/* Se generan solamente las reducciones que hayan sido solicitadas
+		 * 
+		 */
+		if (checkFactorReductionInListToReduction(factor_reduction)) {
+
+		    /* Se leen las columnas desde el fichero de texto generado (todas las columnas iniciales posibles) */
 //		if (factor_reduction == Const.MAXIMUN_LINES_BY_FORM) {
-		authomaticBet.getDataColumns("");
+		    authomaticBet.getDataColumns("");
 //		} else {
 //		    authomaticBet.getDataColumns(Const.AUTHOMATIC_REDUCTION_SUFFIX_TEXT + (factor_reduction + 1));
 //		}
-		System.out.println("Leidas columnas    " + new Date());
-		authomaticBet.setSelReduction(factor_reduction);
+		    System.out.println("Leidas columnas    " + new Date());
+		    authomaticBet.setSelReduction(factor_reduction);
 //		authomaticBet.setReduceFromCol(Const.AUTHOMATIC_REDUCE_FROM_COLUMN);
-		authomaticBet.setReduceFromCol(authomaticBet.getDataCols().size() / 2); // Desde la columna central de la lista de columnas
-		authomaticBet.setMaximumColumnsNumber(0);
-		/* Se ejecuta el proceso de reduccion de columnas */
-		authomaticBet.setDataCols(authomaticBet.getColumnService().generateReduction(authomaticBet));
-		System.out.println("Fin de generacion    " + new Date());
-		authomaticBet.setSaveReduction(Const.AUTHOMATIC_REDUCTION_SUFFIX_TEXT + factor_reduction);
-		authomaticBet.saveReduction();
-		System.out.println("Fin de guardado     " + new Date());
+		    authomaticBet.setReduceFromCol(authomaticBet.getDataCols().size() / 2); // Desde la columna central de la lista de columnas
+		    authomaticBet.setMaximumColumnsNumber(0);
+		    /* Se ejecuta el proceso de reduccion de columnas */
+		    authomaticBet.setDataCols(authomaticBet.getColumnService().generateReduction(authomaticBet));
+		    System.out.println("Fin de generacion    " + new Date());
+		    authomaticBet.setSaveReduction(Const.AUTHOMATIC_REDUCTION_SUFFIX_TEXT + factor_reduction);
+		    authomaticBet.saveReduction();
+		    System.out.println("Fin de guardado     " + new Date());
+		}
 	    }
 	    /* Reduccion especial para un maximo de columnas */
 	    authomaticBet.setMaximumColumnsNumber(Const.AUTHOMATIC_MAXIMUN_COLUMNS_IN_REDUCTION);
@@ -128,5 +158,14 @@ public class MakeAuthomaticColumns {
 	Calendar cal = Calendar.getInstance();
 	cal.setTime(getChampionship().getChaStartDate());
 	setSeason(cal.get(Calendar.YEAR));
+    }
+
+    private boolean checkFactorReductionInListToReduction(int factor_reduction) {
+	for (String reductionId : reductionTypeList) {
+	    if (Integer.parseInt(reductionId) == factor_reduction) {
+		return true;
+	    }
+	}
+	return false;
     }
 }
