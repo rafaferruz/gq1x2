@@ -4,6 +4,7 @@ import com.gq2.DAO.DAOFactory;
 import com.gq2.beans.BetBean;
 import com.gq2.domain.Championship;
 import com.gq2.tools.Const;
+import com.gq2.enums.GenerationBetType;
 import java.util.Calendar;
 
 /**
@@ -16,6 +17,8 @@ public class MakeAuthomaticBet {
     private int round;
     private Championship championship;
     private int season;
+            private Integer generationBetType;
+
 
     public MakeAuthomaticBet() {
     }
@@ -52,28 +55,38 @@ public class MakeAuthomaticBet {
 	this.season = season;
     }
 
-    public void processRound(int chaId, int round) {
+    public Integer getGenerationBetType() {
+	return generationBetType;
+    }
+
+    public void setGenerationBetType(Integer generationBetType) {
+	this.generationBetType = generationBetType;
+    }
+
+    public void processRound(int chaId, int round,Integer generationBetType) {
 	setChaId(chaId);
 	setRound(round);
+	setGenerationBetType(generationBetType);
 	processRound();
     }
 
     private void processRound() {
 	initCollections(chaId, round);
-	deleteAuthomaticBetsCurrentRound(season, round);
+	deleteAuthomaticBetsCurrentRound(season, round, generationBetType);
 	/*
 	 * Se crea la nueva apuesta
 	 */
 	BetBean authomaticBet = new BetBean();
 	authomaticBet.setBetSeason(season);
 	authomaticBet.setBetOrderNumber(round);
-	authomaticBet.setBetDescription(Const.GENERATED_AUTHOMATICALLY_TEXT);
+	authomaticBet.setBetDescription(GenerationBetType.parse(generationBetType).getText());
+	authomaticBet.setGenerationBetType(generationBetType);
 	/* Se completa la nueva apuesta con las lineas que le correspondan desde PrePool */
 	authomaticBet.editBet(); // Desde editBet se llama al servicio para completar las lineas
 	/* Se generan las apuestas automaticas y se persisten en la base de datos */
 	authomaticBet.generateBets();
 
-	System.out.println("MakeBet: Generaci�n Bets Automaticas finalizada. Ronda " + round);
+	System.out.println("MakeBet: Generaci�n Bets Automaticas finalizada. Jornada " + round);
 
     }
 
@@ -84,8 +97,8 @@ public class MakeAuthomaticBet {
 	setSeason(cal.get(Calendar.YEAR));
     }
 
-    private void deleteAuthomaticBetsCurrentRound(int season, int round) {
+    private void deleteAuthomaticBetsCurrentRound(int season, int round, Integer generationBetType) {
 // Se eliminan los registros que existan de objetos Bet de creacion automatica de la round actual
-	new DAOFactory().getBetDAO().deleteAuthomaticRoundBet(season, round);
+	new DAOFactory().getBetDAO().deleteAuthomaticRoundBet(season, round, GenerationBetType.parse(generationBetType).getText());
     }
 }

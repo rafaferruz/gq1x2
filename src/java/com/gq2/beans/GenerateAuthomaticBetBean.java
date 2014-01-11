@@ -3,6 +3,7 @@ package com.gq2.beans;
 import com.gq2.DAO.DAOFactory;
 import com.gq2.services.ChampionshipService;
 import com.gq2.services.MakeAuthomaticBet;
+import com.gq2.enums.GenerationBetType;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -25,6 +26,7 @@ public class GenerateAuthomaticBetBean {
     private int round;
     private Boolean disabledRounds = false;
     private ChampionshipService championshipService = new ChampionshipService();
+    private Integer generationBetType = 0;
 
     /**
      * Creates a new instance of fgenerarAuthomaticBetBean
@@ -84,6 +86,14 @@ public class GenerateAuthomaticBetBean {
 	return this.championshipItemList;
     }
 
+    public Integer getGenerationBetType() {
+	return generationBetType;
+    }
+
+    public void setGenerationBetType(Integer generationBetType) {
+	this.generationBetType = generationBetType;
+    }
+
     public void setChampionshipItemList(List<SelectItem> championshipItemList) {
 	this.championshipItemList = championshipItemList;
     }
@@ -118,23 +128,24 @@ public class GenerateAuthomaticBetBean {
 
 	switch (generateMode) {
 	    case 0: // Se procesa solamente la ronda seleccionada de un campeonato
-		makeAuthomaticBet.processRound(chaId, round);
+		makeAuthomaticBet.processRound(chaId, round, getGenerationBetType());
+		printLogMessage(chaId, round, getGenerationBetType());
 		break;
 	    case 1: // Se procesan las rondas de un campeonato desde una ronda determinada
 		// Se excluye del siguiente bucle el item 0 porque es el titulo de cabecera de la lista de rounds
 		for (SelectItem item : roundItemList.subList(1, roundItemList.size())) {
 		    if ((Integer) item.getValue() >= round) {
-			makeAuthomaticBet.processRound(chaId, (Integer) item.getValue());
+			makeAuthomaticBet.processRound(chaId, (Integer) item.getValue(), getGenerationBetType());
+			printLogMessage(chaId, (Integer) item.getValue(), getGenerationBetType());
 		    }
 		}
 		break;
 	    case 2: // Se procesan todas las rondas de un campeonato (un campeonato completo)
 		// Se excluye del siguiente bucle el item 0 porque es el titulo de cabecera de la lista de rounds
 		for (SelectItem item : roundItemList.subList(1, roundItemList.size())) {
-		    makeAuthomaticBet.processRound(chaId, (Integer) item.getValue());
+		    makeAuthomaticBet.processRound(chaId, (Integer) item.getValue(), getGenerationBetType());
+		    printLogMessage(chaId, (Integer) item.getValue(), getGenerationBetType());
 		}
-		System.out.println("Generaci�n AuthomaticBet finalizada. Campeonato "
-			+ new DAOFactory().getChampionshipDAO().load(chaId).getChaDescription());
 		break;
 	    case 3: // Se procesan todos los campeonatos desde uno seleccionado
 		boolean processingSwitch = false;
@@ -149,11 +160,10 @@ public class GenerateAuthomaticBetBean {
 			    // Se excluye del siguiente bucle el item 0 porque es el titulo de cabecera de la lista de rounds
 			    for (SelectItem item : roundItemList.subList(1, roundItemList.size())) {
 				if (item.getValue() != 0) {
-				    makeAuthomaticBet.processRound(chaId, (Integer) item.getValue());
+				    makeAuthomaticBet.processRound(chaId, (Integer) item.getValue(), getGenerationBetType());
+				    printLogMessage(chaId, (Integer) item.getValue(), getGenerationBetType());
 				}
 			    }
-			    System.out.println("Generaci�n AuthomaticBet finalizada. Campeonato "
-				    + new DAOFactory().getChampionshipDAO().load(chaId).getChaDescription());
 
 			}
 		    }
@@ -161,5 +171,14 @@ public class GenerateAuthomaticBetBean {
 		break;
 	    default:
 	}
+    }
+
+    private void printLogMessage(int chaId, int round, int generationBetType) {
+	System.out.println("Generaci�n AuthomaticBet "
+		+ GenerationBetType.parse(generationBetType).getText()
+		+ " finalizada. Campeonato "
+		+ new DAOFactory().getChampionshipDAO().load(chaId).getChaDescription()
+		+ " Jornada: " + round);
+
     }
 }

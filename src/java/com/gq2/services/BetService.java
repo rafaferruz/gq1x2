@@ -7,6 +7,7 @@ import com.gq2.beans.BetLineBean;
 import com.gq2.domain.Bet;
 import com.gq2.domain.PrePool;
 import com.gq2.tools.Const;
+import com.gq2.enums.GenerationBetType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -115,7 +116,7 @@ public class BetService {
 	aThis = initializeDataBet(aThis);
 	/* Asigna Description al objeto BetBean segun el modo de generacion
 	 */
-	aThis.setBetDescription(getBetDescriptionOnGenerationBetType(aThis));
+	aThis.setBetDescription(GenerationBetType.parse(aThis.getGenerationBetType()).getText());
 
 	Map<Integer, CalculationBetData> ratingDiferenceGroups = new HashMap<>();
 	// Se presentan las lineas ordenadas por rating
@@ -544,23 +545,6 @@ public class BetService {
 	aThis.setDataBetLines(generateBetLinesFromPrePoolLines(aThis.getBetSeason(), aThis.getBetOrderNumber()));
     }
 
-    private String getBetDescriptionOnGenerationBetType(BetBean aThis) {
-	switch (aThis.getGenerationBetType()) {
-	    case 0:
-		aThis.setBetDescription("Generated Authomatically");
-		break;
-	    case 1:
-		aThis.setBetDescription("Limited_456_signs_1");
-	    case 2:
-		aThis.setBetDescription("Forced_First_5_To_111X2_Signs");
-		break;
-	    default:
-		aThis.setBetDescription("Generated Authomatically");
-		break;
-
-	}
-	return aThis.getBetDescription();
-    }
 
     /**
      * calculationBetData es una clase privada para ayuda en los calculos de

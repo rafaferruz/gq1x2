@@ -232,7 +232,7 @@ public class BetDAO implements InjectableDAO {
      * @param round	Id de la ronda a eliminar
      * @return	Numero de filas eliminadas
      */
-    public int deleteAuthomaticRoundBet(int chaId, int round) {
+    public int deleteAuthomaticRoundBet(int chaId, int round, String description) {
 	try {
 	    //** crear la frase DELETE SQL de tabla1
 	    String sql = "DELETE FROM bets WHERE bet_season = ? AND bet_order_number = ?"
@@ -240,7 +240,7 @@ public class BetDAO implements InjectableDAO {
 	    PreparedStatement ps = conn.prepareStatement(sql);
 	    ps.setInt(1, chaId);
 	    ps.setInt(2, round);
-	    ps.setString(3, "Generated Authomatically");
+	    ps.setString(3, description);
 	    log.debug("deleteAuthomaticRoundBet: " + ps.toString());
 	    return ps.executeUpdate();
 	} catch (SQLException ex) {
