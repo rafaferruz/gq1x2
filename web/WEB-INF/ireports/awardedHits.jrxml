@@ -1,27 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="awardedHits" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="db291693-dac4-4f54-8a77-8473cd599807">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="awardedHits" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="db291693-dac4-4f54-8a77-8473cd599807">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="64"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="hitId" class="java.lang.Integer"/>
+	<field name="hitBetId" class="java.lang.Integer"/>
+	<field name="hitBetSeason" class="java.lang.Integer"/>
+	<field name="hitBetOrderNumber" class="java.lang.Integer"/>
+	<field name="hitBetDescription" class="java.lang.String"/>
+	<field name="hitReductionName" class="java.lang.String"/>
+	<field name="hitTotalColumns" class="java.lang.Integer"/>
+	<field name="hitHitsNumber" class="java.lang.Integer"/>
+	<field name="hitColumnsNumber" class="java.lang.Integer"/>
+	<field name="awaId" class="java.lang.Integer"/>
+	<field name="awaSeason" class="java.lang.Integer"/>
+	<field name="awaOrderNumber" class="java.lang.Integer"/>
+	<field name="awaDescription" class="java.lang.String"/>
+	<field name="awaBetPrice" class="java.lang.Double"/>
+	<field name="awa14HitsAmount" class="java.lang.Double"/>
+	<field name="awa13HitsAmount" class="java.lang.Double"/>
+	<field name="awa12HitsAmount" class="java.lang.Double"/>
+	<field name="awa11HitsAmount" class="java.lang.Double"/>
+	<field name="awa10HitsAmount" class="java.lang.Double"/>
+	<variable name="awardAmount" class="java.lang.Double">
+		<variableExpression><![CDATA[($F{hitHitsNumber} == 10 ? $F{hitColumnsNumber} * $F{awa10HitsAmount} :
+    ($F{hitHitsNumber} == 11 ? $F{hitColumnsNumber} * $F{awa11HitsAmount} :
+        ($F{hitHitsNumber} == 12 ? $F{hitColumnsNumber} * $F{awa12HitsAmount} :
+            ($F{hitHitsNumber} == 13 ? $F{hitColumnsNumber} * $F{awa13HitsAmount} :
+                ($F{hitHitsNumber} == 14 ? $F{hitColumnsNumber} * $F{awa14HitsAmount} :
+                    0.0 )))))]]></variableExpression>
+	</variable>
+	<variable name="totalBetAwards" class="java.lang.Double" resetType="Group" resetGroup="BetGroup" calculation="Sum">
+		<variableExpression><![CDATA[$V{awardAmount}]]></variableExpression>
+	</variable>
+	<group name="BetGroup" keepTogether="true">
+		<groupExpression><![CDATA[$F{hitBetId} + $F{hitReductionName}]]></groupExpression>
+		<groupFooter>
+			<band height="30">
+				<staticText>
+					<reportElement x="327" y="5" width="113" height="14" uuid="25a50959-b2c9-48af-9d6d-a5a7f7b5e5f0"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Columnas jugadas:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="440" y="5" width="70" height="14" uuid="cd5716cf-f539-4edb-b601-19df8445dcee"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{hitTotalColumns}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="525" y="5" width="113" height="14" uuid="7358eb81-927f-4a1c-9ee3-70e8321272ba"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Importe pagado:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="638" y="5" width="70" height="14" uuid="ec5288c3-5adc-4821-ac8c-18eb9560956c"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{hitTotalColumns} * $F{awaBetPrice}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0">
+					<reportElement x="730" y="5" width="72" height="14" uuid="94fc62e8-6c7f-4f65-a032-b746558e4d22"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalBetAwards}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="79" splitType="Stretch"/>
-	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="0" width="490" height="30" uuid="3cfcec1f-b0e7-4303-9fcf-116816b020eb"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Informe de Premios conseguidos]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="14" uuid="c3910f6a-fd25-4c5b-84e3-aa54b17e81b3"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id Hit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="178" y="0" width="200" height="14" uuid="597ca1a0-3402-4506-983b-e07019ca6195"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modo Generacion Apuestas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="0" width="200" height="14" uuid="5ff5ed76-1360-47bf-a9aa-82fc6d7e5e90"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Reduccion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="638" y="0" width="45" height="14" uuid="66a5280a-b05e-48fd-9962-a87ddc9e5076"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aciertos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="690" y="0" width="30" height="14" uuid="1c56b882-dd08-44e5-936c-d45834ff1032"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cols.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="40" height="14" uuid="0e263ad6-b448-46b2-972c-ae39464fb0b7"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id Bet]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="40" height="14" uuid="3a9efdb4-61b4-4a41-a296-42747bb45700"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Temp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="0" width="40" height="14" uuid="b31e2c45-b8ee-43df-9fcd-bfade42e9c0e"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jorn.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="21" width="800" height="1" uuid="5331d91e-1b82-4208-b78f-88263c56f6fb"/>
+			</line>
+			<staticText>
+				<reportElement x="730" y="0" width="70" height="14" uuid="bf663847-a34b-4ffa-802b-0d214df53a92"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Imp. Premio]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="14" uuid="95eeb281-b9d5-418b-9154-cc9811184b95"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{hitId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="0" width="40" height="14" uuid="9fd669bc-54bb-48ce-b0f5-2d8556b87019"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{hitBetId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="40" height="14" uuid="fecc453f-87c9-42a0-bb40-04073cb454d1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{hitBetSeason}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="40" height="14" uuid="42ba9780-2072-4529-ad9f-8a011ae91d41"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{hitBetOrderNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="0" width="200" height="14" uuid="6f40a2a7-764f-4453-8e5a-ff78f552f7c1"/>
+				<textFieldExpression><![CDATA[$F{hitBetDescription}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="378" y="0" width="200" height="14" uuid="72bb83c0-4924-4edf-a029-b05be083bb1f"/>
+				<textFieldExpression><![CDATA[$F{hitReductionName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="638" y="0" width="30" height="14" uuid="68360953-e528-48f0-b083-ea396ed53b61"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{hitHitsNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="690" y="0" width="30" height="14" uuid="24ea9923-3c4a-4968-bcd2-fb0e7d9c7beb"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{hitColumnsNumber}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0">
+				<reportElement x="730" y="0" width="72" height="14" uuid="5d2ce8cc-42b8-4846-a639-f3a5b249fac6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{awardAmount}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

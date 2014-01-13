@@ -1,6 +1,7 @@
 package com.gq2.DAO;
 
 import com.gq2.domain.*;
+import com.gq2.reports.AwardedHit;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -204,7 +205,7 @@ public class HitDAO implements InjectableDAO {
 	    hit.setHitBetDescription(rs.getString("hit_bet_description"));
 	    hit.setHitReductionName(rs.getString("hit_reduction_name"));
 	    hit.setHitTotalColumns(rs.getInt("hit_total_columns"));
-	    hit.setHitHitsNumber(rs.getInt("hit_nits_number"));
+	    hit.setHitHitsNumber(rs.getInt("hit_hits_number"));
 	    hit.setHitColumnsNumber(rs.getInt("hit_columns_number"));
 	} catch (SQLException ex) {
 	    log.error(ex);
@@ -293,5 +294,55 @@ public class HitDAO implements InjectableDAO {
 	    log.error(ex);
 	}
 	return 0;
+    }
+
+    public List<AwardedHit> loadAwardedHitList() {
+	List<AwardedHit> hitList = new ArrayList<>();
+	try {
+	    String sql =
+		    "SELECT * "
+		    + " FROM hits LEFT JOIN awards "
+		    + " on hit_bet_season = awa_season and hit_bet_order_number = awa_order_number "
+		    + " WHERE hit_bet_season = 2006 and hit_bet_description LIKE 'Gen%'";
+
+	    PreparedStatement ps = conn.prepareStatement(sql);
+	    log.debug("loadAwardedHitList: " + ps.toString());
+	    try (ResultSet rs = ps.executeQuery()) {
+		while (rs.next()) {
+		    hitList.add(populateAwardedHitFromResultSet(rs));
+		}
+	    }
+	} catch (SQLException ex) {
+	    log.error(ex);
+	}
+	return hitList;
+    }
+
+    private AwardedHit populateAwardedHitFromResultSet(ResultSet rs) {
+	AwardedHit awardedHit = new AwardedHit();
+	try {
+	    awardedHit.setHitId(rs.getInt("hit_id"));
+	    awardedHit.setHitBetId(rs.getInt("hit_bet_id"));
+	    awardedHit.setHitBetSeason(rs.getInt("hit_bet_season"));
+	    awardedHit.setHitBetOrderNumber(rs.getInt("hit_bet_order_number"));
+	    awardedHit.setHitBetDescription(rs.getString("hit_bet_description"));
+	    awardedHit.setHitReductionName(rs.getString("hit_reduction_name"));
+	    awardedHit.setHitTotalColumns(rs.getInt("hit_total_columns"));
+	    awardedHit.setHitHitsNumber(rs.getInt("hit_hits_number"));
+	    awardedHit.setHitColumnsNumber(rs.getInt("hit_columns_number"));
+	    awardedHit.setAwaId(rs.getInt("awa_id"));
+	    awardedHit.setAwaSeason(rs.getInt("awa_season"));
+	    awardedHit.setAwaOrderNumber(rs.getInt("awa_order_number"));
+	    awardedHit.setAwaDescription(rs.getString("awa_description"));
+	    awardedHit.setAwaBetPrice(rs.getDouble("awa_bet_price"));
+	    awardedHit.setAwa14HitsAmount(rs.getDouble("awa_14_hits_amount"));
+	    awardedHit.setAwa13HitsAmount(rs.getDouble("awa_13_hits_amount"));
+	    awardedHit.setAwa12HitsAmount(rs.getDouble("awa_12_hits_amount"));
+	    awardedHit.setAwa11HitsAmount(rs.getDouble("awa_11_hits_amount"));
+	    awardedHit.setAwa10HitsAmount(rs.getDouble("awa_10_hits_amount"));
+	} catch (SQLException ex) {
+	    log.error(ex);
+	}
+	return awardedHit;
     }
 }

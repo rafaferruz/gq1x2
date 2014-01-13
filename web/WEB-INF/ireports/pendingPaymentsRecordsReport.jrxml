@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="budgetResultReport" pageWidth="580" pageHeight="842" columnWidth="520" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="eca5dafb-bb2b-4582-b2de-cddb32a48a63">
+	<property name="ireport.scriptlethandling" value="2"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="315"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<subDataset name="dataset1" uuid="63092f5c-e9f5-4e1b-b389-4ed3779e2083"/>
+	<parameter name="fiscalPeriod" class="es.dialsl.codex.domain.account.FiscalPeriod"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="expenseSubconcepts" class="java.util.HashMap"/>
+	<parameter name="incomeSubconcepts" class="java.util.HashMap"/>
+	<parameter name="banner" class="java.awt.Image"/>
+	<parameter name="locale" class="java.util.Locale"/>
+	<parameter name="language" class="es.dialsl.codex.domain.Language"/>
+	<parameter name="centre" class="es.dialsl.codex.domain.Centre"/>
+	<parameter name="suppliers" class="java.util.HashMap"/>
+	<parameter name="contributors" class="java.util.HashMap"/>
+	<parameter name="costCentres" class="java.util.HashMap" isForPrompting="false"/>
+	<parameter name="recordTypes" class="es.dialsl.codex.util.RecordTypeFactory" isForPrompting="false"/>
+	<parameter name="fiscalPeriods" class="java.util.HashMap"/>
+	<field name="date" class="java.util.Date"/>
+	<field name="paymentDate" class="java.util.Date"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="paid" class="java.lang.Boolean"/>
+	<field name="account" class="es.dialsl.codex.domain.account.Account"/>
+	<field name="documentNumber" class="java.lang.String"/>
+	<field name="recordNumber" class="java.lang.Integer"/>
+	<field name="type" class="es.dialsl.codex.domain.account.RecordType"/>
+	<field name="registeredRecord" class="es.dialsl.codex.domain.account.RegisteredRecord"/>
+	<field name="fiscalPeriod" class="es.dialsl.codex.domain.account.FiscalPeriod"/>
+	<variable name="amount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{registeredRecord}.getTotal()]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="fiscalPeriod" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{fiscalPeriod}.getId()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{fiscalPeriod}.getId()]]></initialValueExpression>
+	</variable>
+	<variable name="amountPeriod" class="java.lang.Integer" resetType="Group" resetGroup="fiscalPeriod" calculation="Sum">
+		<variableExpression><![CDATA[$F{registeredRecord}.getTotal()]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="fiscalPeriod">
+		<groupExpression><![CDATA[$V{fiscalPeriod}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<staticText>
+					<reportElement x="45" y="0" width="31" height="8" uuid="bb967679-a492-4f4b-8255-100af8818164"/>
+					<textElement>
+						<font fontName="SansSerif" size="6"/>
+					</textElement>
+				</staticText>
+				<textField>
+					<reportElement x="45" y="5" width="136" height="8" uuid="71b9e472-9c66-4d3e-a43e-2b3032f9723d"/>
+					<textElement>
+						<font fontName="SansSerif" size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.fiscalPeriod")+":   "+
+((es.dialsl.codex.domain.account.FiscalPeriod)$P{fiscalPeriods}.get($F{registeredRecord}.getFiscalPeriod().getId())).getDescription()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="29">
+				<textField>
+					<reportElement x="56" y="10" width="199" height="10" uuid="591882f2-9ac8-49ce-a2a3-c8f5380201fc"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.totalFiscalPeriod")]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="270" y="5" width="50" height="1" uuid="af86878e-e1dd-42be-906e-e461dbb9be0b"/>
+				</line>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="270" y="10" width="50" height="10" uuid="177bea53-daf5-46b5-af17-4fcd661abc25"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{amountPeriod}/100.0]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="61">
+			<image>
+				<reportElement x="1" y="2" width="114" height="40" uuid="c9080f6b-14cb-4c34-8e3a-195c47b441b6"/>
+				<imageExpression><![CDATA[$P{centre}.getReportBannerAsStream()]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="150" y="34" width="350" height="14" uuid="607490e0-e48c-477b-b420-f81d0e4b8406"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "fiscalPeriod") + ": "+$P{fiscalPeriod}.getDescription()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="22" width="350" height="14" uuid="d86e2d0f-85f6-4e4d-b698-111b9b9ccbba"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "centre") + ": " +$P{centre}.getName().get($P{locale})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="2" width="350" height="20" uuid="252a98ee-93dc-4974-aebb-f7d352fa29f5"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.title")]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="514" height="57" uuid="d8a3599c-d9d3-4484-82cd-97ba3d475278"/>
+			</rectangle>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<textField>
+				<reportElement x="1" y="0" width="40" height="18" uuid="63b5f445-7b9a-4cd2-802b-ac8a886a72d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.recordNumber")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="0" width="52" height="18" uuid="1c8eca82-696d-4833-bf29-1ef58246e0fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.recordDate")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="0" width="130" height="18" uuid="b66f1d91-64fb-4b38-9b0b-9d12f1476fb6"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.description")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="0" width="50" height="18" uuid="41fb47b8-8e36-4134-9d87-dbd309f64991"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.amount")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="0" width="64" height="18" uuid="9b8f7929-f031-4269-a96c-6c1231f4d4b0"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.paymentMethod")]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="20" width="520" height="1" uuid="a3dbcd73-5a78-45b3-9e8c-b2d37dbdccf1"/>
+			</line>
+			<textField>
+				<reportElement x="45" y="0" width="30" height="18" uuid="ed29ccd6-8b5d-4355-9069-9c77c4cded05"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.type")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="28" height="18" uuid="c30fc5e5-fbd2-45af-8138-7afefb670df4"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.paid")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="0" width="56" height="18" uuid="5f5fa76c-cdd3-4f26-99fa-d55d9af39146"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.paymentDate")]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="9" splitType="Stretch">
+			<textField pattern="###0;-###0" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="35" height="8" uuid="1554444a-8718-40e4-a6bd-fcf2591c328e"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recordNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="0" width="31" height="8" uuid="0ae59dad-7239-4048-8cdc-1da8d56b5b25"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, $F{type}.getKey() )]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="85" y="0" width="40" height="8" uuid="762d5dcc-fa8c-4a8a-aa73-e14d1d942064"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy" isBlankWhenNull="true">
+				<reportElement x="135" y="0" width="130" height="8" uuid="f886597a-a1f9-49fc-a227-2f68a44d3c5a"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="270" y="0" width="50" height="8" uuid="525a5856-93ce-4b38-8fdc-c2872aeecba3"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registeredRecord}.getTotal()/100.0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="330" y="0" width="65" height="8" uuid="74ee4730-d8fb-4ed2-9407-642d8924bb9e"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale},  $F{registeredRecord}.getPaymentMethod().getKey())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="26" height="8" uuid="f0923989-c322-43cf-8836-db0161cf769b"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, $F{paid}?"yes":"no")]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="440" y="0" width="50" height="8" uuid="7ca7f320-98ea-4d39-8ddf-93f345270dc9"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paymentDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement x="452" y="10" width="15" height="10" uuid="07173c79-45ff-4cb0-862f-e4051361250a"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="392" y="10" width="52" height="10" uuid="95f89bec-7d47-4c25-9af1-87f23d468721"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "page")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="468" y="10" width="10" height="10" uuid="5e862c52-10b7-4a3c-9a59-172506579b0d"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["/"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="479" y="10" width="15" height="10" uuid="56665476-5d7d-4574-be7c-a124c4e27bbb"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="50">
+			<line>
+				<reportElement x="270" y="5" width="50" height="1" uuid="9f685b14-065b-4a23-9ed6-f564dcee73b9"/>
+			</line>
+			<textField>
+				<reportElement x="59" y="10" width="196" height="10" uuid="33fc32d9-2aa2-441a-8584-1467cc44f711"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centre}.getMessage($P{locale}, "pendingPaymentsRecordsReport.totals")]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="270" y="10" width="50" height="10" uuid="d783a7ed-f912-4135-b512-98a6027c258b"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{amount}/100.0]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
