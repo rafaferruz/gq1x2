@@ -15,6 +15,7 @@
                 <td><div id="menuMain3" class="menuMain" ><a href="#"  onmouseover="MuestraPanelMenuColoca('PROCESOS');"  onmouseout="OcultaPanelMenuRetarda('PROCESOS');">PROCESOS</a></div></td>
                 <td><div id="menuMain4" class="menuMain" ><a href="#"  onmouseover="MuestraPanelMenuColoca('PRONOSTICOS');"  onmouseout="OcultaPanelMenuRetarda('PRONOSTICOS');">PRONOSTICOS</a></div></td>
                 <td><div id="menuMain5" class="menuMain" ><a href="#"  onmouseover="MuestraPanelMenuColoca('APUESTAS');"  onmouseout="OcultaPanelMenuRetarda('APUESTAS');">APUESTAS</a></div></td>
+                <td><div id="menuMain6" class="menuMain" ><a href="#"  onmouseover="MuestraPanelMenuColoca('INFORMES');"  onmouseout="OcultaPanelMenuRetarda('INFORMES');">INFORMES</a></div></td>
             </tr>
             <tr>
                 <td>
@@ -58,6 +59,10 @@
                             <tr><td class="menuLink"> <h:link outcome="bets" value="#{menu.bets}" styleClass="menuMainLink" /></td></tr>
                             <tr><td class="menuLink"> <h:link outcome="columns" value="Gesti�n de Columnas" styleClass="menuMainLink" /></td></tr>
                         </table></div>
+                    <div id="INFORMES" class="menuBox"   onmouseover="MuestraPanelMenuRetarda('INFORMES');"  onmouseout="OcultaPanelMenuRetarda('INFORMES');"  >
+                        <table class="menuBoxTable">
+                            <tr><td class="menuLink"> <a href="/AwardedHitsReport" class="menuMainLink">#{menu.awardedHitsReport}</a></td></tr>
+                        </table></div>
                 </td>
             </tr>
         </table>
@@ -68,9 +73,9 @@
 		    //Aqu� metemos nuestro codigo javascript
 
 		    var empezarMenuNavegador = false;
-		    var menuMainsMenuNavegador = new Array("menuMain1", "menuMain2", "menuMain3", "menuMain4", "menuMain5");
+		    var menuMainsMenuNavegador = new Array("menuMain1", "menuMain2", "menuMain3", "menuMain4", "menuMain5", "menuMain6");
 
-		    var capasMenuNavegador = new Array("FICHEROS", "INSCRIPCIONES", "PROCESOS", "PRONOSTICOS", "APUESTAS");
+		    var capasMenuNavegador = new Array("FICHEROS", "INSCRIPCIONES", "PROCESOS", "PRONOSTICOS", "APUESTAS", "INFORMES");
 		    var retardoMenuNavegador;
 		    var ocultarMenuNavegador;
 		    function MuestraPanelMenu(capa) {
