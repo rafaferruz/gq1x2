@@ -1,14 +1,6 @@
 package com.gq2.servlets;
 
-import com.gq2.reports.AwardedHit;
-import com.gq2.reports.ModelReportGenerator;
-import com.gq2.reports.ReportService;
-import com.gq2.services.ImportScoresAncientProcess;
-import com.gq2.services.ImportScoresGranqProcess;
-import com.gq2.services.ImportScoresProcess;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,22 +31,22 @@ public class ModelReportServlet extends HttpServlet {
 	/*
 	 * Se obtiene un objeto ReportService
 	 */
-	ReportService reportService =new ReportService();
+//	ReportService reportService =new ReportService();
 	
 	/*
 	 * Se obtiene la lista de datos para enviar al report
 	 */
-	List<AwardedHit> awardedHitList= reportService.getAwardedHitList();
+//	List<AwardedHit> awardedHitList= reportService.getAwardedHitList();
 
 /*
  * Se lanza el generador del report	
  */
-		ModelReportGenerator modelReportGenerator = new ModelReportGenerator(awardedHitList);
+	//	ModelReportGenerator modelReportGenerator = new ModelReportGenerator(awardedHitList);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + "awardedHitsReport.pdf" + "\"");
 
 		// Pinta el pdf a la salida
-		modelReportGenerator.writePDFReport(this.getServletContext(), response.getOutputStream());
+	//	modelReportGenerator.writePDFReport(this.getServletContext(), response.getOutputStream());
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
