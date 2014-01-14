@@ -2,6 +2,7 @@ package com.gq2.DAO;
 
 import com.gq2.domain.*;
 import com.gq2.reports.AwardedHit;
+import com.gq2.tools.Const;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -296,14 +297,37 @@ public class HitDAO implements InjectableDAO {
 	return 0;
     }
 
-    public List<AwardedHit> loadAwardedHitList() {
+    public List<AwardedHit> loadAwardedHitList(Integer season, Integer orderNumber,
+	    String betDescription, List<String> reductionNameList, Integer hitsNumber) {
 	List<AwardedHit> hitList = new ArrayList<>();
+	if (season == null || season <= 0) {
+	    return hitList;
+	}
+	String whereCondition = " WHERE hit_bet_season = " + season + " ";
+	if (orderNumber != null && orderNumber > 0) {
+	    whereCondition += " AND hit_bet_order_number = " + orderNumber + " ";
+	}
+	if (betDescription != null && !betDescription.isEmpty()) {
+	    whereCondition += " AND hit_bet_description LIKE '%" + betDescription + "%' ";
+	}
+	if (reductionNameList != null && !reductionNameList.isEmpty()) {
+	    whereCondition += " AND (";
+	    for (String reductionName : reductionNameList) {
+		whereCondition += (reductionNameList.indexOf(reductionName) == 0 ? "" : " OR ");
+		whereCondition += " hit_reduction_name LIKE '%" + reductionName + "%' ";
+	    }
+	    whereCondition+=") ";
+	}
+	if (hitsNumber != null && hitsNumber >= 0) {
+	    whereCondition += " AND hit_hits_number = " + (hitsNumber > 0 ? hitsNumber : Const.MAXIMUN_LINES_BY_FORM) + " ";
+	}
+
 	try {
 	    String sql =
 		    "SELECT * "
 		    + " FROM hits LEFT JOIN awards "
 		    + " on hit_bet_season = awa_season and hit_bet_order_number = awa_order_number "
-		    + " WHERE hit_bet_season = 2006 and hit_bet_description LIKE 'Gen%'";
+		    + whereCondition;
 
 	    PreparedStatement ps = conn.prepareStatement(sql);
 	    log.debug("loadAwardedHitList: " + ps.toString());

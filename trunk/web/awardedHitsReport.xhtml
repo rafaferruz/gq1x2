@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.gq2.multilang.reports" var="txt_reports"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
+                <h3 align="center">#{txt_reports.awardedHitsReport}</h3>
+                <h:form id="awardedHitsReport_form">
+                    <table>
+
+                        <tr>
+                            <td>
+                                <h:outputLabel for="componentLabel3" id="componentLabel3">
+                                    <h:outputText id="componentLabel3Text" value="#{txt_com.selectChampionship}"/>
+                                </h:outputLabel>
+                            </td>
+                            <td>
+                                <h:selectOneMenu id="dropdown1" onchange="submit()" value="#{awardedHitsReport.chaId}">
+                                    <f:selectItems id="dropdown1SelectItems" value="#{awardedHitsReport.championshipItemList}"/>
+                                </h:selectOneMenu>
+                            </td>
+			    <td >
+				<h:selectOneMenu id="select201" value="#{awardedHitsReport.generationBetType}">
+				    <f:selectItem id="selmode0" itemLabel="#{txt_reports.generationBetTypeBasic}" itemValue="0" />
+				    <f:selectItem id="selmode1" itemLabel="#{txt_reports.generationBetTypeLimited_456_Sign1}" itemValue="1" />
+				    <f:selectItem id="selmode2" itemLabel="#{txt_reports.generationBetTypeForcedFirst5To111X2Signs}" itemValue="2" />
+				</h:selectOneMenu>
+			    </td>
+                        </tr>
+			<tr>
+			    <td colspan="2"></td>
+			    <td >
+				<h:selectManyCheckbox id="manyCheckBoxReductionTypes"  value="#{awardedHitsReport.reductionTypes}" layout="pageDirection">
+                                    <f:selectItems id="SelectItemsReductionTypes" value="#{awardedHitsReport.reductionTypeList}"/>
+				</h:selectManyCheckbox>
+			    </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td align="center">
+                                <h:commandButton action="Home" id="cancelar" value="#{txt_com.Cancel}"/>
+                            </td>
+                            <td align="center">
+                                <h:commandButton action="#{awardedHitsReport.generateReport}" id="generateReport" value="#{txt_com.Print}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>
