@@ -1,6 +1,8 @@
 package com.gq2.beans;
 
 import com.gq2.DAO.DAOFactory;
+import com.gq2.enums.GenerationBetType;
+import com.gq2.enums.ReductionType;
 import com.gq2.services.ChampionshipService;
 import com.gq2.services.MakeAuthomaticColumns;
 import java.util.ArrayList;
@@ -27,7 +29,8 @@ public class GenerateAuthomaticColumnsBean {
     private ChampionshipService championshipService = new ChampionshipService();
         private Integer generationBetType = 0;
         private List<String> reductionTypes = new ArrayList<>();
-    private List<SelectItem> reductionTypeList = new ArrayList();
+    private List<ReductionType> reductionTypeList = new ArrayList();
+    private List<GenerationBetType> generationBetTypeList = new ArrayList();
 
 
     /**
@@ -97,19 +100,22 @@ public class GenerateAuthomaticColumnsBean {
 	this.reductionTypes = reductionTypes;
     }
 
-    public List<SelectItem> getReductionTypeList() {
+    public List<ReductionType> getReductionTypeList() {
 	reductionTypeList.clear();
-	reductionTypeList.add(new SelectItem(0,"Sin reduccion"));
-	reductionTypeList.add(new SelectItem(13,"Reduccion a 13"));
-	reductionTypeList.add(new SelectItem(12,"Reduccion a 12"));
-	reductionTypeList.add(new SelectItem(11,"Reduccion a 11"));
-	reductionTypeList.add(new SelectItem(10,"Reduccion a 10"));
-	reductionTypeList.add(new SelectItem(9,"Reduccion a 9"));
+	setReductionTypeList(ReductionType.listReductionTypes());
 	return reductionTypeList;
     }
 
-    public void setReductionTypeList(List<SelectItem> reductionTypeList) {
+    public void setReductionTypeList(List<ReductionType> reductionTypeList) {
 	this.reductionTypeList = reductionTypeList;
+    }
+    public List<GenerationBetType> getGenerationBetTypeList() {
+	setGenerationBetTypeList(GenerationBetType.listGenerationBetTypes());
+	return generationBetTypeList;
+    }
+
+    public void setGenerationBetTypeList(List<GenerationBetType> generationBetTypeList) {
+	this.generationBetTypeList = generationBetTypeList;
     }
 
     public List<SelectItem> getChampionshipItemList() {

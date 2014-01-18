@@ -168,6 +168,18 @@ public class BetService {
 		    groupNumber = 2;
 		}
 		break;
+	    case 3:
+	    case 4:
+	    case 5:
+		/* Los cuatro partidos de mayor diferencia de 
+		 * rating positivo se jugaran a 111 y Xo2. El resto
+		 de partidos seguiran el procedimiento standard. */
+		if (aThis.getDataBetLines().indexOf(betLine) < 4) {
+		    groupNumber = 1;
+		} else if (groupNumber == 1 && aThis.getDataBetLines().indexOf(betLine) >= 4) {
+		    groupNumber = 2;
+		}
+		break;
 	    default:
 		/* Generacion modo standard. */
 		break;
@@ -194,6 +206,14 @@ public class BetService {
 	    case 2:
 		/* Los cinco partidos de mayor diferencia de 
 		 * rating positivo se jugaran a 111X2. El resto
+		 de partidos seguiran el procedimiento standard. */
+		base="1X2";
+		break;
+	    case 3:
+	    case 4:
+	    case 5:
+		/* Los cuatro partidos de mayor diferencia de 
+		 * rating positivo se jugaran a 111 y Xo2. El resto
 		 de partidos seguiran el procedimiento standard. */
 		base="1X2";
 		break;
@@ -232,6 +252,23 @@ public class BetService {
 			break;
 		    case "2":
 			range="1,1";
+			break;
+		}
+	    case 3:
+	    case 4:
+	    case 5:
+		/* Los cuatro partidos de mayor diferencia de 
+		 * rating positivo se jugaran a 111 y Xo2. El resto
+		 de partidos seguiran el procedimiento standard. */
+		switch (sign){
+		    case "1":
+			range="3,3";
+			break;
+		    case "X":
+			range="0,1";
+			break;
+		    case "2":
+			range="0,1";
 			break;
 		}
 		break;

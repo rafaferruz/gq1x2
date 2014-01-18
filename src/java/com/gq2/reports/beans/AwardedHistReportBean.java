@@ -1,20 +1,17 @@
 package com.gq2.reports.beans;
 
-import com.gq2.DAO.DAOFactory;
 import com.gq2.enums.GenerationBetType;
 import com.gq2.enums.ReductionType;
 import com.gq2.reports.AwardedHit;
 import com.gq2.reports.AwardedHitsReportGenerator;
 import com.gq2.reports.AwardedHitsReportService;
 import com.gq2.services.ChampionshipService;
-import com.gq2.services.MakeAuthomaticColumns;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 /**
@@ -33,7 +30,8 @@ public class AwardedHistReportBean {
     private ChampionshipService championshipService = new ChampionshipService();
     private Integer generationBetType = 0;
     private List<String> reductionTypes = new ArrayList<>();
-    private List<SelectItem> reductionTypeList = new ArrayList();
+    private List<ReductionType> reductionTypeList = new ArrayList();
+    private List<GenerationBetType> generationBetTypeList = new ArrayList();
 
     /**
      * Creates a new instance of fgenerarAuthomaticColumnsBean
@@ -93,13 +91,22 @@ public class AwardedHistReportBean {
 	this.reductionTypes = reductionTypes;
     }
 
-    public List<SelectItem> getReductionTypeList() {
-	setReductionTypeList(ReductionType.listSelectItemReductionTypes());
+    public List<ReductionType> getReductionTypeList() {
+	setReductionTypeList(ReductionType.listReductionTypes());
 	return reductionTypeList;
     }
 
-    public void setReductionTypeList(List<SelectItem> reductionTypeList) {
+    public void setReductionTypeList(List<ReductionType> reductionTypeList) {
 	this.reductionTypeList = reductionTypeList;
+    }
+
+    public List<GenerationBetType> getGenerationBetTypeList() {
+	setGenerationBetTypeList(GenerationBetType.listGenerationBetTypes());
+	return generationBetTypeList;
+    }
+
+    public void setGenerationBetTypeList(List<GenerationBetType> generationBetTypeList) {
+	this.generationBetTypeList = generationBetTypeList;
     }
 
     public List<SelectItem> getChampionshipItemList() {
@@ -123,7 +130,12 @@ public class AwardedHistReportBean {
 	/*
 	 * Se obtiene la lista de datos para enviar al report
 	 */
-
+	for (int i = 0; i < reductionTypes.size(); i++) {
+	    if (reductionTypes.get(i).equals("0")) {
+		reductionTypes.set(i, "14");
+		break;
+	    }
+	}
 	List<AwardedHit> awardedHitList;
 	awardedHitList = reportService.getAwardedHitList(season, null,
 		GenerationBetType.parse(generationBetType).getText(), reductionTypes, null);
@@ -135,7 +147,8 @@ public class AwardedHistReportBean {
 	AwardedHitsReportGenerator modelReportGenerator = new AwardedHitsReportGenerator();
 
 	// Pinta el pdf a la salida
-	modelReportGenerator.writePDFReport(fc, awardedHitList, "awardedHitsReport");
+	modelReportGenerator.writePDFReport(fc, awardedHitList,
+		"awardedHitsReport");
 
     }
 }

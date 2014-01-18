@@ -13,6 +13,9 @@ import javax.faces.model.SelectItem;
 	private int hits;
 	private List<SelectItem> hitItemList = new ArrayList<>();
 
+	public HitBet(int hits) {
+	    this.hits = hits;
+	}
 	public HitBet(int hits, Integer numberColumn) {
 	    this.hits = hits;
 	    hitItemList.add(new SelectItem(numberColumn, numberColumn.toString()));

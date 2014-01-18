@@ -1,6 +1,7 @@
 package com.gq2.beans;
 
 import com.gq2.domain.Bet;
+import com.gq2.enums.GenerationBetType;
 import com.gq2.services.BetService;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -36,6 +37,7 @@ public class BetBean extends Bet {
     private Bet betForEdition;
     private Integer numColumns;
     private Integer generationBetType = 0;
+    private List<GenerationBetType> generationBetTypeList = new ArrayList<>();
 
     public BetBean() {
     }
@@ -119,6 +121,15 @@ public class BetBean extends Bet {
 
     public void setGenerationBetType(Integer generationBetType) {
 	this.generationBetType = generationBetType;
+    }
+
+    public List<GenerationBetType> getGenerationBetTypeList() {
+	setGenerationBetTypeList(GenerationBetType.listGenerationBetTypes());
+	return generationBetTypeList;
+    }
+
+    public void setGenerationBetTypeList(List<GenerationBetType> generationBetTypeList) {
+	this.generationBetTypeList = generationBetTypeList;
     }
 
     public Bet getBetForEdition() {
@@ -208,14 +219,14 @@ public class BetBean extends Bet {
 	    // TODO Enviar mensaje notificacion de que el objeto ya existe
 	    betService.update(this);
 	}
-		setSortby("rating");
+	setSortby("rating");
 	sortDataBetLines(getSortby());
 
 	setNumColumns(null);
 
     }
 
-private void fillBet(Bet bet) {
+    private void fillBet(Bet bet) {
 	bet.setBetId(betId);
 	bet.setBetSeason(betSeason);
 	bet.setBetOrderNumber(betOrderNumber);
@@ -295,20 +306,20 @@ private void fillBet(Bet bet) {
     public void saveBet() {
 	insertBet();
 	/* Se mantiene este metodo por compatibilidad con versiones anteriores
-	setSortby("order");
-	sortDataBetLines(getSortby());
-	fillBet(this);
-	Integer idxOf = findIdInBetList(this.getBetId(), betList);
-	if (idxOf == null) {
-	    betService.save(this);
-	    // No esta la lista de bets. Deberia guardarse como apuesta nueva
-	    // TODO Enviar mensaje de que no existe y debe guardarse como nueva
-	} else {
-	    betService.update(this);
-	    betList.set(idxOf, betService.loadConditionalBet(getBetSeason(), getBetOrderNumber(), getBetDescription()));
-	}
-	setNumColumns(null);
-	* */
+	 setSortby("order");
+	 sortDataBetLines(getSortby());
+	 fillBet(this);
+	 Integer idxOf = findIdInBetList(this.getBetId(), betList);
+	 if (idxOf == null) {
+	 betService.save(this);
+	 // No esta la lista de bets. Deberia guardarse como apuesta nueva
+	 // TODO Enviar mensaje de que no existe y debe guardarse como nueva
+	 } else {
+	 betService.update(this);
+	 betList.set(idxOf, betService.loadConditionalBet(getBetSeason(), getBetOrderNumber(), getBetDescription()));
+	 }
+	 setNumColumns(null);
+	 * */
     }
 
     private Integer findIdInBetList(int id, List<Bet> bets) {
@@ -795,19 +806,25 @@ private void fillBet(Bet bet) {
 		/* generationBetTypeLimited_456_Sign1 */
 		insertBet();
 		for (String colBase : colsBase) {
-		    Integer n1 = 0, nX = 0, n2 = 0;
-		    for (int i = 0; i < colBase.length(); i++) {
-			if (colBase.substring(i, i + 1).equals("1")) {
-			    n1++;
-			} else if (colBase.substring(i, i + 1).toUpperCase().equals("X")) {
-			    nX++;
-			} else if (colBase.substring(i, i + 1).equals("2")) {
-			    n2++;
-			}
+		    if (isColumnOnRange(colBase, "4,5,6", "", "")) {
+			colsBaseLocal.add(colBase);
 		    }
-		    if (verifyGroupValues("4,5,6", n1,
-			    "", nX,
-			    "", n2)) {
+		}
+		break;
+	    case 4:
+		/* Generation on group 1 forced to 111Xo2 and total 6 signs 1 */
+		insertBet();
+		for (String colBase : colsBase) {
+		    if (isColumnOnRange(colBase, "6", "", "")) {
+			colsBaseLocal.add(colBase);
+		    }
+		}
+		break;
+	    case 5:
+		/* Generation on group 1 forced to 111Xo2 and total 6 signs 1 */
+		insertBet();
+		for (String colBase : colsBase) {
+		    if (isColumnOnRange(colBase, "5", "", "")) {
 			colsBaseLocal.add(colBase);
 		    }
 		}
@@ -818,5 +835,22 @@ private void fillBet(Bet bet) {
 
 	}
 	return colsBaseLocal;
+    }
+
+    private boolean isColumnOnRange(String colBase, String rangeOf1, String rangeOfX, String rangeOf2) {
+	Integer n1 = 0, nX = 0, n2 = 0;
+	for (int i = 0; i < colBase.length(); i++) {
+	    if (colBase.substring(i, i + 1).equals("1")) {
+		n1++;
+	    } else if (colBase.substring(i, i + 1).toUpperCase().equals("X")) {
+		nX++;
+	    } else if (colBase.substring(i, i + 1).equals("2")) {
+		n2++;
+	    }
+	}
+	if (verifyGroupValues(rangeOf1, n1, rangeOfX, nX, rangeOf2, n2)) {
+	    return true;
+	}
+	return false;
     }
 }

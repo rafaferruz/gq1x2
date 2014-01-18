@@ -421,6 +421,17 @@ public class ColumnsBean extends BetBean {
 
     public void dataShowHits() {
 	dataShowHits.clear();
+	/*
+	 * Se inicializa el mapa dataShowHits con todos los posibles valores de hits que pudieran darse.
+	 * Esto se hace para que el posterior informe de premios obtenidos encuentre el numero total de columnas
+	 * jugadas en todos los valores de aciertos posible (0 a 14)
+	 */
+	for (Integer targets = 0; targets <= Const.MAXIMUN_LINES_BY_FORM; targets++) {
+	    dataShowHits.put(targets, new HitBet(0));
+	}
+	/*
+	 * Calcula el numero de aciertos de cada columna e incrementa la clave correspondiente
+	 */
 	for (String column : dataCols) {
 	    Integer targets = 0;
 	    for (int c = 0; c < Const.MAXIMUN_LINES_BY_FORM; c++) {
@@ -430,14 +441,9 @@ public class ColumnsBean extends BetBean {
 		    targets++;
 		}
 	    }
-	    if (targets >= 10) {
-		if (dataShowHits.get(targets) == null) {
-		    dataShowHits.put(targets, new HitBet(1, dataCols.indexOf(column) + 1));
-		} else {
-		    dataShowHits.put(targets, dataShowHits.get(targets).addHit(dataCols.indexOf(column) + 1));
-		}
-	    }
+	    dataShowHits.put(targets, dataShowHits.get(targets).addHit(dataCols.indexOf(column) + 1));
 	}
+
 	valorateAwardedHits();
     }
 
@@ -449,19 +455,19 @@ public class ColumnsBean extends BetBean {
 	for (Integer hit : getDataShowHits().keySet()) {
 	    switch (hit) {
 		case 10:
-		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa10HitsAmount());
+		    setAwardsAmount(getAwardsAmount() + getDataShowHits().get(hit).getHits() * award.getAwa10HitsAmount());
 		    break;
 		case 11:
-		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa11HitsAmount());
+		    setAwardsAmount(getAwardsAmount() + getDataShowHits().get(hit).getHits() * award.getAwa11HitsAmount());
 		    break;
 		case 12:
-		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa12HitsAmount());
+		    setAwardsAmount(getAwardsAmount() + getDataShowHits().get(hit).getHits() * award.getAwa12HitsAmount());
 		    break;
 		case 13:
-		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa13HitsAmount());
+		    setAwardsAmount(getAwardsAmount() + getDataShowHits().get(hit).getHits() * award.getAwa13HitsAmount());
 		    break;
 		case 14:
-		    setAwardsAmount(getAwardsAmount()+getDataShowHits().get(hit).getHits() * award.getAwa14HitsAmount());
+		    setAwardsAmount(getAwardsAmount() + getDataShowHits().get(hit).getHits() * award.getAwa14HitsAmount());
 		    break;
 	    }
 	}

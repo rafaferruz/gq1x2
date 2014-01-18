@@ -37,9 +37,11 @@
                             </td>
 			    <td >
 				<h:selectOneMenu id="select201" value="#{awardedHitsReport.generationBetType}">
-				    <f:selectItem id="selmode0" itemLabel="#{txt_reports.generationBetTypeBasic}" itemValue="0" />
-				    <f:selectItem id="selmode1" itemLabel="#{txt_reports.generationBetTypeLimited_456_Sign1}" itemValue="1" />
-				    <f:selectItem id="selmode2" itemLabel="#{txt_reports.generationBetTypeForcedFirst5To111X2Signs}" itemValue="2" />
+				    <f:selectItems value="#{awardedHitsReport.generationBetTypeList}"
+						   var="genType"
+						   itemValue="#{genType.id}"
+						   itemLabel="#{txt_bet[genType.key]}"
+						   itemDescription="#{txt_bet[genType.key]}" />
 				</h:selectOneMenu>
 			    </td>
                         </tr>
@@ -47,7 +49,11 @@
 			    <td colspan="2"></td>
 			    <td >
 				<h:selectManyCheckbox id="manyCheckBoxReductionTypes"  value="#{awardedHitsReport.reductionTypes}" layout="pageDirection">
-                                    <f:selectItems id="SelectItemsReductionTypes" value="#{awardedHitsReport.reductionTypeList}"/>
+                                    <f:selectItems value="#{awardedHitsReport.reductionTypeList}"
+						   var="reducType"
+						   itemValue="#{reducType.id}"
+						   itemLabel="#{txt_bet[reducType.key]}"
+						   itemDescription="#{txt_bet[reducType.key]}" />
 				</h:selectManyCheckbox>
 			    </td>
                         </tr>

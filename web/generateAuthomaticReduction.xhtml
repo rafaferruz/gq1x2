@@ -52,9 +52,11 @@
 			    </td>
 			    <td colspan="2">
 				<h:selectOneMenu id="select201" value="#{genAuthomaticColumns.generationBetType}">
-				    <f:selectItem id="selmode0" itemLabel="#{txt_bet.generationBetTypeBasic}" itemValue="0" />
-				    <f:selectItem id="selmode1" itemLabel="#{txt_bet.generationBetTypeLimited_456_Sign1}" itemValue="1" />
-				    <f:selectItem id="selmode2" itemLabel="#{txt_bet.generationBetTypeForcedFirst5To111X2Signs}" itemValue="2" />
+				    <f:selectItems value="#{genAuthomaticColumns.generationBetTypeList}"
+						   var="genType"
+						   itemValue="#{genType.id}"
+						   itemLabel="#{txt_bet[genType.key]}"
+						   itemDescription="#{txt_bet[genType.key]}" />
 				</h:selectOneMenu>
 			    </td>
                         </tr>
@@ -65,7 +67,11 @@
 			    </td>
 			    <td colspan="2">
 				<h:selectManyCheckbox  id="manyCheckBoxReductionTypes"  value="#{genAuthomaticColumns.reductionTypes}">
-                                    <f:selectItems id="SelectItemsReductionTypes" value="#{genAuthomaticColumns.reductionTypeList}"/>
+                                    <f:selectItems id="SelectItemsReductionTypes" value="#{genAuthomaticColumns.reductionTypeList}"
+						   var="reducType"
+						   itemValue="#{reducType.id}"
+						   itemLabel="#{txt_bet[reducType.key]}"
+						   itemDescription="#{txt_bet[reducType.key]}" />
 				</h:selectManyCheckbox>
 			    </td>
                         </tr>

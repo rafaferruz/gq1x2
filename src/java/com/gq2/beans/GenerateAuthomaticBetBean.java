@@ -27,6 +27,7 @@ public class GenerateAuthomaticBetBean {
     private Boolean disabledRounds = false;
     private ChampionshipService championshipService = new ChampionshipService();
     private Integer generationBetType = 0;
+    private List<GenerationBetType> generationBetTypeList = new ArrayList();
 
     /**
      * Creates a new instance of fgenerarAuthomaticBetBean
@@ -92,6 +93,15 @@ public class GenerateAuthomaticBetBean {
 
     public void setGenerationBetType(Integer generationBetType) {
 	this.generationBetType = generationBetType;
+    }
+
+    public List<GenerationBetType> getGenerationBetTypeList() {
+	setGenerationBetTypeList(GenerationBetType.listGenerationBetTypes());
+	return generationBetTypeList;
+    }
+
+    public void setGenerationBetTypeList(List<GenerationBetType> generationBetTypeList) {
+	this.generationBetTypeList = generationBetTypeList;
     }
 
     public void setChampionshipItemList(List<SelectItem> championshipItemList) {
