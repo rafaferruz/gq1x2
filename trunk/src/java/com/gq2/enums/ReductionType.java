@@ -40,7 +40,7 @@ public enum ReductionType {
      *
      * @return Lista de tipos de faltas
      */
-    public static List<ReductionType> listGenerationBetTypes() {
+    public static List<ReductionType> listReductionTypes() {
 	return new ArrayList<>(Arrays.asList(ReductionType.values()));
     }
 
@@ -51,7 +51,7 @@ public enum ReductionType {
      */
     public static List<SelectItem> listSelectItemReductionTypes() {
 	List<SelectItem> selectItemReductionTypesList = new ArrayList<>();
-	for (ReductionType reductionType : listGenerationBetTypes()) {
+	for (ReductionType reductionType : listReductionTypes()) {
 	    selectItemReductionTypesList.add(new SelectItem(reductionType.getId(), reductionType.getText()));
 	}
 	return selectItemReductionTypesList;
