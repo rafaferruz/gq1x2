@@ -15,7 +15,7 @@ public class ChampionshipService {
     public ChampionshipService() {
     }
 
-    public int save(Championship championship) throws SQLException {
+    public int save(Championship championship) {
 
 	return new DAOFactory().getChampionshipDAO().save(championship);
     }
@@ -39,7 +39,7 @@ public class ChampionshipService {
 
     public List<SelectItem> getChampionshipItemList() {
 	List<SelectItem> championshipItemList = new ArrayList<>();
-	championshipItemList.add(new SelectItem(0, "Seleccione Campeonato"));
+	championshipItemList.add(new SelectItem(null, "Seleccione Campeonato"));
 	for (Championship c : getChampionshipList()) {
 	    championshipItemList.add(new SelectItem(c.getChaId(), c.getChaCode()));
 	}

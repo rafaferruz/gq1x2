@@ -2,7 +2,6 @@ package com.gq2.beans;
 
 import com.gq2.domain.Championship;
 import com.gq2.services.ChampionshipService;
-import java.sql.*;
 import java.util.List;
 import javax.faces.bean.*;
 import javax.faces.model.SelectItem;
@@ -70,31 +69,14 @@ public class ChampionshipBean extends Championship {
 	this.rowStart = rowStart;
     }
 
-    public String edit() {
-	load();
-	return "edit";
+    public List<Championship> getChampionshipList() {
+	List<Championship> championshipList = championshipService.getChampionshipList();
+	setRowCount(championshipList.size());
+	return championshipList;
     }
 
-    public int save() throws SQLException {
-
-	return championshipService.save(this);
-
-    }
-
-    public void load() {
-
-	Championship championship = championshipService.load(chaId);
-	if (championship != null) {
-	    setPropertiesFromChampionshipObject(championship);
-	}
-    }
-
-    public boolean delete() {
-	return championshipService.delete(this);
-    }
-
-    public boolean update() {
-	return championshipService.update(this);
+    public List<SelectItem> getChampionshipItemList() {
+	return championshipService.getChampionshipItemList();
     }
 
     public void setPropertiesFromChampionshipObject(Championship championship) {
@@ -111,36 +93,38 @@ public class ChampionshipBean extends Championship {
 
     }
 
-    public String cancelAction() {
+    public String cancel() {
 	return "cancelChampionship";
     }
 
-    public String newChampionship() {
+    public String create() {
 	return "newChampionship";
     }
 
-    public String saveNewChampionship() throws SQLException {
-	save();
-	return "newChampionship";
+    public String save() {
+	if (this.getChaId() > 0) {
+	    championshipService.update(this);
+	    return "listChampionship";
+	} else {
+	    championshipService.save(this);
+	    return "newChampionship";
+	}
     }
 
-    public String deleteChampionship() {
-	delete();
+    public String edit(Championship championship) {
+	if (championship != null) {
+	    setPropertiesFromChampionshipObject(championship);
+	}
+	return "editChampionship";
+    }
+
+    public String delete() {
+	championshipService.delete(this);
 	return "deleteChampionship";
     }
 
-    public String searchChampionship() {
+    public String search() {
 	// TODO Implement method
 	return "searchChampionship";
-    }
-
-    public List<Championship> getChampionshipList() {
-	List<Championship> championshipList = championshipService.getChampionshipList();
-	setRowCount(championshipList.size());
-	return championshipList;
-    }
-
-    public List<SelectItem> getChampionshipItemList() {
-	return championshipService.getChampionshipItemList();
     }
 }

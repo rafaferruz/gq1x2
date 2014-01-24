@@ -146,12 +146,11 @@
 						</h:outputLabel>
 						<br></br>
 						<h:selectOneMenu id="select201" value="#{columns.selReduction}">
-						    <f:selectItem id="selreduce0" itemLabel="#{txt_bet.noReductions}" itemValue="0" />
-						    <f:selectItem id="selreduce1" itemLabel="#{txt_bet.reduction13}" itemValue="13" />
-						    <f:selectItem id="selreduce2" itemLabel="#{txt_bet.reduction12}" itemValue="12" />
-						    <f:selectItem id="selreduce3" itemLabel="#{txt_bet.reduction11}" itemValue="11" />
-						    <f:selectItem id="selreduce4" itemLabel="#{txt_bet.reduction10}" itemValue="10" />
-						    <f:selectItem id="selreduce5" itemLabel="#{txt_bet.reduction9}" itemValue="9" />
+						    <f:selectItems id="SelectItemsReductionTypes" value="#{columns.reductionTypeList}"
+								   var="reducType"
+								   itemValue="#{reducType.id}"
+								   itemLabel="#{txt_bet[reducType.key]}"
+								   itemDescription="#{txt_bet[reducType.key]}" />
 						</h:selectOneMenu>
 						<br></br>
 						<br></br>

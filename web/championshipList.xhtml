@@ -58,13 +58,11 @@
 					<f:facet name="header">
 					    <h:outputText id="outputText21" value="#{txt_com.Action}"/>
 					</f:facet>
-					<h:commandButton action="#{championship.edit}" id="button20" styleClass="button-short" 
-							 value="#{txt_com.Edit}"   
-							 onclick="window.document.getElementById('championshipList_form:keyId').value = #{currentRow['chaId']};">
+					<h:commandButton action="#{championship.edit(currentRow)}" id="button20" styleClass="button-short" 
+							 value="#{txt_com.Edit}">
 					</h:commandButton>
-					<h:commandButton action="#{championship.delete}" id="button21" styleClass="button-short" 
-							 value="#{txt_com.Delete}"   
-							 onclick="window.document.getElementById('championshipList_form:keyId').value = #{currentRow['chaId']};">
+					<h:commandButton action="#{championship.delete(currentRow)}" id="button21" styleClass="button-short" 
+							 value="#{txt_com.Delete}">
 					</h:commandButton>
 				    </h:column>
 				</h:dataTable>
@@ -76,12 +74,12 @@
 				<table class="commandBoxInList">
 				    <tr>
 					<td>
-					    <h:commandButton action="#{championship.newChampionship}" value="#{txt_com.New}"/>
+					    <h:commandButton action="#{championship.create}" value="#{txt_com.New}"/>
 					</td>
 				    </tr>
 				    <tr>
 					<td>
-					    <h:commandButton action="#{championship.searchChampionship}" value="#{txt_com.Search}"/>
+					    <h:commandButton action="#{championship.search}" value="#{txt_com.Search}"/>
 					</td>
 				    </tr>
 				</table>

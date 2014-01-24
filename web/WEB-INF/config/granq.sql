@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS teams (
     tea_code VARCHAR(24) DEFAULT "",
     tea_status INTEGER DEFAULT 0,
     tea_name VARCHAR(60) DEFAULT "",
-    tea_rating INTEGER DEFAULT 0
+    tea_rating INTEGER DEFAULT 0,
+    tea_equivalent_names BLOB
 
 );
 ALTER TABLE teams DROP INDEX tea_name;

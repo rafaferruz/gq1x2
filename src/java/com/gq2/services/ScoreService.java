@@ -44,5 +44,9 @@ public class ScoreService {
 	return new DAOFactory().getScoreDAO().updateScoresDate(score.getScoChaId(), score.getScoRound(), score.getScoDate());
     }
 
+        public Score loadOnTeams(int chaId, int teamId1, int teamId2) {
+
+	return new DAOFactory().getScoreDAO().loadOnTeams(chaId, teamId1, teamId2);
+    }
 
 }

@@ -123,7 +123,7 @@
     <navigation-rule>
 	<from-view-id>/championship.xhtml</from-view-id>
 	<navigation-case>
-	    <from-outcome>editChampionship</from-outcome>
+	    <from-outcome>listChampionship</from-outcome>
 	    <to-view-id>/championshipList.xhtml</to-view-id>
 	</navigation-case>
 	<navigation-case>
@@ -164,6 +164,10 @@
 	</navigation-case>
 	<navigation-case>
 	    <from-outcome>cancelTeam</from-outcome>
+	    <to-view-id>/teamList.xhtml</to-view-id>
+	</navigation-case>
+	<navigation-case>
+	    <from-outcome>listTeam</from-outcome>
 	    <to-view-id>/teamList.xhtml</to-view-id>
 	</navigation-case>
     </navigation-rule>
