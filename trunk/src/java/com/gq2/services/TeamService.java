@@ -2,7 +2,6 @@ package com.gq2.services;
 
 import com.gq2.DAO.DAOFactory;
 import com.gq2.domain.Team;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,14 +16,14 @@ public class TeamService {
     public TeamService() {
     }
 
-    public int save(Team team) throws SQLException {
+    public int save(Team team) {
 
 	return new DAOFactory().getTeamDAO().save(team);
     }
 
-    public Team load(int chaId) {
+    public Team load(int teaId) {
 
-	return new DAOFactory().getTeamDAO().load(chaId);
+	return new DAOFactory().getTeamDAO().load(teaId);
     }
 
     public boolean delete(Team team) {
@@ -54,4 +53,6 @@ public class TeamService {
 	}
 	return teamMap;
     }
+
+
 }

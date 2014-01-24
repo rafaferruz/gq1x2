@@ -103,7 +103,7 @@ public class ChampionshipDAO implements InjectableDAO {
 	    String sql = "UPDATE championships SET "
 		    + "cha_code = ?, cha_description = ?, "
 		    + "cha_status = ?, cha_season = ?, cha_start_date = ?, cha_points_win = ?, "
-		    + "cha_points_draw ? ?, cha_points_lose = ?, cha_max_teams = ? " + "WHERE cha_id=?";
+		    + "cha_points_draw = ?, cha_points_lose = ?, cha_max_teams = ? " + "WHERE cha_id=?";
 	    try (PreparedStatement ps = conn.prepareStatement(sql)) {
 		ps.setString(1, championship.getChaCode());
 		ps.setString(2, championship.getChaDescription());

@@ -26,13 +26,13 @@
                 </h3>
 		<h:messages />
                 <h:form id="championship_form" >
-                    <h:inputHidden id="runAction" value="#{championship.runAction}" />
+                    <h:inputHidden id="runAction" value="#{championship.chaId}" />
                     <table>
                         <tr>
                             <td>
                                 <h:panelGrid columns="2">
                                     <h:outputLabel value="#{txt_cha.Id}:" for="keyId" ></h:outputLabel>
-                                    <h:inputText id="keyId" size="5" maxlength="5" disabled="true" value="#{championship.chaId}" />
+                                    <h:outputText id="keyId" value="#{championship.chaId}" />
 
 
                                     <h:outputLabel value="#{txt_com.Status}:" for="status" ></h:outputLabel>
@@ -87,8 +87,8 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    <h:commandButton id="cancel" action="#{championship.cancelAction}" value="#{txt_com.Cancel}" />
-                                                    <h:commandButton id="save" action="#{championship.saveNewChampionship}" value="#{txt_com.Save}" />
+                                                    <h:commandButton id="cancel" action="#{championship.cancel}" value="#{txt_com.Cancel}" />
+                                                    <h:commandButton id="save" action="#{championship.save}" value="#{txt_com.Save}" />
                                                 </td>
                                             </tr>
                                         </table>

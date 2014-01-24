@@ -1,6 +1,7 @@
 package com.gq2.domain;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Define un objeto Team (Equipo)
@@ -11,9 +12,11 @@ public class Team implements Serializable {
 
     protected int teaId;
     protected String teaCode;
-    protected int teaStatus = 0;
+    protected int teaStatus;
     protected String teaName;
     protected int teaRating;
+    protected String teaEquivalentNames="";
+    
 
     public Team() {
     }
@@ -62,6 +65,14 @@ public class Team implements Serializable {
 	this.teaRating = teaRating;
     }
 
+    public String getTeaEquivalentNames() {
+	return teaEquivalentNames;
+    }
+
+    public void setTeaEquivalentNames(String teaEquivalentNames) {
+	this.teaEquivalentNames = teaEquivalentNames;
+    }
+
     @Override
     public boolean equals(Object obj) {
 	if (obj == null) {
@@ -86,4 +97,17 @@ public class Team implements Serializable {
 	hash = 83 * hash + (this.teaCode != null ? this.teaCode.hashCode() : 0);
 	return hash;
     }
+    
+        /**
+     * Comparador que ordena por la propiedad teaName de cada Team.
+     */
+    public static Comparator<Team> getNameComparator() {
+	return new Comparator<Team>() {
+	    @Override
+	    public int compare(Team c1, Team c2) {
+		return c1.getTeaName().compareTo(c2.getTeaName());
+	    }
+	};
+    }
+
 }

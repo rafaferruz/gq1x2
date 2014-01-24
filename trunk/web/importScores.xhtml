@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/jsf2/templates/templateBasic.xhtml">
+            <ui:define name="top">
+                <ui:include src="/WEB-INF/jsf2/templates/templateNavigation.xhtml"/>
+            </ui:define>
+            <ui:define name="bottom">
+                <ui:include src="/WEB-INF/jsf2/templates/templateBottom.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.gq2.multilang.score" var="txt_sco"/>
+                <f:loadBundle basename="com.gq2.multilang.granq" var="txt_com"/>
+                <f:loadBundle basename="com.gq2.multilang.messages" var="txt_msg"/>
+
+		<h3>
+		    <h:outputLabel for="componentLabel0Text" id="componentLabel0" >
+			<h:outputText id="componentLabel0Text" value="#{txt_sco.importScores}"/>
+		    </h:outputLabel>
+		</h3>
+		<h:messages/>
+		<h:form id="importScores_fileName_form">
+		    <h:panelGrid id="panelGrid01" columns="2">
+			<h:outputLabel for="dropdown1" id="outputLabel1">
+			    <h:outputText id="outputText1" value="#{txt_com.selectChampionship}"/>
+			</h:outputLabel>
+			<h:selectOneMenu id="dropdown1" value="#{importScores.scoChaId}"
+					 required="true" requiredMessage="#{txt_sco.requiredChampioship}">
+			    <f:selectItems id="dropdown1SelectItems" value="#{importScores.championshipItemList}"/>
+			</h:selectOneMenu>
+			<h:outputLabel for="fileNameToImport" id="outputLabel2">
+			    <h:outputText id="outputText2" value="#{txt_sco.fileNameToImport}"/>
+			</h:outputLabel>
+			<h:inputText id="fileNameToImport" size="30" value="#{importScores.fileName}" 
+				     required="true" requiredMessage="#{txt_sco.requiredFileName}"/>
+			<h:commandButton action="#{importScores.openScoresFile}" id="button01"
+					 value="#{txt_sco.checkScoresFile}"
+					 disabled="#{importScores.disableCheckScoresFile}"/>
+			<h:commandButton action="#{importScores.importScoresFile}" id="button02"
+					 value="#{txt_sco.importScores}"
+					 disabled="#{importScores.disableImportScoresFile}"/>
+
+		    </h:panelGrid>
+		</h:form>
+		<h:form id="importScores_equivalentNames_form" rendered="#{importScores.equivalenteNamesFormRender}">
+		    <h:dataTable id="equivalentNames_dataTable" value="#{importScores.newNameList}" var="currentRow"
+				 headerClass="list-header" rowClasses="list-row-even,list-row-odd" >
+			<h:column id="column1">
+			    <h:outputText id="outputText3" value="#{currentRow.newName}"/>
+			    <f:facet name="header">
+				<h:outputText id="outputText4" value="#{txt_sco.newTeamName}"/>
+			    </f:facet>
+			</h:column>
+			<h:column id="column2">
+			    <h:selectOneMenu id="select-1"  value="#{currentRow.equivalentId}">
+				<f:selectItems value="#{importScores.existingTeamSelectItems}"/>
+			    </h:selectOneMenu>
+			    <f:facet name="header">
+				<h:outputText id="outputText5" value="#{txt_sco.equivalentName}"/>
+			    </f:facet>
+			</h:column>
+
+		    </h:dataTable>
+
+		    <h:commandButton action="#{importScores.updateTeams}" id="button4" value="#{txt_sco.updateTeams}"/>
+		    <h:commandButton action="#{importScores.cancelUpdating}" id="button5" value="#{txt_sco.cancelUpdating}"/>
+		</h:form>
+		<h:form id="cancel_form">
+		    <h:commandButton action="#{importScores.cancel}" id="button6" value="#{txt_com.Cancel}"/>
+		</h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+
+</html>
+

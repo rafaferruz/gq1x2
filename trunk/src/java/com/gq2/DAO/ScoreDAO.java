@@ -58,6 +58,29 @@ public class ScoreDAO implements InjectableDAO {
 	return score;
     }
 
+    public Score loadOnTeams(int chaId, int teaId1, int teaId2) {
+	Score score = null;
+	try {
+	    String query = "SELECT * FROM scores WHERE sco_cha_id = ? AND "
+		    + "sco_team1_id = ? AND sco_team2_id = ?";
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+		ps.setInt(1, chaId);
+		ps.setInt(2, teaId1);
+		ps.setInt(3, teaId2);
+		log.debug("loadOnTeams: " + ps.toString());
+		try (ResultSet rs = ps.executeQuery()) {
+		    if (rs.next()) {
+			score = populateScoreFromResultSet(rs);
+		    }
+		}
+	    }
+	} catch (SQLException ex) {
+	    throw new RuntimeException(ex);
+	}
+
+	return score;
+    }
+
     /**
      * Guardar un nuevo Score (Equipo).
      *

@@ -9,8 +9,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,7 +25,7 @@ public class ImportScoresAncientProcess extends ImportScoresProcess{
     }
 
     @Override
-    public void doImport(String fileScores) throws IOException, Exception {
+    public void doImport(String fileScores) {
 
 	// Abre el fichero externo de texto con scoreStrs
 //            FileInputStream file = null;
@@ -66,11 +69,13 @@ public class ImportScoresAncientProcess extends ImportScoresProcess{
 
 	} catch (MalformedURLException e) {
 	    //               getServletContext().log("URL mal formada");
+	} catch (IOException ex) {
+	    Logger.getLogger(ImportScoresAncientProcess.class.getName()).log(Level.SEVERE, null, ex);
 	}
     }
 
     @Override
-    protected boolean checkingsScore(String scoreStr) throws SQLException, Exception {
+    protected boolean checkingsScore(String scoreStr) {
 
 	championshipRow = "FUT" + scoreStr.substring(2, 4) + "-" + scoreStr.substring(7, 9) + scoreStr.substring(13, 15);
 	setChampionshipRow(championshipRow);
@@ -91,7 +96,7 @@ public class ImportScoresAncientProcess extends ImportScoresProcess{
     }
 
     @Override
-    protected int saveChampionship(String championshipStr) throws Exception {
+    protected int saveChampionship(String championshipStr)  {
 
 	int season;
 	Championship championship = new Championship();
@@ -105,7 +110,11 @@ public class ImportScoresAncientProcess extends ImportScoresProcess{
 	} else {
 	    season = 1900 + (Integer.parseInt(championshipStr.substring(3, 5)));
 	}
-	fechaSQL = (new SimpleDateFormat("dd/MM/yyyy")).parse("30/08/" + season);
+	try {
+	    fechaSQL = (new SimpleDateFormat("dd/MM/yyyy")).parse("30/08/" + season);
+	} catch (ParseException ex) {
+	    Logger.getLogger(ImportScoresAncientProcess.class.getName()).log(Level.SEVERE, null, ex);
+	}
 	championship.setChaStartDate(fechaSQL);
 	championship.setChaPointsWin(3);
 	championship.setChaPointsDraw(1);
@@ -120,7 +129,7 @@ public class ImportScoresAncientProcess extends ImportScoresProcess{
     }
 
     @Override
-    protected int saveTeam(String equipo) throws Exception {
+    protected int saveTeam(String equipo)  {
 
 	Team tea = new Team();
 	tea.setTeaId(0);
@@ -136,7 +145,7 @@ public class ImportScoresAncientProcess extends ImportScoresProcess{
     }
 
     @Override
-    protected int saveScore(String resultado) throws Exception {
+    protected int saveScore(String resultado) {
 
 	Score res = new Score();
 	res.setScoChaId(championshipMap.get(championshipRow).getChaId());

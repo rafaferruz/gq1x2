@@ -25,17 +25,17 @@
                     <h:outputFormat value="#{txt_tea.editTeams}"/>
                 </h3>
                 <h:form id="team_form" >
-                    <h:inputHidden id="runAction" value="#{team.runAction}" />
+                    <h:inputHidden id="runAction" value="#{team.teaId}" />
                     <table>
 
                         <tr>
                             <td>
                                 <h:panelGrid columns="2">
                                     <h:outputLabel value="#{txt_tea.Id}:" for="keyId" ></h:outputLabel>
-                                    <h:inputText id="keyId" size="5" maxlength="5" disabled="true" value="#{team.teaId}" />
+                                    <h:outputText id="keyId" value="#{team.teaId}" />
 
 
-                                    <h:outputLabel value="#{txt_tea.Status}:" for="status" ></h:outputLabel>
+                                    <h:outputLabel value="#{txt_granq.Status}:" for="status" ></h:outputLabel>
                                     <h:selectOneRadio id="status" value="#{team.teaStatus}" >
                                         <f:selectItem id="status_0" itemValue="0" itemLabel="#{txt_com.Activ}"/>
                                         <f:selectItem id="status_1" itemValue="1" itemLabel="#{txt_com.Unactiv}"/>
@@ -43,7 +43,7 @@
                                     </h:selectOneRadio>
 
                                     <h:outputLabel value="#{txt_com.Code}:" for="code" ></h:outputLabel>
-                                    <h:inputText id="code" required="true" size="12" maxlength="12" value="#{team.teaCode}" />
+                                    <h:inputText id="code" required="true" size="12" maxlength="24" value="#{team.teaCode}" />
 
 
                                     <h:outputLabel value="#{txt_tea.TeamName}:" for="name" ></h:outputLabel>
@@ -55,13 +55,16 @@
 					<f:validateLongRange minimum="0"/>
 				    </h:inputText>
 
+                                    <h:outputLabel value="#{txt_tea.TeamEquivalenNames}:" for="name" ></h:outputLabel>
+                                    <h:inputTextarea id="equivalentNames" rows="2" value="#{team.teaEquivalentNames}" />
+
                                     <h:panelGroup/>
                                     <h:panelGroup>
                                         <table>
 					    <tr>
 						<td>
-                                                    <h:commandButton id="cancel" action="#{team.cancelAction}" value="#{txt_com.Cancel}" />
-                                                    <h:commandButton id="save" action="#{team.saveNewTeam}" value="#{txt_com.Save}" />
+                                                    <h:commandButton id="cancel" action="#{team.cancel}" value="#{txt_com.Cancel}" />
+                                                    <h:commandButton id="save" action="#{team.save}" value="#{txt_com.Save}" />
                                                 </td>
 					    </tr>
 					</table>

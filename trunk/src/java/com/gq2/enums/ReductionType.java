@@ -45,19 +45,6 @@ public enum ReductionType {
     }
 
     /**
-     * Devuelve la lista de SelectItems de tipos de reducciones de columnas
-     *
-     * @return Lista de tipos de faltas
-     */
-    public static List<SelectItem> listSelectItemReductionTypes() {
-	List<SelectItem> selectItemReductionTypesList = new ArrayList<>();
-	for (ReductionType reductionType : listReductionTypes()) {
-	    selectItemReductionTypesList.add(new SelectItem(reductionType.getId(), reductionType.getText()));
-	}
-	return selectItemReductionTypesList;
-    }
-
-    /**
      * Parsea el entero y devuelve el valor del enumerado
      */
     public static ReductionType parse(int i) {

@@ -2,6 +2,7 @@ package com.gq2.beans;
 
 import com.gq2.domain.Award;
 import com.gq2.domain.HitBet;
+import com.gq2.enums.ReductionType;
 import com.gq2.services.ColumnService;
 import com.gq2.tools.Const;
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class ColumnsBean extends BetBean {
     private Integer numCols = 0;
     private Integer colgoto = 1;
     private Integer selReduction = 0;
+    private List<ReductionType> reductionTypeList;
     private Integer reduceFromCol = 1;
     private Integer maximumColumnsNumber;
     private Boolean reduceRandom = false;
@@ -269,6 +271,15 @@ public class ColumnsBean extends BetBean {
 
     public void setFc(FacesContext fc) {
 	this.fc = fc;
+    }
+
+    public List<ReductionType> getReductionTypeList() {
+	setReductionTypeList(ReductionType.listReductionTypes());
+	return reductionTypeList;
+    }
+
+    public void setReductionTypeList(List<ReductionType> reductionTypeList) {
+	this.reductionTypeList = reductionTypeList;
     }
 
     public List<String> getDataColumns(String combinatedName) {

@@ -45,19 +45,6 @@ public enum GenerationBetType {
     }
 
     /**
-     * Devuelve la lista de SelectItems de tipos de reducciones de columnas
-     *
-     * @return Lista de tipos de faltas
-     */
-    public static List<SelectItem> listSelectItemGenerationBetTypes() {
-	List<SelectItem> selectItemReductionTypesList = new ArrayList<>();
-	for (GenerationBetType generationBetTypeType : listGenerationBetTypes()) {
-	    selectItemReductionTypesList.add(new SelectItem(generationBetTypeType.getId(), generationBetTypeType.getText()));
-	}
-	return selectItemReductionTypesList;
-    }
-
-    /**
      * Parsea el entero y devuelve el valor del enumerado
      */
     public static GenerationBetType parse(int i) {

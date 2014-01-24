@@ -5,17 +5,17 @@ import com.gq2.DAO.DAOFactory;
 import com.gq2.domain.EnrolledTeam;
 import com.gq2.domain.Team;
 import com.gq2.domain.Score;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,6 +25,7 @@ public abstract class ImportScoresProcess {
 
     protected Map<String, Championship> championshipMap = new HashMap<>();
     protected Map<String, Integer> teamsMap = new HashMap<>();
+    protected Map<String, String> equivalentTeamNamesMap = new HashMap<>();
     protected List<Championship> championshipsList = new ArrayList<>();
     protected List<Team> teamsList = new ArrayList<>();
     protected Date fechaSQL = new Date(0);
@@ -43,12 +44,20 @@ public abstract class ImportScoresProcess {
 	this.championshipMap = championshipMap;
     }
 
-    protected Map<String, Integer> getTeamsMap() {
+    public Map<String, Integer> getTeamsMap() {
 	return teamsMap;
     }
 
     protected void setTeamsMap(Map<String, Integer> teamsMap) {
 	this.teamsMap = teamsMap;
+    }
+
+    public Map<String, String> getEquivalentTeamNamesMap() {
+	return equivalentTeamNamesMap;
+    }
+
+    protected void setEquivalentTeamNamesMap(Map<String, String> equivalentTeamNamesMap) {
+	this.equivalentTeamNamesMap = equivalentTeamNamesMap;
     }
 
     protected List<Championship> getChampionshipList() {
@@ -83,12 +92,12 @@ public abstract class ImportScoresProcess {
 	this.fechaSQL = fechaSQL;
     }
 
-    protected void initMaps() throws SQLException, Exception {
+    public void initMaps() {
 	initMapChampionships();
 	initMapTeams();
     }
 
-    protected void initMapChampionships() throws SQLException, Exception {
+    protected void initMapChampionships() {
 
 	championshipsList = new DAOFactory().getChampionshipDAO().loadAllChampionships();
 	for (Championship championship : championshipsList) {
@@ -96,23 +105,32 @@ public abstract class ImportScoresProcess {
 	}
     }
 
-    protected void initMapTeams() throws SQLException, Exception {
+    protected void initMapTeams() {
 
 	teamsList = new DAOFactory().getTeamDAO().loadAllTeams();
+	equivalentTeamNamesMap.clear();
 	for (Team team : teamsList) {
 	    teamsMap.put(team.getTeaCode(), team.getTeaId());
+	    if (team.getTeaEquivalentNames() != null && !team.getTeaEquivalentNames().equals("")) {
+		for (String equivalentName : Arrays.asList(team.getTeaEquivalentNames().split("/"))) {
+		    if (equivalentName.equals("")){
+			System.out.println(team);
+		    }
+		    equivalentTeamNamesMap.put(equivalentName, team.getTeaName());
+		}
+	    }
 	}
     }
 
     /**
      * Ejecuta el bucle principal de la importacion de datos
-     * 
-     * @param fileScores    Deber recibir la direccion completa y nombre del fichero que contiene los datos a importar
+     *
+     * @param fileScores Deber recibir la direccion completa y nombre del
+     * fichero que contiene los datos a importar
      */
-    abstract public void doImport(String fileScores) throws IOException, Exception ;
-    
+    abstract public void doImport(String fileScores);
 
-    protected boolean checkingsScore(String scoreStr) throws SQLException, Exception {
+    protected boolean checkingsScore(String scoreStr) {
 	int championshipId;
 	int teamId;
 	championshipRow = "FUT" + scoreStr.substring(2, 4) + "-" + scoreStr.substring(7, 9) + scoreStr.substring(13, 15);
@@ -149,7 +167,7 @@ public abstract class ImportScoresProcess {
      * @throws SQLException
      * @throws Exception
      */
-    protected int verifyChampionship(String championship) throws SQLException, Exception {
+    protected int verifyChampionship(String championship) {
 
 
 	if (getChampionshipMap().get(championship) != null) {
@@ -169,17 +187,21 @@ public abstract class ImportScoresProcess {
      * @throws SQLException
      * @throws Exception
      */
-    protected int verifyTeam(String equipo) throws SQLException, Exception {
+    protected int verifyTeam(String equipo) {
 
 	if (getTeamsMap().get(equipo) != null) {
 	    return getTeamsMap().get(equipo);
+	} else if (equivalentTeamNamesMap.get(equipo)!=null){
+	    if (getTeamsMap().get(equivalentTeamNamesMap.get(equipo))!=null){
+		return getTeamsMap().get(equivalentTeamNamesMap.get(equipo));
+	    }
 	}
 // No existe Equipo.
 	// Creamos equipo
 	return saveTeam(equipo);
     }
 
-    protected int saveChampionship(String championshipStr) throws Exception {
+    protected int saveChampionship(String championshipStr) {
 
 	int season;
 	Championship championship = new Championship();
@@ -193,7 +215,11 @@ public abstract class ImportScoresProcess {
 	} else {
 	    season = 1900 + (Integer.parseInt(championshipStr.substring(3, 5)));
 	}
-	fechaSQL = (new SimpleDateFormat("dd/MM/yyyy")).parse("30/08/" + season);
+	try {
+	    fechaSQL = (new SimpleDateFormat("dd/MM/yyyy")).parse("30/08/" + season);
+	} catch (ParseException ex) {
+	    Logger.getLogger(ImportScoresProcess.class.getName()).log(Level.SEVERE, null, ex);
+	}
 	championship.setChaStartDate(fechaSQL);
 	championship.setChaPointsWin(3);
 	championship.setChaPointsDraw(1);
@@ -207,7 +233,7 @@ public abstract class ImportScoresProcess {
 	return championship.getChaId();
     }
 
-    protected int saveTeam(String equipo) throws Exception {
+    protected int saveTeam(String equipo) {
 
 	Team tea = new Team();
 	tea.setTeaId(0);
@@ -232,7 +258,7 @@ public abstract class ImportScoresProcess {
 	    enrolledList.clear();
 	}
 	championshipForEnrolling = championshipId;
-	if (!enrolledList.contains(teamId)){
+	if (!enrolledList.contains(teamId)) {
 	    enrolledList.add(teamId);
 	}
     }
@@ -245,7 +271,7 @@ public abstract class ImportScoresProcess {
 	new DAOFactory().getEnrolledTeamDAO().saveEnrolledTeamList(enrolledTeamList);
     }
 
-    protected int saveScore(String resultado) throws Exception {
+    protected int saveScore(String resultado) {
 
 	Score res = new Score();
 	res.setScoChaId(championshipMap.get(championshipRow).getChaId());

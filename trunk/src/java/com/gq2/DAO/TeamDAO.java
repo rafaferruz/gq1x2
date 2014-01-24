@@ -63,14 +63,15 @@ public class TeamDAO implements InjectableDAO {
     public int save(Team team) {
 	try {
 	    String sql = "INSERT INTO teams (tea_code, tea_name, "
-		    + "tea_status, tea_rating) "
-		    + "VALUES (?,?,?,?)";
+		    + "tea_status, tea_rating, tea_equivalent_names) "
+		    + "VALUES (?,?,?,?,?)";
 	    int identifierGenerated;
 	    try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 		ps.setString(1, team.getTeaCode());
 		ps.setString(2, team.getTeaName());
 		ps.setInt(3, team.getTeaStatus());
 		ps.setInt(4, team.getTeaRating());
+		ps.setString(5, team.getTeaEquivalentNames());
 		log.debug("save: " + ps.toString());
 		ps.executeUpdate();
 		try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -95,13 +96,14 @@ public class TeamDAO implements InjectableDAO {
 	try {
 	    String sql = "UPDATE teams SET "
 		    + "tea_code = ?, tea_name = ?, "
-		    + "tea_status = ?, tea_rating = ? " + "WHERE tea_id=?";
+		    + "tea_status = ?, tea_rating = ?, tea_equivalent_names = ? " + "WHERE tea_id=?";
 	    try (PreparedStatement ps = conn.prepareStatement(sql)) {
 		ps.setString(1, team.getTeaCode());
 		ps.setString(2, team.getTeaName());
 		ps.setInt(3, team.getTeaStatus());
 		ps.setInt(4, team.getTeaRating());
-		ps.setInt(5, team.getTeaId());
+		ps.setString(5, team.getTeaEquivalentNames());
+		ps.setInt(6, team.getTeaId());
 		log.debug("update: " + ps.toString());
 		ps.executeUpdate();
 		return true;
@@ -186,6 +188,7 @@ public class TeamDAO implements InjectableDAO {
 	team.setTeaStatus(rs.getInt("tea_status"));
 	team.setTeaName(rs.getString("tea_name"));
 	team.setTeaRating(rs.getInt("tea_rating"));
+	team.setTeaEquivalentNames(rs.getString("tea_equivalent_names"));
 	return team;
     }
 }
