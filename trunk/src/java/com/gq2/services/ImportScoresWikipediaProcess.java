@@ -1,7 +1,6 @@
 package com.gq2.services;
 
 import com.gq2.domain.Championship;
-import com.gq2.DAO.DAOFactory;
 import com.gq2.domain.Team;
 import com.gq2.domain.Score;
 import java.io.BufferedReader;
@@ -16,6 +15,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+
+
+	// verifica equipo1
 /**
  *
  * @author RAFAEL FERRUZ
@@ -30,6 +33,9 @@ public class ImportScoresWikipediaProcess extends ImportScoresProcess {
     private ChampionshipService championshipService;
     private ScoreService scoreService;
     private TeamService teamService;
+    private int indexLocal;
+    private int indexVisitante;
+    private int indexFecha;
 
     public ImportScoresWikipediaProcess() {
 	championshipService = new ChampionshipService();
@@ -149,18 +155,36 @@ public class ImportScoresWikipediaProcess extends ImportScoresProcess {
 	    /* Se establece la ronda del resultado */
 	    setRound(Integer.parseInt(dataScore[0].split(" ")[1]));
 	    setDate(null);
+	    if (dataScore[0].contains("Fecha:")){
+		try {
+		    setDate((new SimpleDateFormat("dd/MM/yyyy")).parse(dataScore[0].
+			    substring(dataScore[0].indexOf("Fecha:")+7, dataScore[0].indexOf("Fecha:")+17)
+			    ));
+		} catch (ParseException ex) {
+		    Logger.getLogger(ImportScoresWikipediaProcess.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	    }
 	    return false;
 	}
 
 	if (dataScore[0].startsWith("Local")) {
+	    for (int i=0;  i<dataScore.length;i++ ){
+		switch (dataScore[i]){
+		    case "Local":
+			indexLocal=i;
+			break;
+		    case "Visitante":
+			indexVisitante =i;
+			break;
+		    case "Fecha":
+			indexFecha=i;
+			break;
+		}
+	    }
 	    /* Skip la linea */
 	    return false;
 	}
-
-
-
-	// verifica equipo1
-	teamId = verifyTeam(dataScore[0]);
+	teamId = verifyTeam(dataScore[indexLocal]);
 	if (teamId == 0) {
 	    return false;
 	} else {
@@ -168,7 +192,7 @@ public class ImportScoresWikipediaProcess extends ImportScoresProcess {
 	}
 
 	// verifica equipo2
-	teamId = verifyTeam(!dataScore[2].equals("") ? dataScore[2] : dataScore[3]);
+	teamId = verifyTeam( dataScore[indexVisitante]);
 	if (teamId == 0) {
 	    return false;
 	} else {
@@ -188,12 +212,12 @@ public class ImportScoresWikipediaProcess extends ImportScoresProcess {
 	sco.setScoRound(getRound());
 // Calcula la fecha de la jornada tomando la primera fecha que se encuentra en una jornada
 	if (getDate() == null) {
-	    setDate(calculateRoundDate(!dataScore[6].equals("") ? dataScore[6] : dataScore[7]));
+	    setDate(calculateRoundDate( dataScore[indexFecha]));
 	}
 	sco.setScoDate(getDate());
 	
 	String scoreName;
-	scoreName = dataScore[0];
+	scoreName = dataScore[indexLocal];
 	if (teamsMap.get(scoreName) == null) {
 	    if (equivalentTeamNamesMap.get(scoreName) == null) {
 		throw new RuntimeException();
@@ -203,7 +227,7 @@ public class ImportScoresWikipediaProcess extends ImportScoresProcess {
 	}
 	sco.setScoTeam1Id(teamsMap.get(scoreName));
 	
-	scoreName = !dataScore[2].equals("") ? dataScore[2] : dataScore[3];
+	scoreName = dataScore[indexVisitante];
 	if (teamsMap.get(scoreName) == null) {
 	    if (equivalentTeamNamesMap.get(scoreName) == null) {
 		throw new RuntimeException();

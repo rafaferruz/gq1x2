@@ -229,20 +229,41 @@ public class ImportScoresBean {
 	unknownTeamNamesMap.clear();
 	String scoreRow;
 	int numberLine = 0;
+	int indexLocal = 0;
+	int indexVisitante = 0;
 	while ((scoreRow = bf.readLine()) != null) {
+	    String[] dataScore = scoreRow.split(",");
 	    numberLine++;
+	    if (scoreRow.startsWith("Local")) {
+		for (int i = 0; i < dataScore.length; i++) {
+		    switch (dataScore[i]) {
+			case "Local":
+			    indexLocal = i;
+			    break;
+			case "Visitante":
+			    indexVisitante = i;
+			    break;
+		    }
+		}
+
+	    }
 	    if (!scoreRow.startsWith("Jornada") && !scoreRow.startsWith("Local")) {
 		/* Comprueba que existe el nombre de equipo o su equivalente, 
 		 * en otro caso lo añade a una lista de nombres desconocidos
 		 */
-		if (scoreRow.split(",")[0].equals("") || 
-			(scoreRow.split(",")[2].equals("")&& scoreRow.split(",")[3].equals(""))) {
+		try {
+		    if (dataScore[indexLocal].equals("")
+			    || (dataScore[indexVisitante].equals(""))) {
+			System.out.println(numberLine + "  " + scoreRow);
+		    } else {
+			/* Se comprueba solamente el equipo local ya que todos los equipos tienen
+			 * condicion de local en algun momento.
+			 */
+			checkTeamNameInMaps(dataScore[indexLocal]);
+		    }
+		} catch (Exception ex) {
 		    System.out.println(numberLine + "  " + scoreRow);
-		} else {
-		    /* Se comprueba solamente el equipo local ya que todos los equipos tienen
-		     * condicion de local en algun momento.
-		     */
-		    checkTeamNameInMaps(scoreRow.split(",")[0]);
+		    throw new RuntimeException(ex);
 		}
 	    }
 	}
@@ -259,6 +280,8 @@ public class ImportScoresBean {
 		&& null == equivalentTeamNamesMap.get(teamName)
 		&& null == unknownTeamNamesMap.get(teamName)) {
 	    unknownTeamNamesMap.put(teamName, new UnknownTeam(teamName, 0));
+
+
 	}
     }
 
