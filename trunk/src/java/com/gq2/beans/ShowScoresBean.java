@@ -38,7 +38,6 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
     private List<SelectItem> teamItemList_2 = new ArrayList();
     private List<ScoreBean> scoreList = new ArrayList();
     private boolean disabledRounds = false;
-    private Date tempDate;
     private int tempRound;
     private String disabledCreateCommand = "true";
     private ChampionshipService championshipService = new ChampionshipService();
@@ -50,12 +49,6 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
      */
     public ShowScoresBean() {
 	scoRound = 1;
-    }
-
-    @Override
-    public Date getScoDate() {
-	scoDate = tempDate;
-	return scoDate;
     }
 
     @Override
@@ -138,14 +131,14 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
     }
 
     public void getRoundScores() {
-	scoreList.clear();
-	if (scoChaId == 0 || scoRound == 0) {
-	    tempDate = null;
+	if (scoChaId <= 0 || scoRound <= 0) {
+	    scoreList.clear();
+	    setScoDate(null);
 	    return;
 	}
 	setScoreList(scoreService.getChampionshipRoundScores(scoChaId, scoRound));
 	if (scoreList.size() > 0) {
-	    tempDate = scoreList.get(0).getScoDate();
+	    setScoDate(scoreList.get(0).getScoDate());
 	}
     }
 
@@ -208,7 +201,7 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
 
     public void changeRoundDate() {
 	updateScoresDate();
-//	getRoundScores();
+	getRoundScores();
     }
 
     public void roundDateValidator(FacesContext context, UIComponent component,
@@ -233,7 +226,7 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
 	    tempRound = 0;
 	    scoreList.clear();
 	    getRoundsAndTeams(scoChaId);
-	    tempDate = null;
+	    scoDate = null;
 	} else {
 	    clearLists();
 	}
@@ -262,14 +255,13 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
 	teamItemList.clear();
 	scoreList.clear();
 	scoChaId = 0;
-	tempDate = null;
+	scoDate = null;
 	tempRound = 0;
     }
 
     private void checkTeamItemListSizes() {
 	if (scoreList.isEmpty()) {
 	    scoDate = null;
-	    tempDate = null;
 	    disabledCreateCommand = "true";
 	}
 	removeTeamsFromLists();

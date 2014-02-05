@@ -38,7 +38,7 @@ public class PrePoolDAO implements InjectableDAO {
 
     protected PrePool load(Connection conn, int id) throws SQLException {
 	PrePool prePool = null;
-	String query = "SELECT * FROM prePools WHERE pre_id = ?";
+	String query = "SELECT * FROM prePools LEFT JOIN scores ON sco_id = pre_sco_id WHERE pre_id = ?";
 	try (PreparedStatement ps = conn.prepareStatement(query)) {
 	    ps.setInt(1, id);
 	    log.debug("load: " + ps.toString());

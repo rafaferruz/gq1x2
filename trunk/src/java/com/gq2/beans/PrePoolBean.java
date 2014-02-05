@@ -8,6 +8,7 @@ import com.gq2.services.PrePoolService;
 import com.gq2.services.PrognosticService;
 import com.gq2.services.TeamService;
 import com.gq2.tools.Const;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,7 +26,7 @@ import javax.faces.model.SelectItem;
  */
 @ManagedBean(name = "prePool")
 @ViewScoped
-public class PrePoolBean {
+public class PrePoolBean implements Serializable {
 
     private List<PrePool> prePoolList = new ArrayList();
     private List<SelectItem> championshipItemList = new ArrayList();
@@ -94,12 +95,6 @@ public class PrePoolBean {
     }
 
     public List<PrePool> getDataMatches() {
-	if (season != null && orderNumber != null && season != 0 && orderNumber != 0  ) {
-	    showMatches();
-	    readTeamItemList();
-	} else {
-	    dataMatches.clear();
-	}
 	return dataMatches;
     }
 
@@ -288,8 +283,10 @@ public class PrePoolBean {
 
     public void deleteMatch() {
 	if (dataPrePoolMatch != null) {
-	    prePoolService.deleteMatch(dataPrePoolMatch);
-	    loadPrePoolList(season, orderNumber);
+	    if (prePoolService.delete(dataPrePoolMatch) != 0) {
+		getPrePoolList().remove(dataPrePoolMatch);
+	    }
+//	    loadPrePoolList(season, orderNumber);
 	}
     }
 
@@ -336,27 +333,43 @@ public class PrePoolBean {
 	List<Prognostic> prognosticList = prognosticService.loadPrognosticRoundList(chaId, round);
 	for (Prognostic prognostic : prognosticList) {
 	    PrePool prePool = populatePrePoolFromPrognostic(prognostic, season, orderNumber);
-	    dataMatches.add(prePool);
+	    if (!matchIsInPrePoolList(prePool)) {
+		dataMatches.add(prePool);
+	    }
 	}
     }
 
+    private boolean matchIsInPrePoolList(PrePool match) {
+	for (PrePool prePool : getPrePoolList()) {
+	    if (match.getPreScoTeam1Id() == prePool.getPreScoTeam1Id()
+		    & match.getPreScoTeam2Id() == prePool.getPreScoTeam2Id()) {
+		return true;
+	    }
+	}
+	return false;
+    }
+
     public void inputMatch() {
-	dataMatches.clear();
 	List<Prognostic> prognosticList = prognosticService.loadPrognosticRoundList(chaId, round);
 	for (Prognostic prognostic : prognosticList) {
 	    if (dataMatch.getPreScoTeam1Id() == prognostic.getPro_sco_team1_id()
 		    & dataMatch.getPreScoTeam2Id() == prognostic.getPro_sco_team2_id()) {
 		PrePool prePool = populatePrePoolFromPrognostic(prognostic, season, orderNumber);
-		prePoolService.save(prePool);
+		int id = prePoolService.save(prePool);
+		if (id > 0) {
+		    prePool.setPreId(id);
+		    getPrePoolList().add(prePool);
+		    sortPrePoolList();
+		    dataMatches.remove(dataMatch);
+		}
 		break;
 	    }
 	}
-	loadPrePoolList(season, orderNumber);
     }
 
     public void insertMatches() {
 	int m = 0;
-	dataMatches.clear();
+//	dataMatches.clear();
 	List<Prognostic> prognosticList = prognosticService.loadPrognosticRoundList(chaId, round);
 	for (Prognostic prognostic : prognosticList) {
 	    if (getInsertedmatches() != 0) {
@@ -372,10 +385,14 @@ public class PrePoolBean {
 
 	    }
 	    PrePool prePool = populatePrePoolFromPrognostic(prognostic, season, orderNumber);
-	    prePoolService.save(prePool);
+	    int id = prePoolService.save(prePool);
+	    if (id > 0) {
+		getPrePoolList().add(prePool);
+	    }
 	}
+	sortPrePoolList();
 
-	loadPrePoolList(season, orderNumber);
+//	loadPrePoolList(season, orderNumber);
     }
 
     public void insertTotal() {

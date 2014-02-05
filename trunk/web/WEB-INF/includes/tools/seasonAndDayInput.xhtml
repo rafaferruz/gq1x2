@@ -42,6 +42,7 @@ changeValueOrderNumber(ValueChangeEvent ev).
 	<c:if test="#{mode=='onlyADay'}">
 	    <h:outputLabel for="dayOrder" value="#{txt_pre.prePoolRound}"/>
 	    <h:inputText id="dayOrder" maxlength="2" size="2" required="#{requiredDayOrder}"
+			 label="#{txt_pre.prePoolRound}"
 			 onchange="submit();" 
 			 value="#{bean.orderNumber}" 
 			 valueChangeListener="#{bean.changeValueOrderNumber}"/>
@@ -50,12 +51,16 @@ changeValueOrderNumber(ValueChangeEvent ev).
 	    <h:outputLabel for="textfirstRound" id="textfirstRoundlabel">
 		<h:outputText id="textfirstRound" value="#{txt_pre.roundStart}"/>
 	    </h:outputLabel>
-	    <h:inputText id="firstRound" maxlength="2" size="2" value="#{bean.firstRound}" valueChangeListener="#{bean.changeValueRound}">
+	    <h:inputText id="firstRound" maxlength="2" size="2" value="#{bean.firstRound}" 
+			 label="#{txt_pre.prePoolRound}"
+			 valueChangeListener="#{bean.changeValueRound}">
 	    </h:inputText>
 	    <h:outputLabel for="textlastRound" id="textlastRoundlabel">
 		<h:outputText id="textlastRound" value="#{txt_pre.roundEnd}"/>
 	    </h:outputLabel>
-	    <h:inputText id="lastRound" maxlength="2" size="2" value="#{bean.lastRound}"  onchange="submit();" valueChangeListener="#{bean.changeValueRound}">
+	    <h:inputText id="lastRound" maxlength="2" size="2" value="#{bean.lastRound}" 
+			 label="#{txt_pre.prePoolRound}"
+			 onchange="submit();" valueChangeListener="#{bean.changeValueRound}">
 	    </h:inputText>
 	</c:if>
     </h:panelGrid>
