@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Fragmento para incluir en ficheros xhtml de facelets para mostrar una tabla de objetos Hit premiados.
+
+Sintaxis:
+    <ui:include  src="/WEB-INF/includes/tools/scoreTable.xhtml">
+	<ui:param name="bean" value="EL que haga referencia a la clase bean que
+contenga los métodos y propiedades usados en este fragmento"/>
+	<ui:param name="textBundle" value="fichero de recursos que contenga los textos a usar"/>
+
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:loadBundle basename="#{textBundle}" var="txt_sco"/>
+
+    <h:dataTable  id="sc_dataTable1" 
+		  value="#{bean.scoreList}" var="currentRow"
+		  columnClasses="col-left,col-left,col-center,col-center"
+		  headerClass="list-header" rowClasses="list-row-even,list-row-odd" >
+	<h:column id="sc_column1">
+	    <h:outputText id="sc_outputText1" value="#{currentRow['scoTeamName1']}"/>
+	    <f:facet name="header">
+		<h:outputText id="sc_outputText2" value="#{txt_sco.homeTeam}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="sc_column2">
+	    <h:outputText id="sc_outputText3" value="#{currentRow['scoTeamName2']}"/>
+	    <f:facet name="header">
+		<h:outputText id="sc_outputText4" value="#{txt_sco.outTeam}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="sc_column3">
+	    <h:inputText id="sc_inputText1" maxlength="2" required="true" size="2" 
+			 value="#{currentRow['scoScore1']}">
+		<f:validateLongRange maximum="20" minimum="0"/>
+	    </h:inputText>
+	    <f:facet name="header">
+		<h:outputText id="sc_outputText5" value="#{txt_sco.GC}"/>
+	    </f:facet>
+	</h:column>
+	<h:column id="sc_column4">
+	    <h:inputText id="sc_inputText2" maxlength="2" required="true" size="2" 
+			 value="#{currentRow['scoScore2']}">
+		<f:validateLongRange maximum="20" minimum="0"/>
+	    </h:inputText>
+	    <f:facet name="header">
+		<h:outputText id="sc_outputText6" value="#{txt_sco.GF}"/>
+	    </f:facet>
+	</h:column>
+    </h:dataTable>
+</html>

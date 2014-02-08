@@ -31,15 +31,21 @@
 		    <table>
 			<tr>
 			    <td>
-				<h:outputLabel for="componentLabel3" id="componentLabel3">
-				    <h:outputText id="componentLabel3Text" value="#{txt_com.selectChampionship}"/>
-				</h:outputLabel>
+				<ui:include  src="/WEB-INF/includes/tools/championshipAndRound.xhtml">
+				    <ui:param name="bean" value="#{showScores}"/>
+				    <ui:param name="beanChaId" value="#{showScores.scoChaId}"/>
+				    <ui:param name="beanRound" value="#{showScores.scoRound}"/>
+				    <ui:param name="championshipItemList" value="#{showScores.championshipItemList}"/>
+				    <ui:param name="roundItemList" value="#{showScores.roundItemList}"/>
+				    <ui:param name="disabledRounds" value="#{showScores.disabledRounds}"/>
+				    <ui:param name="textChampionship" value="#{txt_com.Championship}"/>
+				    <ui:param name="textRound" value="#{txt_com.Round}"/> 
+				    <ui:param name="textShowResults" value="#{txt_com.ShowScores}"/> 
+				</ui:include>
 			    </td>
-			    <td>
-				<h:outputLabel for="componentLabel4" id="componentLabel4">
-				    <h:outputText id="componentLabel4Text" value="#{txt_com.selectRound}"/>
-				</h:outputLabel>
-			    </td>
+
+			</tr>
+			<tr>
 			    <td>
 				<h:outputLabel for="componentLabel5Text" id="componentLabel5">
 				    <h:outputText id="componentLabel5Text" value="#{txt_sco.roundDate}"/>
@@ -48,16 +54,6 @@
 
 			</tr>
 			<tr>
-			    <td>
-				<h:selectOneMenu id="dropdown1" value="#{showScores.scoChaId}" onchange="submit();" valueChangeListener="#{showScores.championshipChangeEvent}">
-				    <f:selectItems id="dropdown1SelectItems" value="#{showScores.championshipItemList}"/>
-				</h:selectOneMenu>
-			    </td>
-			    <td>
-				<h:selectOneMenu disabled="#{showScores.disabledRounds}" id="dropdown2" value="#{showScores.scoRound}" onchange="submit();" valueChangeListener="#{showScores.roundChangeEvent}">
-				    <f:selectItems id="dropdown2SelectItems" value="#{showScores.roundItemList}"/>
-				</h:selectOneMenu>
-			    </td>
 			    <td>
 				<h:inputText converterMessage="#{txt_msg.errorDate}" id="rounddate" maxlength="10" size="10"
 					     validator="#{showScores.roundDateValidator}" value="#{showScores.scoDate}">
@@ -73,44 +69,16 @@
 			</tr>
 			<tr>
 			    <td colspan="4">
-				<h:dataTable  id="dataTable1" value="#{showScores.scoreList}" var="currentRow"
-					      columnClasses="col-left,col-left,col-center,col-center"
-					      headerClass="list-header" rowClasses="list-row-even,list-row-odd" >
-				    <h:column id="column1">
-					<h:outputText id="outputText1" value="#{currentRow['scoTeamName1']}"/>
-					<f:facet name="header">
-					    <h:outputText id="outputText2" value="#{txt_sco.homeTeam}"/>
-					</f:facet>
-				    </h:column>
-				    <h:column id="column2">
-					<h:outputText id="outputText3" value="#{currentRow['scoTeamName2']}"/>
-					<f:facet name="header">
-					    <h:outputText id="outputText4" value="#{txt_sco.outTeam}"/>
-					</f:facet>
-				    </h:column>
-				    <h:column id="column3">
-					<h:inputText id="inputText5" maxlength="2" required="true" size="2" value="#{currentRow['scoScore1']}">
-					    <f:validateLongRange maximum="20" minimum="0"/>
-					</h:inputText>
-					<f:facet name="header">
-					    <h:outputText id="outputText6" value="#{txt_sco.GC}"/>
-					</f:facet>
-				    </h:column>
-				    <h:column id="column4">
-					<h:inputText id="inputText7" maxlength="2" required="true" size="2" value="#{currentRow['scoScore2']}">
-					    <f:validateLongRange maximum="20" minimum="0"/>
-					</h:inputText>
-					<f:facet name="header">
-					    <h:outputText id="outputText8" value="#{txt_sco.GF}"/>
-					</f:facet>
-				    </h:column>
-				</h:dataTable>
+				<ui:include  src="/WEB-INF/includes/dataTables/scoreTable.xhtml">
+				    <ui:param name="bean" value="#{showScores}"/>
+				    <ui:param name="textBundle" value="com.gq2.multilang.score"/>
+				</ui:include>
+
 			    </td>
 			</tr>
 			<tr>
 			    <td colspan="4">
 				<h:commandButton action="#{showScores.updateScores}" id="button8" value="#{txt_sco.saveScores}"/>
-				<h:commandButton action="#{showScores.generateClassifications}" id="generateclasif8" value="#{txt_sco.generateClassifications}"/>
 			    </td>
 			</tr>
 			<tr>
@@ -119,7 +87,9 @@
 			    </td>
 			</tr>
 			<tr>
-			    <td colspan="3"></td>
+			    <td colspan="3">
+				<h:commandButton action="#{showScores.generateClassifications}" id="generateclasif8" value="#{txt_sco.generateClassifications}"/>
+			    </td>
 			    <td>
 				<h:commandButton action="close" id="button9" value="#{txt_com.Close}"/>
 			    </td>
@@ -128,8 +98,8 @@
 		</h:form>
 
 
-            </ui:define>
-        </ui:composition>
+	    </ui:define>
+	</ui:composition>
     </h:body>
 
 

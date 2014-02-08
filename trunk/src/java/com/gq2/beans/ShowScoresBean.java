@@ -18,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,6 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
     private List<SelectItem> teamItemList_2 = new ArrayList();
     private List<ScoreBean> scoreList = new ArrayList();
     private boolean disabledRounds = false;
-    private int tempRound;
     private String disabledCreateCommand = "true";
     private ChampionshipService championshipService = new ChampionshipService();
     private TeamService teamService = new TeamService();
@@ -48,15 +48,17 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
      * Creates a new instance of ShowScoresBean
      */
     public ShowScoresBean() {
-	scoRound = 1;
     }
 
     @Override
-    public int getScoRound() {
-	scoRound = tempRound;
-	return scoRound;
+    public void setScoDate(Date date){
+	super.setScoDate(date);
     }
-
+    @Override
+    public Date getScoDate(){
+	return super.getScoDate();
+    }
+    
     public String getDisabledCreateCommand() {
 	return disabledCreateCommand;
     }
@@ -130,13 +132,13 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
 	reloadTeamItemLists();
     }
 
-    public void getRoundScores() {
-	if (scoChaId <= 0 || scoRound <= 0) {
+    private void getRoundScores() {
+	if (getScoChaId() <= 0 || getScoRound() <= 0) {
 	    scoreList.clear();
 	    setScoDate(null);
 	    return;
 	}
-	setScoreList(scoreService.getChampionshipRoundScores(scoChaId, scoRound));
+	setScoreList(scoreService.getChampionshipRoundScores(getScoChaId(), getScoRound()));
 	if (scoreList.size() > 0) {
 	    setScoDate(scoreList.get(0).getScoDate());
 	}
@@ -156,17 +158,17 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
 	FacesContext fcClasifications = FacesContext.getCurrentInstance();
 	HttpServletRequest request = (HttpServletRequest) fcClasifications.getExternalContext().getRequest();
 	HttpServletResponse response = (HttpServletResponse) fcClasifications.getExternalContext().getResponse();
-	request.setAttribute("campeonatos", scoChaId);
+	request.setAttribute("campeonatos", getScoChaId());
 	request.setAttribute("generartodos", null);
 	request.setAttribute("generardesde", null);
-	request.setAttribute("scoRound", scoRound);
-	request.setAttribute("roundfinal", scoRound);
+	request.setAttribute("getScoRound()", getScoRound());
+	request.setAttribute("roundfinal", getScoRound());
 	MakeClassification clasif = new MakeClassification();
-	clasif.processRound(scoChaId, scoRound);
+	clasif.processRound(getScoChaId(), getScoRound());
 	MakeSuperTable supertable = new MakeSuperTable();
-	supertable.processRound(scoChaId, scoRound);
+	supertable.processRound(getScoChaId(), getScoRound());
 	MakePrognostic prognostic = new MakePrognostic();
-	prognostic.processRound(scoChaId, scoRound);
+	prognostic.processRound(getScoChaId(), getScoRound());
     }
 
     private void reloadTeamItemLists() {
@@ -209,7 +211,7 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
 	String message;
 	DateFormat df = new SimpleDateFormat();
 	try {
-	    scoDate = (Date) value;
+	    setScoDate((Date) value);
 	} catch (Exception e) {
 	    message = "Fecha erronea.";
 	    context.addMessage(component.getClientId(context),
@@ -222,11 +224,11 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
 	    if (championshipItemList.isEmpty()) {
 		setChampionshipItemList(championshipService.getChampionshipItemList());
 	    }
-	    scoChaId = (Integer) ev.getNewValue();
-	    tempRound = 0;
+	    setScoChaId((Integer) ev.getNewValue());
+	    setScoRound(0);
 	    scoreList.clear();
-	    getRoundsAndTeams(scoChaId);
-	    scoDate = null;
+	    getRoundsAndTeams(getScoChaId());
+	    setScoDate(null);
 	} else {
 	    clearLists();
 	}
@@ -235,8 +237,18 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
     public void roundChangeEvent(ValueChangeEvent ev) {
 	scoreList.clear();
 	if (ev.getNewValue() != null) {
-	    scoRound = (Integer) ev.getNewValue();
-	    tempRound = scoRound;
+	    setScoRound((Integer) ev.getNewValue());
+/*	Las siguientes líneas deberán ser restauradas si se modifica el mecanismo de mostrar los resultados
+	    getRoundScores();
+	    reloadTeamItemLists();
+	    checkTeamItemListSizes();
+*/
+	}
+    }
+
+    public void showResultsEvent(ActionEvent ev) {
+	scoreList.clear();
+	if (ev != null) {
 	    getRoundScores();
 	    reloadTeamItemLists();
 	    checkTeamItemListSizes();
@@ -254,14 +266,13 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
 	roundItemList.clear();
 	teamItemList.clear();
 	scoreList.clear();
-	scoChaId = 0;
-	scoDate = null;
-	tempRound = 0;
+	setScoChaId(0);
+	setScoDate(null);
     }
 
     private void checkTeamItemListSizes() {
 	if (scoreList.isEmpty()) {
-	    scoDate = null;
+	    setScoDate(null);
 	    disabledCreateCommand = "true";
 	}
 	removeTeamsFromLists();
@@ -276,25 +287,25 @@ public class ShowScoresBean extends ScoreBean implements Serializable {
     private void removeTeamsFromLists() {
 	for (ScoreBean score : scoreList) {
 	    for (SelectItem item : teamItemList_1) {
-		if (item.getValue() == score.scoTeam1Id) {
+		if (item.getValue() == score.getScoTeam1Id()) {
 		    teamItemList_1.remove(item);
 		    break;
 		}
 	    }
 	    for (SelectItem item : teamItemList_1) {
-		if (item.getValue() == score.scoTeam2Id) {
+		if (item.getValue() == score.getScoTeam2Id()) {
 		    teamItemList_1.remove(item);
 		    break;
 		}
 	    }
 	    for (SelectItem item : teamItemList_2) {
-		if (item.getValue() == score.scoTeam1Id) {
+		if (item.getValue() == score.getScoTeam1Id()) {
 		    teamItemList_2.remove(item);
 		    break;
 		}
 	    }
 	    for (SelectItem item : teamItemList_2) {
-		if (item.getValue() == score.scoTeam2Id) {
+		if (item.getValue() == score.getScoTeam2Id()) {
 		    teamItemList_2.remove(item);
 		    break;
 		}
