@@ -14,11 +14,11 @@ import javax.faces.bean.ViewScoped;
 
 public class ScoreBean extends Score  implements Serializable{
 
-    public String scoTeamName1;
-    public String scoTeamName2;
+    private String scoTeamName1;
+    private String scoTeamName2;
     private String command;
     private boolean registered;
-    public boolean scoMarkDelete;
+    private boolean scoMarkDelete;
 
     public ScoreBean() {
     }
@@ -67,7 +67,7 @@ public class ScoreBean extends Score  implements Serializable{
 
     public Score loadScore() {
 
-	Score score = new DAOFactory().getScoreDAO().load(scoId);
+	Score score = new DAOFactory().getScoreDAO().load(getScoId());
 	if (score != null) {
 	    setScoId(score.getScoId());
 	    setScoDate(score.getScoDate());
@@ -82,7 +82,7 @@ public class ScoreBean extends Score  implements Serializable{
     }
 
     public boolean deleteScore() {
-	if (scoId != 0) {
+	if (getScoId() != 0) {
 	    return new DAOFactory().getScoreDAO().delete((Score) this);
 	}
 	return false;
@@ -90,7 +90,7 @@ public class ScoreBean extends Score  implements Serializable{
 
     public boolean updateScore() {
 
-	if (scoId != 0) {
+	if (getScoId() != 0) {
 	    return new DAOFactory().getScoreDAO().update((Score) this);
 	}
 	return false;

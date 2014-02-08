@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+Fragmento para incluir en ficheros xhtml de facelets para solicitar dos campos numericos
+
+Sintaxis:
+    <ui:include  src="/WEB-INF/includes/tools/championshipAndRound.xhtml">
+	<ui:param name="bean" value="EL que haga referencia a la clase bean que
+contenga los métodos que atenderán los cambios de valor de championship y round"/>
+	<ui:param name="beanChaId" value="EL que haga referencia a la propiedad 
+del bean que recibe el id de championship"/>
+	<ui:param name="beanRound" value="EL que haga referencia a la propiedad 
+del bean que recibe el numero de ronda"/>
+	<ui:param name="championshipItemList" value="EL que haga referencia a la propiedad del bean
+ que contiene la lista de SelecItems que contienen los nombres y códigos de los championship">
+	<ui:param name="roundItemList" value="EL que haga referencia a la propiedad del bean
+ que contiene la lista de SelecItems que contienen los nombres y códigos de las rondas
+	<ui:param name="disabledRounds" value="EL que haga referencia a la propiedad del bean
+ que contiene el valor 'true' si se quiere inhabilitar la selección de Round"
+	<ui:param name="textChampionship" value="Texto para mostrar como etiqueta del 
+selector de championships"/>     // Este bean deberá tener un método championshipChangeEvent(ValueChangeEvent ev)
+	<ui:param name="textRound" value="Texto para mostrar como etiqueta del 
+selector de rounds"/>    // Este bean deberá tener un método roundChangeEvent(ValueChangeEvent ev)
+	<ui:param name="textShowResults" value="Texto para mostrar en el botón
+de solicitar que se muestren los resultados"/>    // Este bean deberá tener un método showResults()
+
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:panelGrid columns="2">
+	<h:outputLabel for="car_selectChampionship" id="car_labelTextChampionship">
+	    <h:outputText id="car_textChampionship" value="#{textChampionship}"/>
+	</h:outputLabel>
+	<h:outputLabel for="car_selectRound" id="car_labelTextRound">
+	    <h:outputText id="car_textRound" value="#{textRound}"/>
+	</h:outputLabel>
+	<h:selectOneMenu id="car_selectChampionship" value="#{beanChaId}" onchange="submit();" valueChangeListener="#{bean.championshipChangeEvent}">
+	    <f:selectItems id="car_championshipSelectItems" value="#{championshipItemList}"/>
+	</h:selectOneMenu>
+	<h:selectOneMenu disabled="#{disabledRounds}" id="car_selectRound" value="#{beanRound}" onchange="submit();" valueChangeListener="#{bean.roundChangeEvent}">
+	    <f:selectItems id="car_roundSelectItems" value="#{roundItemList}"/>
+	</h:selectOneMenu>
+	<h:commandButton id="car_commandShowScores" actionListener="#{bean.showResultsEvent}" value="#{textShowResults}"/>
+    </h:panelGrid>
+</html>

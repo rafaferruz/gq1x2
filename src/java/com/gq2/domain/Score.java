@@ -9,14 +9,14 @@ import java.util.Date;
  */
 public class Score implements Serializable{
 
-    public int scoId;
-    public int scoChaId;
-    public int scoRound;
-    public Date scoDate;
-    public int scoTeam1Id;
-    public int scoTeam2Id;
-    public int scoScore1;
-    public int scoScore2;
+    private int scoId;
+    private int scoChaId;
+    private int scoRound;
+    private Date scoDate;
+    private int scoTeam1Id;
+    private int scoTeam2Id;
+    private int scoScore1;
+    private int scoScore2;
 
     public Score() {
     }

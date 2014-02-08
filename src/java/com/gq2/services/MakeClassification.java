@@ -218,7 +218,7 @@ public class MakeClassification {
 	classification.setClaRound(score.getScoRound());
 	classification.setClaDate(score.getScoDate());
 	classification.setClaPosition(0);
-	if (classification.getClaTeaId() == score.scoTeam1Id) {
+	if (classification.getClaTeaId() == score.getScoTeam1Id()) {
 	    // Se incrementan Partidos ganados totales y Partidos ganados en casa
 	    classification.setClaTotalPlayedGames(classification.getClaTotalPlayedGames() + 1);
 	    classification.setClaHomePlayedGames(classification.getClaHomePlayedGames() + 1);
@@ -245,7 +245,7 @@ public class MakeClassification {
 	    classification.setClaHomeAgainstGoals(classification.getClaHomeAgainstGoals() + score.getScoScore2());
 	}
 
-	if (classification.getClaTeaId() == score.scoTeam2Id) {
+	if (classification.getClaTeaId() == score.getScoTeam2Id()) {
 	    // Se incrementan Partidos ganados totales y Partidos ganados en casa
 	    classification.setClaTotalPlayedGames(classification.getClaTotalPlayedGames() + 1);
 	    classification.setClaOutPlayedGames(classification.getClaOutPlayedGames() + 1);

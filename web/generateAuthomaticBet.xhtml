@@ -27,7 +27,7 @@
                         <tr>
                             <td>
                                 <h:outputLabel for="componentLabel3" id="componentLabel3">
-                                    <h:outputText id="componentLabel3Text" value="#{txt_com.selectChampionship}"/>
+                                    <h:outputText id="componentLabel3Text" value="#{txt_com.Championship}"/>
                                 </h:outputLabel>
                             </td>
                             <td colspan="2">
@@ -62,7 +62,7 @@
                         </tr>
 
                         <tr>
-                            <td>#{txt_com.selectRound}</td>
+                            <td>txt_com.Round</td>
                             <td>
                                 <h:selectOneMenu  id="ronda2"  onchange="submit()" value="#{genAuthomaticBet.round}" valueChangeListener="#{genAuthomaticBet.roundChangeEvent}">
                                     <f:selectItems id="dropdown2SelectItems" value="#{genAuthomaticBet.roundItemList}"/>

@@ -99,7 +99,7 @@ public class ClassificationWDLService {
 	classificationWDL.setWdlRound(score.getScoRound());
 	classificationWDL.setWdlDate(score.getScoDate());
 	classificationWDL.setWdlPosition(0);
-	if (classificationWDL.getWdlTeaId() == score.scoTeam1Id) {
+	if (classificationWDL.getWdlTeaId() == score.getScoTeam1Id()) {
 	    if (score.getScoScore1() > score.getScoScore2()) {
 		// En caso de victoria en casa ...
 		classificationWDL.setWdlPSG(classificationWDL.getWdlPSG() + 1);
@@ -126,7 +126,7 @@ public class ClassificationWDLService {
 		classificationWDL.setWdlPSNP(0);
 	    }
 	}
-	if (classificationWDL.getWdlTeaId() == score.scoTeam2Id) {
+	if (classificationWDL.getWdlTeaId() == score.getScoTeam2Id()) {
 	    if (score.getScoScore1() < score.getScoScore2()) {
 		// En caso de victoria fuera ...
 		classificationWDL.setWdlPSG(classificationWDL.getWdlPSG() + 1);
