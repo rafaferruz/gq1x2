@@ -49,4 +49,8 @@ public class ScoreService {
 	return new DAOFactory().getScoreDAO().loadOnTeams(chaId, teamId1, teamId2);
     }
 
+    public List<ScoreBean> getChampionshipScoresList(int chaId) {
+	return new DAOFactory().getScoreDAO().loadChampionshipScores(chaId);
+    }
+
 }

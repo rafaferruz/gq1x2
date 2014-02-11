@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="championshipScores" columnCount="3" pageWidth="595" pageHeight="842" columnWidth="185" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="db291693-dac4-4f54-8a77-8473cd599807">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="championshipDescription" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="scoRound" class="java.lang.Integer"/>
+	<field name="scoDate" class="java.util.Date"/>
+	<field name="scoTeamName1" class="java.lang.String"/>
+	<field name="scoTeamName2" class="java.lang.String"/>
+	<field name="scoScore1" class="java.lang.Integer"/>
+	<field name="scoScore2" class="java.lang.Integer"/>
+	<group name="Round" keepTogether="true">
+		<groupExpression><![CDATA[$F{scoRound}]]></groupExpression>
+		<groupHeader>
+			<band height="24">
+				<staticText>
+					<reportElement x="0" y="0" width="50" height="12" uuid="0c226d3e-5e46-42f7-b2d8-f3cf2a09895e"/>
+					<text><![CDATA[Jornada]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="50" y="0" width="30" height="12" uuid="f311f376-04ea-45c8-8f3c-b9c56feaadf4"/>
+					<textFieldExpression><![CDATA[$F{scoRound}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="80" y="0" width="50" height="12" uuid="2b968a9e-d131-4f66-843b-8e83fedc85b7"/>
+					<text><![CDATA[Fecha]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="130" y="0" width="50" height="12" uuid="025cf8ff-069e-4d18-9253-982f14629494"/>
+					<textFieldExpression><![CDATA[$F{scoDate}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<line>
+					<reportElement x="0" y="5" width="184" height="1" uuid="77b41b85-4459-4165-b675-0f3cef85cfee"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="299" height="30" uuid="3cfcec1f-b0e7-4303-9fcf-116816b020eb"/>
+				<textElement textAlignment="Left">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resultados del campeonato]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="299" y="0" width="256" height="30" uuid="62449850-5905-4084-ae97-d2195fc9be5b"/>
+				<textElement textAlignment="Left">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{championshipDescription}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="70" height="12" uuid="17385cb6-b3f3-4917-bb28-12cd686f5f30"/>
+				<textFieldExpression><![CDATA[$F{scoTeamName1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="70" height="12" uuid="195dd22d-6d89-4c6d-ac08-4d28600197fc"/>
+				<textFieldExpression><![CDATA[$F{scoTeamName2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="0" width="12" height="12" uuid="e5f1a941-507e-4440-b1a0-601601a9a43f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{scoScore1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="166" y="0" width="12" height="12" uuid="6d01e6e2-55c0-4506-a2b8-b486e796b9e8"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{scoScore2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="160" y="0" width="5" height="12" uuid="c70b88c7-c6a1-47c1-a128-1364e83491cd"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
