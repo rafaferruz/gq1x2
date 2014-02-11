@@ -188,6 +188,28 @@ public class ScoreDAO implements InjectableDAO {
 	return roundList;
     }
 
+    public List<ScoreBean> loadChampionshipScores(int chaId) {
+	List<ScoreBean> scoreBeanList = new ArrayList<>();
+	String query = "SELECT team1.tea_name AS name1, "
+		+ " team2.tea_name AS name2, sco.* "
+		+ " FROM scores AS sco, teams AS team1, teams AS team2 "
+		+ " WHERE sco.sco_cha_id = ? "
+		+ " AND team1.tea_id = sco.sco_team1_id "
+		+ " AND team2.tea_id = sco.sco_team2_id "
+		+ " ORDER BY sco.sco_round, sco.sco_id ";
+	try (PreparedStatement ps = conn.prepareStatement(query)) {
+	    ps.setInt(1, chaId);
+	    log.debug("loadChampionshipScores: " + ps.toString());
+	    try (ResultSet rs = ps.executeQuery()) {
+		while (rs.next()) {
+		    scoreBeanList.add(populateScoreBeanFromResultSet(rs));
+		}
+	    }
+	} catch (SQLException ex) {
+	    log.error(ex);
+	}
+	return scoreBeanList;
+    }
     public List<ScoreBean> loadChampionshipRoundScores(int chaId, int round) {
 	List<ScoreBean> scoreBeanList = new ArrayList<>();
 	String query = "SELECT team1.tea_name AS name1, "
@@ -208,7 +230,7 @@ public class ScoreDAO implements InjectableDAO {
 		}
 	    }
 	} catch (SQLException ex) {
-	    java.util.logging.Logger.getLogger(ScoreDAO.class.getName()).log(Level.SEVERE, null, ex);
+	    log.error(ex);
 	}
 	return scoreBeanList;
     }

@@ -92,6 +92,10 @@
 	    <to-view-id>/index.xhtml</to-view-id>
 	</navigation-case>
 	<navigation-case>
+	    <from-outcome>championshipScoresReport</from-outcome>
+	    <to-view-id>/championshipScoresReport.xhtml</to-view-id>
+	</navigation-case>
+	<navigation-case>
 	    <from-outcome>awardedHitsReport</from-outcome>
 	    <to-view-id>/awardedHitsReport.xhtml</to-view-id>
 	</navigation-case>

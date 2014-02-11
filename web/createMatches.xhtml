@@ -30,29 +30,19 @@
 		    <table>
 			<tr>
 			    <td>
-				<h:outputLabel for="componentLabel3" id="componentLabel3">
-				    <h:outputText id="componentLabel3Text" value="#{txt_com.Championship}"/>
-				</h:outputLabel>
+				<ui:include  src="/WEB-INF/includes/tools/championshipAndRound.xhtml">
+				    <ui:param name="bean" value="#{showScores}"/>
+				    <ui:param name="beanChaId" value="#{showScores.scoChaId}"/>
+				    <ui:param name="beanRound" value="#{showScores.scoRound}"/>
+				    <ui:param name="championshipItemList" value="#{showScores.championshipItemList}"/>
+				    <ui:param name="roundItemList" value="#{showScores.roundItemList}"/>
+				    <ui:param name="disabledRounds" value="#{showScores.disabledRounds}"/>
+				    <ui:param name="textChampionship" value="#{txt_com.Championship}"/>
+				    <ui:param name="textRound" value="#{txt_com.Round}"/> 
+				    <ui:param name="textShowResults" value="#{txt_com.ShowScores}"/> 
+				</ui:include>
 			    </td>
-			    <td>
-				<h:outputLabel for="textround" id="textroundlabel">
-				    <h:outputText id="textround" value="#{txt_com.Round}"/>
-				</h:outputLabel>
-			    </td>
-			</tr>
-			<tr>
-			    <td>
-				<h:selectOneMenu id="dropdown1" value="#{showScores.scoChaId}" onchange="submit();" valueChangeListener="#{showScores.championshipChangeEvent}">
-				    <f:selectItems id="dropdown1SelectItems" value="#{showScores.championshipItemList}"/>
-				</h:selectOneMenu>
-			    </td>
-			    <td>
-				<h:inputText id="round" maxlength="2" size="2" value="#{showScores.scoRound}" onchange="submit();" valueChangeListener="#{showScores.roundChangeEvent}">
-				    <f:validateLongRange maximum="60" minimum="1"/>
-				</h:inputText>
-			    </td>
-			    <td>
-			    </td>
+
 			</tr>
 			<tr>
 			    <td>
