@@ -1,0 +1,1 @@
+Crea y mantiene una base de datos de resultados, clasificaciones y datos estadísticos con los que poder realizar consultas SQL para ayuda en elaboración de quinielas de futbol. Permite también la confección de quinielas y la impresión de los boletos con columnas de apuestas sencillas (no columnas de apuestas múltiples).
